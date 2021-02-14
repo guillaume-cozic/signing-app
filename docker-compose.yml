@@ -30,6 +30,18 @@ services:
     networks:
       - back-tier
 
+  nginx_signing:
+    image: nginx:latest
+    container_name: nginx_signing
+    ports:
+      - 8002:80
+    volumes:
+      - ./:/var/www/html/
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - back-tier
+      - front-tier
+
 networks:
   front-tier:
     driver: bridge
