@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+  php_signing:
+    container_name: php_signing
+    build:
+      context: .
+      dockerfile: ./dockerfiles/php/Dockerfile
+    expose:
+      - 9000
+    volumes:
+      - ./:/var/www/html/:rw
+    depends_on:
+      - mysql_signing
+    networks:
+      - front-tier
+      - back-tier
+
+  mysql_signing:
+    image: mysql:5.7
+    container_name: mysql_signing
+    environment:
+      MYSQL_DATABASE: signing
+      MYSQL_USER: signing
+      MYSQL_PASSWORD: signing
+      MYSQL_ROOT_PASSWORD: signing
+    ports:
+      - 3308:3306
+    networks:
+      - back-tier
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
+
+volumes:
+  php_signing:
+  mysql_signing:
