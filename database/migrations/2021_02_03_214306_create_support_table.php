@@ -17,6 +17,7 @@ class CreateSupportTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->integer('total_available');
+            $table->json('name')->default(null)->nullable();
             $table->timestamps();
         });
     }

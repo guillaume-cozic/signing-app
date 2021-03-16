@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Mpociot\Teamwork\Traits\UserHasTeams;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, UserHasTeams;
 
     /**
      * The attributes that are mass assignable.
@@ -40,4 +41,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function adminlte_profile_url()
+    {
+        return '/profile';
+    }
+
+    public function adminlte_image()
+    {
+        return 'http://dev.signing.com:8002/vendor/adminlte/dist/img/AdminLTELogo.png';
+    }
+
+    public function adminlte_desc()
+    {
+        return $this->name;
+    }
 }
