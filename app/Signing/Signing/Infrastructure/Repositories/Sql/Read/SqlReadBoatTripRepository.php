@@ -12,16 +12,12 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
     public function getActive()
     {
-        $records = BoatTripModel::with('support')
+        return BoatTripModel::with('support')
             ->whereNull('end_at')
             ->paginate()
-            ->transform(function ($item, $key){
-                return new BoatTripsDTo(
-                    $item->uuid,
-                    $item->uuid,
-                );
+            ->transform(function (BoatTripModel $item){
+                return $item->toDto();
             });
-
-        return $records;
     }
+
 }

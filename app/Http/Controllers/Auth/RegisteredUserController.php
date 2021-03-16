@@ -17,9 +17,10 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('auth.register');
+        $invite = $request->has('invite');
+        return view('auth.register', ['invite' => $invite]);
     }
 
     /**
@@ -33,6 +34,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'team_name' => 'required_if:invite,false|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
@@ -44,6 +46,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]));
 
+        if(!$request->invite) {
+            $user->team_name = $request->team_name;
+        }
         event(new Registered($user));
 
         return redirect(RouteServiceProvider::HOME);

@@ -14,7 +14,9 @@ class SqlBoatTripRepository implements BoatTripRepository
     public function get(string $id): ?BoatTrip
     {
         return BoatTripModel::with('support')
-            ->where('uuid', $id)->first()?->toDomain();
+            ->where('uuid', $id)
+            ->first()
+            ?->toDomain();
     }
 
     public function add(BoatTrip $b)

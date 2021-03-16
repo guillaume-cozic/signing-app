@@ -233,17 +233,15 @@ return [
             'text' => 'dashboard',
             'url'  => 'dashboard',
             'icon' => 'nav-icon fas fa-tachometer-alt',
-
         ],
         [
             'text' => 'Les supports',
             'url'  => 'ships',
             'icon' => 'nav-icon fas fa-ship',
-
         ],
         [
             'text' => 'Utilisateurs',
-            'url'  => 'users',
+            'url'  => 'teams',
             'icon' => 'nav-icon fas fa-user',
         ],
         [

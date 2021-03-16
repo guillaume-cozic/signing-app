@@ -7,12 +7,14 @@
                 <div class="card-header d-flex p-0">
                     <h3 class="card-title p-3">Les sorties en cours</h3>
                     <ul class="nav nav-pills ml-auto p-2">
-                        <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Toutes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">A venir</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#all" data-toggle="tab">Toutes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#coming" data-toggle="tab">A venir</a></li>
                     </ul>
                 </div>
                 <div class="card-body p-0">
-                    <table class="table table-striped">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="all">
+                            <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>Bateaux</th>
@@ -76,11 +78,15 @@
                         </tr>
                         </tbody>
                     </table>
+                        </div>
+                        <div class="tab-pane" id="coming">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-4">
-            <a href="compose.html" class="btn btn-primary btn-block mb-3">Ajouter une sortie</a>
+            <button class="btn btn-primary btn-block mb-3" id="btn-add-boat-trip">Ajouter une sortie</button>
             <div class="card">
                 <div class="card-body p-0">
                     <table class="table table-striped">
@@ -134,4 +140,13 @@
             </div>
         </div>
     </div>
+    @include('modal.add-boat-trip')
+@endsection
+
+@section('adminlte_js')
+    <script type="text/javascript">
+        $('#btn-add-boat-trip').click(function(){
+            $('#modal-add-boat-trip').modal('show');
+        });
+    </script>
 @endsection

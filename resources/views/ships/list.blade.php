@@ -35,20 +35,31 @@
                 <div class="card-header">
                     <h3 class="card-title">Ajouter un support</h3>
                 </div>
-                <form>
+                <form action="{{route('ships.add')}}" method="POST">
+                    @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nom du support</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                            <label for="name">Nom du support</label>
+                            <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" id="name" placeholder="Entrer le nom du support">
+                            @if ($errors->has('name'))
+                                <span class="error invalid-feedback">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Nombre total de support disponible</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <label for="total_available">Nombre total de support disponible</label>
+                            <input type="number" name="total_available" step="1" value="1" min="1" class="form-control {{ $errors->has('total_available') ? 'is-invalid' : '' }}" id="total_available" placeholder="Total disponible">
+                            @if ($errors->has('total_available'))
+                                <span class="error invalid-feedback">
+                                    <strong>{{ $errors->first('total_available') }}</strong>
+                                </span>
+                            @endif
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                <input type="checkbox" checked class="custom-control-input" id="customSwitch3">
-                                <label class="custom-control-label" for="customSwitch3">Support actif</label>
+                                <input type="checkbox" checked class="custom-control-input" id="support_status" name="state">
+                                <label class="custom-control-label" for="support_status">Support actif</label>
                             </div>
                         </div>
                     </div>

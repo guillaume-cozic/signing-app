@@ -17,6 +17,25 @@
     <form action="{{ $register_url }}" method="post">
         {{ csrf_field() }}
 
+        {{-- team field --}}
+        <input type="hidden" name="invite" value={{$invite}}/>
+        @if(isset($invite) && $invite === true)
+            <div class="input-group mb-3">
+                <input type="text" name="team_name" class="form-control {{ $errors->has('team_name') ? 'is-invalid' : '' }}"
+                       value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.team_name') }}" autofocus>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                    </div>
+                </div>
+                @if($errors->has('team_name'))
+                    <div class="invalid-feedback">
+                        <strong>{{ $errors->first('team_name') }}</strong>
+                    </div>
+                @endif
+            </div>
+        @endif
+
         {{-- Name field --}}
         <div class="input-group mb-3">
             <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
@@ -60,7 +79,7 @@
                 </div>
             </div>
             @if($errors->has('password'))
-                <div class="invalid-feedback">
+                <div class="error invalid-feedback">
                     <strong>{{ $errors->first('password') }}</strong>
                 </div>
             @endif
