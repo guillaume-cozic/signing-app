@@ -4,16 +4,23 @@
 namespace Tests\Unit\Signing;
 
 
-use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class EndBoatTripTest extends TestCase
 {
+    private EndBoatTrip $endBoatTrip;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->endBoatTrip = app(EndBoatTrip::class);
+    }
+
     /**
      * @test
      */
@@ -24,13 +31,26 @@ class EndBoatTripTest extends TestCase
             ->inProgress(numberHours:2, name: $name = 'tabarly');
         $this->boatTripRepository->add($boatTrip);
 
-        app(EndBoatTrip::class)->execute($id);
+        $this->endBoatTrip->execute($id);
 
         $boatTripExpected = BoatTripBuilder::build($id = 'abc')
             ->withBoats([$supportId => 2])
             ->ended(numberHours:2, name: $name = 'tabarly');
 
         $this->assertBoatTripHasBeenEnded($id, $boatTripExpected);
+    }
+
+
+    /**
+     * @test
+     */
+    public function shouldNotEndBoatTripTwice()
+    {
+        $boatTrip = BoatTripBuilder::build($id = 'abc')->ended(1, 'Tabarly');
+        $this->boatTripRepository->add($boatTrip);
+
+        self::expectException(BoatTripAlreadyEnded::class);
+        $this->endBoatTrip->execute($id);
     }
 
     private function assertBoatTripHasBeenEnded(string $id, BoatTrip $boatTripExpected): void

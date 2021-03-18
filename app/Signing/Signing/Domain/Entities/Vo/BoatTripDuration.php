@@ -17,17 +17,14 @@ class BoatTripDuration
 
     public function end(\DateTime $endDate)
     {
+        if($this->isEnded()) throw new BoatTripAlreadyEnded();
         $this->end = $endDate;
     }
 
     public function addTime(float $numberHours)
     {
-        if($numberHours < 0){
-            throw new TimeCantBeNegative();
-        }
-        if($this->isEnded()){
-            throw new BoatTripAlreadyEnded();
-        }
+        if($numberHours < 0) throw new TimeCantBeNegative();
+        if($this->isEnded()) throw new BoatTripAlreadyEnded();
         $this->numberHours += $numberHours;
     }
 

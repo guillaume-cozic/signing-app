@@ -18,6 +18,7 @@ class BoatTripBuilder
     private function __construct(private string $id)
     {
         $this->dateProvider = app(DateProvider::class);
+        $this->boats = new BoatsCollection([]);
     }
 
     public static function build(string $id):self
