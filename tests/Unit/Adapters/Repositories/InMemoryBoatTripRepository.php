@@ -24,12 +24,10 @@ class InMemoryBoatTripRepository implements BoatTripRepository
     public function getBySupport(string $supportId): array
     {
         foreach($this->boatTrips as $boatTrip){
-            if($boatTrip->supportId() === $supportId) {
+            if($boatTrip->hasBoat($supportId)) {
                 $boatTrips[] = $boatTrip;
             }
         }
         return $boatTrips ?? [];
     }
-
-
 }

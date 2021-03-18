@@ -7,7 +7,7 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
-use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SupportModel;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 
 class SqlBoatTripRepository implements BoatTripRepository
 {
@@ -21,20 +21,31 @@ class SqlBoatTripRepository implements BoatTripRepository
 
     public function add(BoatTrip $b)
     {
-        $model = new BoatTripModel();
+        $boatTripState = $b->getState();
+        $boatTripModel = new BoatTripModel();
 
-        if($b->supportId() !== null) {
-            $supportModel = SupportModel::where('uuid', $b->supportId())->first();
-            $model->support_id = $supportModel?->id;
+        if($boatTripState->supportId() !== null) {
+            $boatTripModel->support_id = FleetModel::where('uuid', $boatTripState->supportId())->first()?->id;
         }
 
-        $model->fill($b->toArray());
-        $model->save();
+        $boatTripModel->uuid = $boatTripState->id();
+        $boatTripModel->number_boats = $boatTripState->qty();
+        $boatTripModel->name = $boatTripState->name();
+        $boatTripModel->fill($boatTripState->duration());
+        $boatTripModel->save();
     }
 
     public function getBySupport(string $supportId): array
     {
-        // TODO: Implement getBySupport() method.
+        return BoatTripModel::query()
+            ->whereHas('support', function ($query) use($supportId){
+                return $query->where('uuid', $supportId);
+            })
+            ->get()
+            ?->transform(function (BoatTripModel $model){
+                return $model->toDomain();
+            })
+            ->toArray();
     }
 
 }

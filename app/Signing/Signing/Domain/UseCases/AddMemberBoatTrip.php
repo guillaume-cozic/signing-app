@@ -6,5 +6,5 @@ namespace App\Signing\Signing\Domain\UseCases;
 
 interface AddMemberBoatTrip
 {
-    public function execute(string $memberId, ?string $supportId = null, ?int $numberBoats = null, ?int $numberHours = null);
+    public function execute(string $memberId, array $boats = [], ?int $numberHours = null);
 }

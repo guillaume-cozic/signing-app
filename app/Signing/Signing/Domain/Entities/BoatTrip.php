@@ -8,16 +8,16 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use JetBrains\PhpStorm\Pure;
+use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 
-class BoatTrip
+class BoatTrip implements HasState
 {
     private BoatTripRepository $boatTripRepository;
 
     public function __construct(
         private Id $id,
         private BoatTripDuration $boatTripDuration,
-        private ?string $supportId = null,
-        private ?int $qty = null,
+        private ?BoatsCollection $boats = null,
         private ?string $name = null,
         private ?string $memberId = null,
     ){
@@ -29,13 +29,22 @@ class BoatTrip
         return $this->id->id();
     }
 
-    #[Pure] public function supportId():?string
+    public function hasBoat(string $boatIdAsked):bool
     {
-        return $this->supportId;
+        foreach ($this->boats->boats() as $boatId => $qty) {
+            if($boatIdAsked === $boatId){
+                return true;
+            }
+        }
+        return false;
     }
 
+    /**
+     * @throws BoatNotAvailable
+     */
     public function create()
     {
+        (new BoatAvailabilityChecker($this->boats))->checkIfEnoughBoat();
         $this->boatTripRepository->add($this);
     }
 
@@ -45,20 +54,14 @@ class BoatTrip
         $this->boatTripRepository->add($this);
     }
 
-    public function quantity():int
+    public function quantity(string $supportId):int
     {
-        return $this->qty;
+        return $this->boats->quantity($supportId) ?? 0;
     }
 
-    public function toArray()
+    public function getState(): BoatTripState
     {
         $boatTripDuration = $this->boatTripDuration->toArray();
-        return array_merge([
-            'uuid' => $this->id->id(),
-            'support_id' => $this->supportId,
-            'number_boats' => $this->qty,
-            'name' => $this->name,
-            'member_id' => $this->memberId,
-        ], $boatTripDuration);
+        return new BoatTripState($this->id->id(), $boatTripDuration, $this->boats->boats(), $this->name, $this->memberId);
     }
 }
