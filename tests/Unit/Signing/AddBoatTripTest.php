@@ -9,6 +9,7 @@ use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
+use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use Tests\TestCase;
 
@@ -57,6 +58,18 @@ class AddBoatTripTest extends TestCase
         $this->expectBoatNotAvailable();
 
         $this->addBoatTripUseCase->execute([$s1->id() => 3], $name, $numberHours = 3);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotAddBoatTripWhenNumberOfBoatsNegative()
+    {
+        ($s1 = new Fleet(new Id('abc'), 5))->create();
+
+        self::expectException(NumberBoatsCantBeNegative::class);
+        self::expectExceptionMessage('error.qty_cant_be_negative');
+        $this->addBoatTripUseCase->execute([$s1->id() => -1], $name = 'Tabarly', $numberHours = 3);
     }
 
     private function assertBoatTripAdded(string $id, BoatTrip $boatTripExpected): void
