@@ -10,5 +10,5 @@ interface BoatTripRepository
 {
     public function get(string $id):?BoatTrip;
     public function add(BoatTrip $b);
-    public function getBySupport(string $supportId):array;
+    public function getInProgressByBoat(string $boatId):array;
 }

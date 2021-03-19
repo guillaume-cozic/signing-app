@@ -23,24 +23,24 @@ class BoatAvailabilityChecker
     /**
      * @throws BoatNotAvailable
      */
-    public function checkIfEnoughBoat():void
+    public function checkIfEnough():void
     {
         foreach($this->boatsAsked->boats() as $boatId => $qty) {
-            if (!$this->isSupportAvailable($boatId, $qty)) throw new BoatNotAvailable('error.support_not_available');
+            if (!$this->isBoatAvailable($boatId, $qty)) throw new BoatNotAvailable('error.support_not_available');
         }
     }
 
-    private function isSupportAvailable(string $boatId, int $qty):bool
+    private function isBoatAvailable(string $boatId, int $qty):bool
     {
-        $support = $this->fleetRepository->get($boatId);
-        $totalSupportUsed = $this->getTotalSupportUsed($boatId);
-        return $support->isBoatAvailable($totalSupportUsed + $qty);
+        $fleet = $this->fleetRepository->get($boatId);
+        $totalSupportUsed = $this->getTotalBoatUsed($boatId);
+        return $fleet->isBoatAvailable($totalSupportUsed + $qty);
     }
 
-    private function getTotalSupportUsed(string $boatId): int
+    private function getTotalBoatUsed(string $boatId): int
     {
         $totalActive = 0;
-        $boatTrips = $this->boatTripRepository->getBySupport($boatId);
+        $boatTrips = $this->boatTripRepository->getInProgressByBoat($boatId);
         foreach ($boatTrips as $activeBoatTrip) {
             $totalActive += $activeBoatTrip->quantity($boatId);
         }

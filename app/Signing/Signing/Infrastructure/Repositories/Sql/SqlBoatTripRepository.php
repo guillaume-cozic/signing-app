@@ -35,11 +35,11 @@ class SqlBoatTripRepository implements BoatTripRepository
         $boatTripModel->save();
     }
 
-    public function getBySupport(string $supportId): array
+    public function getInProgressByBoat(string $boatId): array
     {
         return BoatTripModel::query()
-            ->whereHas('support', function ($query) use($supportId){
-                return $query->where('uuid', $supportId);
+            ->whereHas('support', function ($query) use($boatId){
+                return $query->where('uuid', $boatId);
             })
             ->get()
             ?->transform(function (BoatTripModel $model){

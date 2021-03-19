@@ -40,7 +40,6 @@ class EndBoatTripTest extends TestCase
         $this->assertBoatTripHasBeenEnded($id, $boatTripExpected);
     }
 
-
     /**
      * @test
      */

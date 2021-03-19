@@ -32,6 +32,13 @@ class Fleet implements HasState
         $this->fleetRepository->save($this);
     }
 
+    public function update(int $totalAvailable)
+    {
+        if($totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
+        $this->totalAvailable = $totalAvailable;
+        $this->fleetRepository->save($this);
+    }
+
     public function isBoatAvailable(int $qtyAsked):bool
     {
         return $this->totalAvailable >= $qtyAsked;
