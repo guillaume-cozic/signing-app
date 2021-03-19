@@ -39,7 +39,7 @@ class AddBoatTripTest extends TestCase
 
         $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3);
 
-        $boatTripExpected = BoatTripBuilder::build($id)->withBoats($boats)->inProgress($numberHours, $name);
+        $boatTripExpected = BoatTripBuilder::build($id)->withBoats($boats)->withSailor(name:$name)->inProgress($numberHours);
         $this->assertBoatTripAdded($id, $boatTripExpected);
     }
 
@@ -52,7 +52,8 @@ class AddBoatTripTest extends TestCase
 
         BoatTripBuilder::build('abc')
             ->withBoats([$s1->id() => $qty = 5])
-            ->inProgress(numberHours:2, name: $name = 'tabarly')
+            ->withSailor(name: $name = 'tabarly')
+            ->inProgress(numberHours:2)
             ->create();
 
         $this->expectBoatNotAvailable();

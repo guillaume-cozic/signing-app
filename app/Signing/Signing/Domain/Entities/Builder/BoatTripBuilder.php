@@ -8,12 +8,14 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
 
 class BoatTripBuilder
 {
     private DateProvider $dateProvider;
     private BoatsCollection $boats;
+    private Sailor $sailor;
 
     private function __construct(private string $id)
     {
@@ -32,16 +34,22 @@ class BoatTripBuilder
         return $this;
     }
 
-    public function inProgress(?float $numberHours, string $name = null, string $memberId = null):BoatTrip
+    public function withSailor(?string $memberId = '', ?string $name = ''):self
     {
-        $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->boats, $name, $memberId);
+        $this->sailor = new Sailor($memberId, $name);
+        return $this;
     }
 
-    public function ended(?float $numberHours, string $name = null, string $memberId = null):BoatTrip
+    public function inProgress(?float $numberHours):BoatTrip
+    {
+        $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
+    }
+
+    public function ended(?float $numberHours):BoatTrip
     {
         $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours, $this->dateProvider->current());
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->boats, $name, $memberId);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
     }
 
 }

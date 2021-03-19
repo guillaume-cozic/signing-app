@@ -28,14 +28,16 @@ class EndBoatTripTest extends TestCase
     {
         $boatTrip = BoatTripBuilder::build($id = 'abc')
             ->withBoats([$supportId = Uuid::uuid4()->toString() => 2])
-            ->inProgress(numberHours:2, name: $name = 'tabarly');
+            ->withSailor(name: $name = 'Tabarly')
+            ->inProgress(numberHours:2);
         $this->boatTripRepository->add($boatTrip);
 
         $this->endBoatTrip->execute($id);
 
         $boatTripExpected = BoatTripBuilder::build($id = 'abc')
             ->withBoats([$supportId => 2])
-            ->ended(numberHours:2, name: $name = 'tabarly');
+            ->withSailor(name: $name)
+            ->ended(numberHours:2);
 
         $this->assertBoatTripHasBeenEnded($id, $boatTripExpected);
     }
@@ -45,7 +47,9 @@ class EndBoatTripTest extends TestCase
      */
     public function shouldNotEndBoatTripTwice()
     {
-        $boatTrip = BoatTripBuilder::build($id = 'abc')->ended(1, 'Tabarly');
+        $boatTrip = BoatTripBuilder::build($id = 'abc')
+            ->withSailor(name: 'Tabarly')
+            ->ended(1);
         $this->boatTripRepository->add($boatTrip);
 
         self::expectException(BoatTripAlreadyEnded::class);

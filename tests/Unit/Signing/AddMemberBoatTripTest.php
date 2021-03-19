@@ -34,7 +34,8 @@ class AddMemberBoatTripTest extends TestCase
 
         $boatTripExpected = BoatTripBuilder::build($boatTripId)
             ->withBoats([$supportId => 1])
-            ->inProgress(numberHours:$numberHours, memberId:$memberId);
+            ->withSailor(memberId:$memberId)
+            ->inProgress(numberHours:$numberHours);
 
         self::assertEquals($boatTripExpected, $boatTripSaved);
     }
@@ -53,7 +54,8 @@ class AddMemberBoatTripTest extends TestCase
 
         $boatTrip = BoatTripBuilder::build('abc')
             ->withBoats([$supportId => 5])
-            ->inProgress(numberHours:2, name: 'Tabarly');
+            ->withSailor(name:'Tabarly')
+            ->inProgress(numberHours:2);
         $this->boatTripRepository->add($boatTrip);
 
         self::expectException(BoatNotAvailable::class);
@@ -74,8 +76,8 @@ class AddMemberBoatTripTest extends TestCase
         $boatTripSaved = $this->boatTripRepository->get($boatTripId);
 
         $boatTripExpected = BoatTripBuilder::build($boatTripId)
-            ->withBoats([])
-            ->inProgress(numberHours:null, memberId:$memberId);
+            ->withSailor(memberId:$memberId)
+            ->inProgress(numberHours:null);
 
         self::assertEquals($boatTripExpected, $boatTripSaved);
     }

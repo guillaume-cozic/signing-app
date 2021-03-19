@@ -7,7 +7,6 @@ namespace App\Signing\Signing\Domain\Entities;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
-use JetBrains\PhpStorm\Pure;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
@@ -18,15 +17,14 @@ class BoatTrip implements HasState
 
     public function __construct(
         private Id $id,
-        private BoatTripDuration $boatTripDuration,
+        private BoatTripDuration $duration,
+        private Sailor $sailor,
         private ?BoatsCollection $boats = null,
-        private ?string $name = null,
-        private ?string $memberId = null,
     ){
         $this->boatTripRepository = app(BoatTripRepository::class);
     }
 
-    #[Pure] public function id():string
+    public function id():string
     {
         return $this->id->id();
     }
@@ -55,7 +53,7 @@ class BoatTrip implements HasState
      */
     public function end(\DateTime $endDate)
     {
-        $this->boatTripDuration->end($endDate);
+        $this->duration->end($endDate);
         $this->boatTripRepository->add($this);
     }
 
@@ -65,7 +63,7 @@ class BoatTrip implements HasState
      */
     public function addTime(float $numberHours)
     {
-        $this->boatTripDuration->addTime($numberHours);
+        $this->duration->addTime($numberHours);
         $this->boatTripRepository->add($this);
     }
 
@@ -76,7 +74,7 @@ class BoatTrip implements HasState
 
     public function getState(): BoatTripState
     {
-        $boatTripDuration = $this->boatTripDuration->toArray();
-        return new BoatTripState($this->id->id(), $boatTripDuration, $this->boats->boats(), $this->name, $this->memberId);
+        $boatTripDuration = $this->duration->toArray();
+        return new BoatTripState($this->id->id(), $boatTripDuration, $this->boats->boats(), $this->sailor);
     }
 }

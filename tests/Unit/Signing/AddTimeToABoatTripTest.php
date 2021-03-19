@@ -27,7 +27,8 @@ class AddTimeToABoatTripTest extends TestCase
     {
         $boatTrip = BoatTripBuilder::build($boatTripId = 'abcd')
             ->withBoats($boats = ['abc' => 1])
-            ->ended($numberHours = 2, $name = 'Tabarly');
+            ->withSailor(name:'Tabarly')
+            ->ended($numberHours = 2);
         $this->boatTripRepository->add($boatTrip);
 
         self::expectException(BoatTripAlreadyEnded::class);
@@ -42,12 +43,16 @@ class AddTimeToABoatTripTest extends TestCase
     {
         $boatTrip = BoatTripBuilder::build($boatTripId = 'abcd')
             ->withBoats($boats = ['abc' => 1])
-            ->inProgress($numberHours = 2, $name = 'Tabarly');
+            ->withSailor(name: $name = 'Tabarly')
+            ->inProgress($numberHours = 2);
         $this->boatTripRepository->add($boatTrip);
 
         $this->addTimeToBoatTrip->execute($boatTripId, 0.5);
 
-        $boatTripExpected = BoatTripBuilder::build($boatTripId)->withBoats($boats)->inProgress(2.5, $name);
+        $boatTripExpected = BoatTripBuilder::build($boatTripId)
+            ->withBoats($boats)
+            ->withSailor(name: $name)
+            ->inProgress(2.5);
 
         $this->assertTimeAddedToBoatTrip($boatTripId, $boatTripExpected);
     }
@@ -60,7 +65,8 @@ class AddTimeToABoatTripTest extends TestCase
     {
         $boatTrip = BoatTripBuilder::build($boatTripId = 'abcd')
             ->withBoats($boats = ['abc' => 1])
-            ->inProgress($numberHours = 2, $name = 'Tabarly');
+            ->withSailor(name: 'Tabarly')
+            ->inProgress($numberHours = 2);
         $this->boatTripRepository->add($boatTrip);
 
         self::expectException(TimeCantBeNegative::class);

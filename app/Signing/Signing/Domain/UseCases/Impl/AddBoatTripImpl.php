@@ -9,6 +9,7 @@ use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\BoatAvailabilityChecker;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
@@ -25,7 +26,7 @@ class AddBoatTripImpl implements AddBoatTrip
     public function execute(array $boats, string $name, int $numberHours)
     {
         $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
-        $boatTrip = new BoatTrip(new Id(), $boatTripDuration, new BoatsCollection($boats), $name);
+        $boatTrip = new BoatTrip(new Id(), $boatTripDuration, new Sailor(name:$name), new BoatsCollection($boats));
         $boatTrip->create();
     }
 }
