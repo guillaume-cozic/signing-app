@@ -6,11 +6,11 @@ namespace App\Signing\Signing\Domain\Entities;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
-use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
-use App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use JetBrains\PhpStorm\Pure;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
+use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
+use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 
 class BoatTrip implements HasState
 {
@@ -50,21 +50,28 @@ class BoatTrip implements HasState
         $this->boatTripRepository->add($this);
     }
 
+    /**
+     * @throws BoatTripAlreadyEnded
+     */
     public function end(\DateTime $endDate)
     {
         $this->boatTripDuration->end($endDate);
         $this->boatTripRepository->add($this);
     }
 
+    /**
+     * @throws BoatTripAlreadyEnded
+     * @throws TimeCantBeNegative
+     */
     public function addTime(float $numberHours)
     {
         $this->boatTripDuration->addTime($numberHours);
         $this->boatTripRepository->add($this);
     }
 
-    public function quantity(string $supportId):int
+    public function quantity(string $boatId):int
     {
-        return $this->boats->quantity($supportId) ?? 0;
+        return $this->boats->quantity($boatId) ?? 0;
     }
 
     public function getState(): BoatTripState
