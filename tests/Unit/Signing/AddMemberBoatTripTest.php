@@ -5,10 +5,8 @@ namespace Tests\Unit\Signing;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\Vo;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use Ramsey\Uuid\Uuid;
@@ -56,7 +54,7 @@ class AddMemberBoatTripTest extends TestCase
             ->withBoats([$supportId => 5])
             ->withSailor(name:'Tabarly')
             ->inProgress(numberHours:2);
-        $this->boatTripRepository->add($boatTrip);
+        $this->boatTripRepository->add($boatTrip->getState());
 
         self::expectException(BoatNotAvailable::class);
         self::expectExceptionMessage('support_not_available');

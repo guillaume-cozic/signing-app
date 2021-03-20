@@ -50,11 +50,12 @@ class AddBoatTripTest extends TestCase
     {
         ($s1 = new Fleet(new Id('abc'), 5))->create();
 
-        BoatTripBuilder::build('abc')
+        $boatTrip = BoatTripBuilder::build('abc')
             ->withBoats([$s1->id() => $qty = 5])
             ->withSailor(name: $name = 'tabarly')
-            ->inProgress(numberHours:2)
-            ->create();
+            ->inProgress(numberHours:2);
+
+        $this->boatTripRepository->add($boatTrip->getState());
 
         $this->expectBoatNotAvailable();
 

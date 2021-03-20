@@ -27,7 +27,7 @@ class SqlBoatTripRepositoryTest extends TestCase
             ->withBoats([$fleetId => 1])
             ->inProgress(1);
 
-        $this->boatTripRepository->add($boatTrip);
+        $this->boatTripRepository->add($boatTrip->getState());
 
 
         self::assertDatabaseHas('boat_trip', ['uuid' => 'abcd']);

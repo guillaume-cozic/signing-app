@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Entities\State\SailorState;
 
@@ -15,6 +16,24 @@ class BoatTripState implements State
         private array $boats,
         private SailorState $sailor
     ){}
+
+    public function toBoatTrip():BoatTrip
+    {
+        return BoatTripBuilder::build($this->id)
+            ->withBoats($this->boats)
+            ->withSailor($this->memberId(), $this->name())
+            ->fromState($this->numberHours(), $this->startAt(), $this->endAt());
+    }
+
+    public function hasBoat(string $boatIdAsked):bool
+    {
+        foreach ($this->boats() as $boatId => $qty) {
+            if($boatIdAsked === $boatId){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function id(): string
     {

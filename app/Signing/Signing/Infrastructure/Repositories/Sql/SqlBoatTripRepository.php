@@ -5,6 +5,7 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 
 
 use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTripState;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
@@ -19,9 +20,8 @@ class SqlBoatTripRepository implements BoatTripRepository
             ?->toDomain();
     }
 
-    public function add(BoatTrip $b)
+    public function add(BoatTripState $boatTripState)
     {
-        $boatTripState = $b->getState();
         $boatTripModel = new BoatTripModel();
 
         $boatTripModel->uuid = $boatTripState->id();

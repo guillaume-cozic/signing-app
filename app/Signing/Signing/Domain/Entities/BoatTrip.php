@@ -28,23 +28,13 @@ class BoatTrip implements HasState
         return $this->id->id();
     }
 
-    public function hasBoat(string $boatIdAsked):bool
-    {
-        foreach ($this->boats->boats() as $boatId => $qty) {
-            if($boatIdAsked === $boatId){
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * @throws BoatNotAvailable
      */
     public function create()
     {
         (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
-        $this->boatTripRepository->add($this);
+        $this->boatTripRepository->add($this->getState());
     }
 
     /**
@@ -53,7 +43,7 @@ class BoatTrip implements HasState
     public function end(\DateTime $endDate)
     {
         $this->duration->end($endDate);
-        $this->boatTripRepository->add($this);
+        $this->boatTripRepository->add($this->getState());
     }
 
     /**
@@ -63,7 +53,7 @@ class BoatTrip implements HasState
     public function addTime(float $numberHours)
     {
         $this->duration->addTime($numberHours);
-        $this->boatTripRepository->add($this);
+        $this->boatTripRepository->add($this->getState());
     }
 
     public function quantity(string $boatId):int
