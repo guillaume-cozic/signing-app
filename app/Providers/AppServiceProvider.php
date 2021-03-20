@@ -24,6 +24,8 @@ use App\Signing\Signing\Domain\UseCases\Impl\DelayBoatTripStartImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\EndBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetBoatTripsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\UpdateFleetImpl;
+use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
+use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlBoatTripRepository;
@@ -46,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AddTimeToBoatTrip::class, AddTimeToBoatTripImpl::class);
         $this->app->singleton(UpdateFleet::class, UpdateFleetImpl::class);
         $this->app->singleton(DelayBoatTripStart::class, DelayBoatTripStartImpl::class);
+        $this->app->singleton(CreateFleetWhenTeamCreated::class, CreateFleetWhenTeamCreatedImpl::class);
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);
 
         $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);

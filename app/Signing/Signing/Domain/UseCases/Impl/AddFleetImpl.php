@@ -16,17 +16,6 @@ class AddFleetImpl implements AddFleet
 
     public function execute(string $title, string $description, int $totalAvailable)
     {
-        (new Fleet($id = new Id(), $totalAvailable))->create();
-
-        $this->saveTranslations($title, $description, $id);
-    }
-
-    private function saveTranslations(string $title, string $description, Id $id): void
-    {
-        $trans = [
-            'title' => [App::getLocale() => $title],
-            'description' => [App::getLocale() => $description],
-        ];
-        $this->translationService->add($trans, $id->id(), 'support');
+        (new Fleet($id = new Id(), $totalAvailable))->create($title, $description);
     }
 }

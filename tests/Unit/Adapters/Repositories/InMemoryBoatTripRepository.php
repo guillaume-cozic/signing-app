@@ -14,7 +14,7 @@ class InMemoryBoatTripRepository implements BoatTripRepository
 
     public function get(string $id): ?BoatTrip
     {
-        return isset($this->boatTrips[$id]) ? $this->boatTrips[$id]->toBoatTrip() : null;
+        return $this->boatTrips[$id]?->toBoatTrip();
     }
 
     public function save(BoatTripState $b)
