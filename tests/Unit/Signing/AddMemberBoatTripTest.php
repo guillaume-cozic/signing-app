@@ -8,7 +8,7 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\Vo;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use Ramsey\Uuid\Uuid;

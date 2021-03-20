@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities\Vo;
+namespace App\Signing\Signing\Domain\Entities;
 
 
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;

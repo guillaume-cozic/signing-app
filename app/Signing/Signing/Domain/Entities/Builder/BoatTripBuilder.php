@@ -9,7 +9,7 @@ use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Sailor;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 
 class BoatTripBuilder
 {

@@ -7,7 +7,7 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Model;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

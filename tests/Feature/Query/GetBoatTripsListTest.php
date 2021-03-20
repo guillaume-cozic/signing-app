@@ -8,7 +8,7 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
 use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Support\Facades\Artisan;
