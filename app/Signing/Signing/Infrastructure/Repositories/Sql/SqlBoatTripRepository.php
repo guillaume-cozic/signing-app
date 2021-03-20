@@ -13,7 +13,7 @@ class SqlBoatTripRepository implements BoatTripRepository
 {
     public function get(string $id): ?BoatTrip
     {
-        return BoatTripModel::with('support')
+        return BoatTripModel::query()
             ->where('uuid', $id)
             ->first()
             ?->toDomain();
@@ -24,14 +24,13 @@ class SqlBoatTripRepository implements BoatTripRepository
         $boatTripState = $b->getState();
         $boatTripModel = new BoatTripModel();
 
-        if($boatTripState->supportId() !== null) {
-            $boatTripModel->support_id = FleetModel::where('uuid', $boatTripState->supportId())->first()?->id;
-        }
-
         $boatTripModel->uuid = $boatTripState->id();
-        $boatTripModel->number_boats = $boatTripState->qty();
+        $boatTripModel->boats = $boatTripState->boats();
         $boatTripModel->name = $boatTripState->name();
-        $boatTripModel->fill($boatTripState->duration());
+        $boatTripModel->member_id = $boatTripState->memberId();
+        $boatTripModel->number_hours = $boatTripState->numberHours();
+        $boatTripModel->end_at = $boatTripState->endAt();
+        $boatTripModel->start_at = $boatTripState->startAt();
         $boatTripModel->save();
     }
 

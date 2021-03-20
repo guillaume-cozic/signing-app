@@ -5,7 +5,6 @@ namespace App\Signing\Signing\Domain\Entities;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
@@ -74,7 +73,11 @@ class BoatTrip implements HasState
 
     public function getState(): BoatTripState
     {
-        $boatTripDuration = $this->duration->toArray();
-        return new BoatTripState($this->id->id(), $boatTripDuration, $this->boats->boats(), $this->sailor);
+        return new BoatTripState(
+            $this->id->id(),
+            $this->duration->getState(),
+            $this->boats->boats(),
+            $this->sailor->getState()
+        );
     }
 }

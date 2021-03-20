@@ -4,14 +4,16 @@
 namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
+use App\Signing\Signing\Domain\Entities\State\SailorState;
+
 class BoatTripState implements State
 {
     public function __construct(
         private string $id,
-        private array $duration,
+        private BoatTripDurationState $duration,
         private array $boats,
-        private ?string $name,
-        private ?string $memberId
+        private SailorState $sailor
     ){}
 
     public function id(): string
@@ -19,17 +21,33 @@ class BoatTripState implements State
         return $this->id;
     }
 
-    public function duration(): array
+    public function startAt(): \DateTime
     {
-        return $this->duration;
+        return $this->duration->startAt();
+    }
+
+    public function endAt(): ?\DateTime
+    {
+        return $this->duration->endAt();
+    }
+
+    public function numberHours(): ?float
+    {
+        return $this->duration->numberHours();
+    }
+
+    public function boats(): array
+    {
+        return $this->boats;
     }
 
     public function name(): ?string
     {
-        return $this->name;
+        return $this->sailor->name();
     }
+
     public function memberId(): ?string
     {
-        return $this->memberId;
+        return $this->sailor->memberId();
     }
 }

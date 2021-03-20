@@ -5,32 +5,34 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Model;
 
 
 use App\Signing\Shared\Entities\Id;
+use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
 use App\Signing\Signing\Domain\Entities\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BoatTripModel extends Model
 {
     protected $table = 'boat_trip';
 
-    protected $fillable = ['uuid', 'number_boats', 'name', 'number_hours', 'start_at', 'end_at'];
+    protected $fillable = ['number_hours', 'start_at', 'end_at'];
 
     protected $casts = [
         'start_at' => 'datetime',
-        'end_at' => 'datetime'
+        'end_at' => 'datetime',
+        'boats' => 'array'
     ];
 
     public function toDomain():BoatTrip
     {
         $boatTripDuration = new BoatTripDuration($this->start_at, $this->number_hours, $this->end_at);
-        return new BoatTrip(new Id($this->uuid), $boatTripDuration, $this->support_id, $this->number_boats, $this->name);
-    }
-
-    public function boat():BelongsTo
-    {
-        return $this->belongsTo(FleetModel::class);
+        return new BoatTrip(
+            new Id($this->uuid),
+            $boatTripDuration,
+            new Sailor($this->member_id, $this->name),
+            new BoatsCollection($this->boats)
+        );
     }
 
     public function setStartAtAttribute(?\DateTime $value)

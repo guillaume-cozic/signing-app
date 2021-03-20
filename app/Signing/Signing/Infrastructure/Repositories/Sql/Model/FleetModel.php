@@ -13,7 +13,7 @@ class FleetModel extends Model
 {
     use HasTranslations;
 
-    protected $table = 'support';
+    protected $table = 'fleet';
 
     protected $fillable = ['uuid', 'total_available'];
 

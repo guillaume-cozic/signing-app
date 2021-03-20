@@ -4,10 +4,11 @@
 namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 
-class BoatTripDuration
+class BoatTripDuration implements HasState
 {
     public function __construct(
         private \DateTime $start,
@@ -33,12 +34,8 @@ class BoatTripDuration
         return $this->end !== null;
     }
 
-    public function toArray():array
+    public function getState(): BoatTripDurationState
     {
-        return [
-            'start_at' => $this->start,
-            'end_at' => $this->end,
-            'number_hours' => $this-> numberHours
-        ];
+        return new BoatTripDurationState($this->start, $this->numberHours, $this->end);
     }
 }
