@@ -1,13 +1,14 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities\Vo;
+namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 
-class BoatTripDuration
+class BoatTripDuration implements HasState
 {
     public function __construct(
         private \DateTime $start,
@@ -28,17 +29,20 @@ class BoatTripDuration
         $this->numberHours += $numberHours;
     }
 
+    public function delayStart(int $minutes)
+    {
+        if($minutes < 0) throw new TimeCantBeNegative();
+        if($this->isEnded()) throw new BoatTripAlreadyEnded();
+        $this->start->add(\DateInterval::createFromDateString('+'.$minutes.' minutes'));
+    }
+
     private function isEnded()
     {
         return $this->end !== null;
     }
 
-    public function toArray():array
+    public function getState(): BoatTripDurationState
     {
-        return [
-            'start_at' => $this->start,
-            'end_at' => $this->end,
-            'number_hours' => $this-> numberHours
-        ];
+        return new BoatTripDurationState($this->start, $this->numberHours, $this->end);
     }
 }

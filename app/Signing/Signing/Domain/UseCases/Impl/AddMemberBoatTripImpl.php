@@ -10,7 +10,7 @@ use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\BoatAvailabilityChecker;
 use App\Signing\Signing\Domain\Entities\Sailor;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 
 class AddMemberBoatTripImpl implements AddMemberBoatTrip

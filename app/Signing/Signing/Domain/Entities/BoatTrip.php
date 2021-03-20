@@ -5,7 +5,6 @@ namespace App\Signing\Signing\Domain\Entities;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
@@ -29,23 +28,13 @@ class BoatTrip implements HasState
         return $this->id->id();
     }
 
-    public function hasBoat(string $boatIdAsked):bool
-    {
-        foreach ($this->boats->boats() as $boatId => $qty) {
-            if($boatIdAsked === $boatId){
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * @throws BoatNotAvailable
      */
     public function create()
     {
         (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
-        $this->boatTripRepository->add($this);
+        $this->boatTripRepository->save($this->getState());
     }
 
     /**
@@ -54,7 +43,7 @@ class BoatTrip implements HasState
     public function end(\DateTime $endDate)
     {
         $this->duration->end($endDate);
-        $this->boatTripRepository->add($this);
+        $this->boatTripRepository->save($this->getState());
     }
 
     /**
@@ -64,7 +53,18 @@ class BoatTrip implements HasState
     public function addTime(float $numberHours)
     {
         $this->duration->addTime($numberHours);
-        $this->boatTripRepository->add($this);
+        $this->boatTripRepository->save($this->getState());
+    }
+
+
+    /**
+     * @throws BoatTripAlreadyEnded
+     * @throws TimeCantBeNegative
+     */
+    public function delayStart(int $minutes)
+    {
+        $this->duration->delayStart($minutes);
+        $this->boatTripRepository->save($this->getState());
     }
 
     public function quantity(string $boatId):int
@@ -74,7 +74,11 @@ class BoatTrip implements HasState
 
     public function getState(): BoatTripState
     {
-        $boatTripDuration = $this->duration->toArray();
-        return new BoatTripState($this->id->id(), $boatTripDuration, $this->boats->boats(), $this->sailor);
+        return new BoatTripState(
+            $this->id->id(),
+            $this->duration->getState(),
+            $this->boats->boats(),
+            $this->sailor->getState()
+        );
     }
 }

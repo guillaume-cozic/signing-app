@@ -8,7 +8,7 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
 use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Support\Facades\Artisan;
@@ -51,9 +51,9 @@ class GetBoatTripsListTest extends TestCase
         $boatTripDuration = new BoatTripDuration($d3 = new \DateTime('-1 hours'), $nb3 = 2);
         $boatTrip3 = new BoatTrip(Uuid::uuid4()id: $id3 = new Id(), boatTripDuration: $boatTripDuration, boats: Uuid::uuid4());
 
-        $this->boatTripRepository->add($boatTrip1);
-        $this->boatTripRepository->add($boatTrip2);
-        $this->boatTripRepository->add($boatTrip3);
+        $this->boatTripRepository->save($boatTrip1);
+        $this->boatTripRepository->save($boatTrip2);
+        $this->boatTripRepository->save($boatTrip3);
 
         $boatTrips = app(GetBoatTripsList::class)->execute();
 

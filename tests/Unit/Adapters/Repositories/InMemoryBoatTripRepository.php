@@ -5,6 +5,7 @@ namespace Tests\Unit\Adapters\Repositories;
 
 
 use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTripState;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 
 class InMemoryBoatTripRepository implements BoatTripRepository
@@ -13,10 +14,10 @@ class InMemoryBoatTripRepository implements BoatTripRepository
 
     public function get(string $id): ?BoatTrip
     {
-        return isset($this->boatTrips[$id]) ? clone $this->boatTrips[$id] : null;
+        return isset($this->boatTrips[$id]) ? $this->boatTrips[$id]->toBoatTrip() : null;
     }
 
-    public function add(BoatTrip $b)
+    public function save(BoatTripState $b)
     {
         $this->boatTrips[$b->id()] = $b;
     }
@@ -25,7 +26,7 @@ class InMemoryBoatTripRepository implements BoatTripRepository
     {
         foreach($this->boatTrips as $boatTrip){
             if($boatTrip->hasBoat($boatId)) {
-                $boatTrips[] = $boatTrip;
+                $boatTrips[] = $boatTrip->toBoatTrip();
             }
         }
         return $boatTrips ?? [];
