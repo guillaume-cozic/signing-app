@@ -21,15 +21,13 @@ class InMemoryBoatTripRepository implements BoatTripRepository
         $this->boatTrips[$b->id()] = $b;
     }
 
-    public function getBySupport(string $supportId): array
+    public function getInProgressByBoat(string $boatId): array
     {
         foreach($this->boatTrips as $boatTrip){
-            if($boatTrip->supportId() === $supportId) {
+            if($boatTrip->hasBoat($boatId)) {
                 $boatTrips[] = $boatTrip;
             }
         }
         return $boatTrips ?? [];
     }
-
-
 }

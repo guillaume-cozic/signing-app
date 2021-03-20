@@ -7,58 +7,74 @@ namespace App\Signing\Signing\Domain\Entities;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
-use JetBrains\PhpStorm\Pure;
+use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
+use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
+use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 
-class BoatTrip
+class BoatTrip implements HasState
 {
     private BoatTripRepository $boatTripRepository;
 
     public function __construct(
         private Id $id,
-        private BoatTripDuration $boatTripDuration,
-        private ?string $supportId = null,
-        private ?int $qty = null,
-        private ?string $name = null,
-        private ?string $memberId = null,
+        private BoatTripDuration $duration,
+        private Sailor $sailor,
+        private ?BoatsCollection $boats = null,
     ){
         $this->boatTripRepository = app(BoatTripRepository::class);
     }
 
-    #[Pure] public function id():string
+    public function id():string
     {
         return $this->id->id();
     }
 
-    #[Pure] public function supportId():?string
+    public function hasBoat(string $boatIdAsked):bool
     {
-        return $this->supportId;
+        foreach ($this->boats->boats() as $boatId => $qty) {
+            if($boatIdAsked === $boatId){
+                return true;
+            }
+        }
+        return false;
     }
 
+    /**
+     * @throws BoatNotAvailable
+     */
     public function create()
     {
+        (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
         $this->boatTripRepository->add($this);
     }
 
+    /**
+     * @throws BoatTripAlreadyEnded
+     */
     public function end(\DateTime $endDate)
     {
-        $this->boatTripDuration->end($endDate);
+        $this->duration->end($endDate);
         $this->boatTripRepository->add($this);
     }
 
-    public function quantity():int
+    /**
+     * @throws BoatTripAlreadyEnded
+     * @throws TimeCantBeNegative
+     */
+    public function addTime(float $numberHours)
     {
-        return $this->qty;
+        $this->duration->addTime($numberHours);
+        $this->boatTripRepository->add($this);
     }
 
-    public function toArray()
+    public function quantity(string $boatId):int
     {
-        $boatTripDuration = $this->boatTripDuration->toArray();
-        return array_merge([
-            'uuid' => $this->id->id(),
-            'support_id' => $this->supportId,
-            'number_boats' => $this->qty,
-            'name' => $this->name,
-            'member_id' => $this->memberId,
-        ], $boatTripDuration);
+        return $this->boats->quantity($boatId) ?? 0;
+    }
+
+    public function getState(): BoatTripState
+    {
+        $boatTripDuration = $this->duration->toArray();
+        return new BoatTripState($this->id->id(), $boatTripDuration, $this->boats->boats(), $this->sailor);
     }
 }

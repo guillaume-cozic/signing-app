@@ -6,7 +6,7 @@ use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Shared\Services\Translations\TranslationService;
 use App\Signing\Signing\Domain\Provider\IdentityProvider;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
-use App\Signing\Signing\Domain\Repositories\SupportRepository;
+use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -14,7 +14,7 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     protected IdentityProvider $identityProvider;
-    protected SupportRepository $supportRepository;
+    protected FleetRepository $fleetRepository;
     protected BoatTripRepository $boatTripRepository;
     protected DateProvider $dateProvider;
     protected TranslationService $translationService;
@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         $this->identityProvider = app(IdentityProvider::class);
-        $this->supportRepository = app(SupportRepository::class);
+        $this->fleetRepository = app(FleetRepository::class);
         $this->boatTripRepository = app(BoatTripRepository::class);
         $this->dateProvider = app(DateProvider::class);
         $this->translationService = app(TranslationService::class);

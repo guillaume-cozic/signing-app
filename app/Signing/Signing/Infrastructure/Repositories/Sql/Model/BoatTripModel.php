@@ -25,12 +25,12 @@ class BoatTripModel extends Model
     public function toDomain():BoatTrip
     {
         $boatTripDuration = new BoatTripDuration($this->start_at, $this->number_hours, $this->end_at);
-        return new BoatTrip(new Id($this->uuid), $boatTripDuration, $this->support_id, $this->number_boats, $this->name, $this->member_id);
+        return new BoatTrip(new Id($this->uuid), $boatTripDuration, $this->support_id, $this->number_boats, $this->name);
     }
 
-    public function support():BelongsTo
+    public function boat():BelongsTo
     {
-        return $this->belongsTo(SupportModel::class);
+        return $this->belongsTo(FleetModel::class);
     }
 
     public function setStartAtAttribute(?\DateTime $value)

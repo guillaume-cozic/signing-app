@@ -6,9 +6,12 @@ namespace App\Signing\Signing\Domain\UseCases\Impl;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\DateProvider;
+use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
-use App\Signing\Signing\Domain\Entities\BoatTripChecker;
+use App\Signing\Signing\Domain\Entities\BoatAvailabilityChecker;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Entities\Vo\BoatTripDuration;
+use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 
 class AddBoatTripImpl implements AddBoatTrip
@@ -17,12 +20,13 @@ class AddBoatTripImpl implements AddBoatTrip
         private DateProvider $dateProvider
     ){}
 
-    public function execute(string $supportId, int $quantity, string $name, int $numberHours)
+    /**
+     * @throws BoatNotAvailable
+     */
+    public function execute(array $boats, string $name, int $numberHours)
     {
-        (new BoatTripChecker(supportId: $supportId, qtyAsked: $quantity))->checkIfEnoughBoat();
-
         $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
-        $boatTrip = new BoatTrip(new Id(), $boatTripDuration, $supportId, $quantity, $name);
+        $boatTrip = new BoatTrip(new Id(), $boatTripDuration, new Sailor(name:$name), new BoatsCollection($boats));
         $boatTrip->create();
     }
 }
