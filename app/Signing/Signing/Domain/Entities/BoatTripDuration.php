@@ -29,6 +29,13 @@ class BoatTripDuration implements HasState
         $this->numberHours += $numberHours;
     }
 
+    public function delayStart(int $minutes)
+    {
+        if($minutes < 0) throw new TimeCantBeNegative();
+        if($this->isEnded()) throw new BoatTripAlreadyEnded();
+        $this->start->add(\DateInterval::createFromDateString('+'.$minutes.' minutes'));
+    }
+
     private function isEnded()
     {
         return $this->end !== null;

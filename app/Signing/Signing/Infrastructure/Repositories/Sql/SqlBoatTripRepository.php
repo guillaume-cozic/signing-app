@@ -20,9 +20,9 @@ class SqlBoatTripRepository implements BoatTripRepository
             ?->toDomain();
     }
 
-    public function add(BoatTripState $boatTripState)
+    public function save(BoatTripState $boatTripState)
     {
-        $boatTripModel = new BoatTripModel();
+        $boatTripModel = BoatTripModel::query()->where('uuid', $boatTripState->id())->first() ?? new BoatTripModel();;
 
         $boatTripModel->uuid = $boatTripState->id();
         $boatTripModel->boats = $boatTripState->boats();

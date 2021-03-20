@@ -54,7 +54,7 @@ class AddMemberBoatTripTest extends TestCase
             ->withBoats([$supportId => 5])
             ->withSailor(name:'Tabarly')
             ->inProgress(numberHours:2);
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         self::expectException(BoatNotAvailable::class);
         self::expectExceptionMessage('support_not_available');

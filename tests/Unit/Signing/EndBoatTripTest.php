@@ -30,7 +30,7 @@ class EndBoatTripTest extends TestCase
             ->withBoats([$supportId = Uuid::uuid4()->toString() => 2])
             ->withSailor(name: $name = 'Tabarly')
             ->inProgress(numberHours:2);
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         $this->endBoatTrip->execute($id);
 
@@ -50,7 +50,7 @@ class EndBoatTripTest extends TestCase
         $boatTrip = BoatTripBuilder::build($id = 'abc')
             ->withSailor(name: 'Tabarly')
             ->ended(1);
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         self::expectException(BoatTripAlreadyEnded::class);
         $this->endBoatTrip->execute($id);

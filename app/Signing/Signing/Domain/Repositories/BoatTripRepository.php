@@ -10,6 +10,6 @@ use App\Signing\Signing\Domain\Entities\BoatTripState;
 interface BoatTripRepository
 {
     public function get(string $id):?BoatTrip;
-    public function add(BoatTripState $b);
+    public function save(BoatTripState $b);
     public function getInProgressByBoat(string $boatId):array;
 }

@@ -34,7 +34,7 @@ class BoatTrip implements HasState
     public function create()
     {
         (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
-        $this->boatTripRepository->add($this->getState());
+        $this->boatTripRepository->save($this->getState());
     }
 
     /**
@@ -43,7 +43,7 @@ class BoatTrip implements HasState
     public function end(\DateTime $endDate)
     {
         $this->duration->end($endDate);
-        $this->boatTripRepository->add($this->getState());
+        $this->boatTripRepository->save($this->getState());
     }
 
     /**
@@ -53,7 +53,18 @@ class BoatTrip implements HasState
     public function addTime(float $numberHours)
     {
         $this->duration->addTime($numberHours);
-        $this->boatTripRepository->add($this->getState());
+        $this->boatTripRepository->save($this->getState());
+    }
+
+
+    /**
+     * @throws BoatTripAlreadyEnded
+     * @throws TimeCantBeNegative
+     */
+    public function delayStart(int $minutes)
+    {
+        $this->duration->delayStart($minutes);
+        $this->boatTripRepository->save($this->getState());
     }
 
     public function quantity(string $boatId):int

@@ -55,7 +55,7 @@ class AddBoatTripTest extends TestCase
             ->withSailor(name: $name = 'tabarly')
             ->inProgress(numberHours:2);
 
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         $this->expectBoatNotAvailable();
 

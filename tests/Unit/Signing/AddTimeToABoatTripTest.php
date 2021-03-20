@@ -29,7 +29,7 @@ class AddTimeToABoatTripTest extends TestCase
             ->withBoats($boats = ['abc' => 1])
             ->withSailor(name:'Tabarly')
             ->ended($numberHours = 2);
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         self::expectException(BoatTripAlreadyEnded::class);
 
@@ -45,7 +45,7 @@ class AddTimeToABoatTripTest extends TestCase
             ->withBoats($boats = ['abc' => 1])
             ->withSailor(name: $name = 'Tabarly')
             ->inProgress($numberHours = 2);
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         $this->addTimeToBoatTrip->execute($boatTripId, 0.5);
 
@@ -67,7 +67,7 @@ class AddTimeToABoatTripTest extends TestCase
             ->withBoats($boats = ['abc' => 1])
             ->withSailor(name: 'Tabarly')
             ->inProgress($numberHours = 2);
-        $this->boatTripRepository->add($boatTrip->getState());
+        $this->boatTripRepository->save($boatTrip->getState());
 
         self::expectException(TimeCantBeNegative::class);
         $this->addTimeToBoatTrip->execute($boatTripId, -1);
