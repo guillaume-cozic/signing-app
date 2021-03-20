@@ -13,7 +13,7 @@ class CreateSupportTable extends Migration
      */
     public function up()
     {
-        Schema::create('support', function (Blueprint $table) {
+        Schema::create('fleet', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
             $table->integer('total_available');
@@ -29,6 +29,6 @@ class CreateSupportTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('support');
+        Schema::dropIfExists('fleet');
     }
 }

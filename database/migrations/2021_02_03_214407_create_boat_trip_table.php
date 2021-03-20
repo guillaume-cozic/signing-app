@@ -18,11 +18,10 @@ class CreateBoatTripTable extends Migration
             $table->uuid('uuid');
             $table->dateTime('start_at', 6)->nullable();
             $table->dateTime('end_at', 6)->nullable();
-            $table->integer('number_boats')->nullable();
             $table->float('number_hours')->nullable();
             $table->string('name')->nullable();
             $table->integer('member_id')->nullable();
-            $table->integer('support_id')->nullable();
+            $table->json('boats')->nullable();
             $table->timestamps();
         });
     }
