@@ -5,6 +5,7 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 
 
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\FleetState;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 
@@ -18,12 +19,11 @@ class SqlFleetRepository implements FleetRepository
             ?->toDomain();
     }
 
-    public function save(Fleet $s): void
+    public function save(FleetState $fleetState): void
     {
-        $supportState = $s->getState();
         $supportModel = new FleetModel();
-        $supportModel->total_available = $supportState->totalAvailable();
-        $supportModel->uuid = $supportState->id();
+        $supportModel->total_available = $fleetState->totalAvailable();
+        $supportModel->uuid = $fleetState->id();
         $supportModel->save();
     }
 }
