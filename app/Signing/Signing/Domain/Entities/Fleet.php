@@ -33,7 +33,7 @@ class Fleet implements HasState
 
     public function create(string $title, string $description)
     {
-        $this->fleetRepository->save($this);
+        $this->fleetRepository->save($this->getState());
 
         $trans = [
             'title' => [App::getLocale() => $title],
@@ -46,7 +46,7 @@ class Fleet implements HasState
     {
         if($totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
         $this->totalAvailable = $totalAvailable;
-        $this->fleetRepository->save($this);
+        $this->fleetRepository->save($this->getState());
     }
 
     public function isBoatAvailable(int $qtyAsked):bool

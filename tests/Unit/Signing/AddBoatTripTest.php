@@ -29,9 +29,9 @@ class AddBoatTripTest extends TestCase
     public function shouldAddABoatTrip()
     {
         $s1 = new Fleet(new Id('abc'), 20);
-        $this->fleetRepository->save($s1);
+        $this->fleetRepository->save($s1->getState());
         $s2 = new Fleet(new Id('abcd'), 15);
-        $this->fleetRepository->save($s2);
+        $this->fleetRepository->save($s2->getState());
 
         $this->identityProvider->add($id = 'abc');
         $boats = [
@@ -51,7 +51,7 @@ class AddBoatTripTest extends TestCase
     public function shouldNotAddBoatTripWhenSupportNotAvailable()
     {
         $s1 = new Fleet(new Id('abc'), 5);
-        $this->fleetRepository->save($s1);
+        $this->fleetRepository->save($s1->getState());
 
         $boatTrip = BoatTripBuilder::build('abc')
             ->withBoats([$s1->id() => $qty = 5])
@@ -71,7 +71,7 @@ class AddBoatTripTest extends TestCase
     public function shouldNotAddBoatTripWhenNumberOfBoatsNegative()
     {
         $s1 = new Fleet(new Id('abc'), 5);
-        $this->fleetRepository->save($s1);
+        $this->fleetRepository->save($s1->getState());
 
         self::expectException(NumberBoatsCantBeNegative::class);
         self::expectExceptionMessage('error.qty_cant_be_negative');

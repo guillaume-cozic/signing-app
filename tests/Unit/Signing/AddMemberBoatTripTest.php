@@ -23,8 +23,8 @@ class AddMemberBoatTripTest extends TestCase
         $memberId = Uuid::uuid4()->toString();
         $this->identityProvider->add($boatTripId = 'abc');
 
-        $support = new Fleet(new Id($supportId), 20);
-        $this->fleetRepository->save($support);
+        $fleet = new Fleet(new Id($supportId), 20);
+        $this->fleetRepository->save($fleet->getState());
 
         app(AddMemberBoatTrip::class)->execute($memberId, [$supportId => $numberBoats = 1], $numberHours = 3);
 
@@ -46,8 +46,8 @@ class AddMemberBoatTripTest extends TestCase
         $supportId = Uuid::uuid4()->toString();
         $memberId = Uuid::uuid4()->toString();
 
-        $support = new Fleet(new Id($supportId), 5);
-        $this->fleetRepository->save($support);
+        $fleet = new Fleet(new Id($supportId), 5);
+        $this->fleetRepository->save($fleet->getState());
 
 
         $boatTrip = BoatTripBuilder::build('abc')

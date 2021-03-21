@@ -28,7 +28,7 @@ class UpdateFleetTest extends TestCase
     {
         $fleetId = 'abc';
         $fleet = new Fleet(new Id($fleetId), 15);
-        $this->fleetRepository->save($fleet);
+        $this->fleetRepository->save($fleet->getState());
 
         $this->updateFleet->execute($fleetId, $newTotal = 20);
 
@@ -44,7 +44,7 @@ class UpdateFleetTest extends TestCase
     {
         $fleetId = 'abc';
         $fleet = new Fleet(new Id($fleetId), 15);
-        $this->fleetRepository->save($fleet);
+        $this->fleetRepository->save($fleet->getState());
 
         self::expectException(NumberBoatsCantBeNegative::class);
         $this->updateFleet->execute($fleetId, $newTotal = -1);

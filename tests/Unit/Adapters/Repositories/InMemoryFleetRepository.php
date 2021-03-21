@@ -5,6 +5,7 @@ namespace Tests\Unit\Adapters\Repositories;
 
 
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\FleetState;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 
 class InMemoryFleetRepository implements FleetRepository
@@ -13,10 +14,10 @@ class InMemoryFleetRepository implements FleetRepository
 
     public function get(string $id): ?Fleet
     {
-        return isset($this->fleets[$id]) ? clone $this->fleets[$id] : null;
+        return isset($this->fleets[$id]) ? $this->fleets[$id]->toDomain() : null ;
     }
 
-    public function save(Fleet $s): void
+    public function save(FleetState $s): void
     {
         $this->fleets[$s->id()] = $s;
     }
