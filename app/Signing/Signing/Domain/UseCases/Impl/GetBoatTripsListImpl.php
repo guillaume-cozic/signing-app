@@ -15,6 +15,6 @@ class GetBoatTripsListImpl implements GetBoatTripsList
 
     public function execute()
     {
-        return $this->boatTripRepository->getActive();
+        return $this->boatTripRepository->getInProgress();
     }
 }

@@ -10,8 +10,8 @@ class BoatTripsDTo
         public string $id,
         public \DateTime $startAt,
         public ?\DateTime $endAt,
-        public ?string $supportName,
-        public string $numberHours
+        public string $name,
+        public ?array $boats = [],
     ){}
 
 }

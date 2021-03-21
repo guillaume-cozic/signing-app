@@ -4,19 +4,20 @@
 namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Model;
 
 
+use App\Models\User;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
 use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\Entities\Sailor;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BoatTripModel extends Model
 {
     protected $table = 'boat_trip';
-
-    protected $fillable = ['number_hours', 'start_at', 'end_at'];
 
     protected $casts = [
         'start_at' => 'datetime',
@@ -24,13 +25,18 @@ class BoatTripModel extends Model
         'boats' => 'array'
     ];
 
+    public function member():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'member_id', 'id');
+    }
+
     public function toDomain():BoatTrip
     {
         $boatTripDuration = new BoatTripDuration($this->start_at, $this->number_hours, $this->end_at);
         return new BoatTrip(
             new Id($this->uuid),
             $boatTripDuration,
-            new Sailor($this->member_id, $this->name),
+            new Sailor($this->member?->uuid, $this->name),
             new BoatsCollection($this->boats)
         );
     }
@@ -47,12 +53,17 @@ class BoatTripModel extends Model
 
     public function toDto()
     {
+        $boats = [];
+        foreach($this->boats as $boatId => $qty){
+            $boat = FleetModel::query()->where('uuid', $boatId)->first();
+            $boats[$boat->name] = $qty;
+        }
         return new BoatTripsDTo(
             $this->uuid,
-            $this->start_at,
-            $this->end_at,
-            $this->support?->name,
-            $this->number_hours
+            new Carbon($this->start_at),
+            $this->end_at ? new Carbon($this->end_at) : null,
+            $this->member !== null ? $this->member->firstname.' '.$this->member->surname : $this->name,
+            $boats
         );
     }
 }

@@ -9,9 +9,9 @@ use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 
 class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
-    public function getActive()
+    public function getInProgress()
     {
-        return BoatTripModel::with('support')
+        return BoatTripModel::query()
             ->whereNull('end_at')
             ->paginate()
             ->transform(function (BoatTripModel $item){
