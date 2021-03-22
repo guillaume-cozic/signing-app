@@ -21,7 +21,7 @@ class SqlFleetRepository implements FleetRepository
 
     public function save(FleetState $fleetState): void
     {
-        $fleetModel = FleetModel::query()->where('uuid', $fleetState->id())->first() ?? new FleetModel();;
+        $fleetModel = FleetModel::query()->where('uuid', $fleetState->id())->first() ?? new FleetModel();
         $fleetModel->total_available = $fleetState->totalAvailable();
         $fleetModel->uuid = $fleetState->id();
         $fleetModel->save();

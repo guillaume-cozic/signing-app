@@ -13,5 +13,4 @@ class BoatTripsDTo
         public string $name,
         public ?array $boats = [],
     ){}
-
 }

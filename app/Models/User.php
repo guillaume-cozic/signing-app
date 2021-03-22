@@ -18,9 +18,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'surname',
         'email',
         'password',
+        'uuid'
     ];
 
     /**
@@ -54,6 +56,6 @@ class User extends Authenticatable
 
     public function adminlte_desc()
     {
-        return $this->name;
+        return $this->firstname;
     }
 }

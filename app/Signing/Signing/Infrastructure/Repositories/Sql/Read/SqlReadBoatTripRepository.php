@@ -9,12 +9,12 @@ use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 
 class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
-    public function getInProgress()
+    public function getInProgress(int $page = 1, int $perPage = 10)
     {
         return BoatTripModel::query()
             ->whereNull('end_at')
-            ->paginate()
-            ->transform(function (BoatTripModel $item){
+            ->paginate($perPage, ['*'], 'page', $page)
+            ->through(function (BoatTripModel $item) {
                 return $item->toDto();
             });
     }
