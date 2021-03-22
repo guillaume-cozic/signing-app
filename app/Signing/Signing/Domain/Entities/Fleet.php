@@ -36,8 +36,7 @@ class Fleet implements HasState
         $this->fleetRepository->save($this->getState());
 
         $trans = [
-            'title' => [App::getLocale() => $title],
-            'description' => [App::getLocale() => $description],
+            'name' => [App::getLocale() => $title],
         ];
         $this->translationService->add($trans, $this->id(), 'support');
     }

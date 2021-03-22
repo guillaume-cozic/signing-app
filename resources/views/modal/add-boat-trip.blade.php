@@ -16,12 +16,13 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="form-group">
-                                <label for="name">Supports</label>
+                                <label for="name">Embarcation</label>
                                 <select class="form-control">
-                                    <option>Hobie cat15</option>
-                                    <option>Pav</option>
-                                    <option>foil</option>
-                                    <option>123</option>
+                                    @if(isset($fleets))
+                                        @foreach($fleets as $fleet)
+                                            <option value="{{ $fleet->id }}">{{ $fleet->name }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         </div>

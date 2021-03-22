@@ -13,8 +13,9 @@ class GetBoatTripsListImpl implements GetBoatTripsList
         private ReadBoatTripRepository $boatTripRepository
     ){}
 
-    public function execute()
+    public function execute(int $start = 0, int $perPage = 10)
     {
-        return $this->boatTripRepository->getActive();
+        $page = $start/$perPage +1;
+        return $this->boatTripRepository->getInProgress($page, $perPage);
     }
 }

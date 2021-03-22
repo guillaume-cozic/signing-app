@@ -9,6 +9,7 @@ use App\Signing\Signing\Domain\Provider\IdentityProvider;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
+use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -16,6 +17,7 @@ use App\Signing\Signing\Domain\UseCases\AddTimeToBoatTrip;
 use App\Signing\Signing\Domain\UseCases\DelayBoatTripStart;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
+use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Impl\AddBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\AddMemberBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\AddFleetImpl;
@@ -23,11 +25,13 @@ use App\Signing\Signing\Domain\UseCases\Impl\AddTimeToBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\DelayBoatTripStartImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\EndBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetBoatTripsListImpl;
+use App\Signing\Signing\Domain\UseCases\Impl\GetFleetsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\UpdateFleetImpl;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadBoatTripRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlFleetRepository;
 use Illuminate\Support\ServiceProvider;
@@ -49,7 +53,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(UpdateFleet::class, UpdateFleetImpl::class);
         $this->app->singleton(DelayBoatTripStart::class, DelayBoatTripStartImpl::class);
         $this->app->singleton(CreateFleetWhenTeamCreated::class, CreateFleetWhenTeamCreatedImpl::class);
+
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);
+        $this->app->singleton(GetFleetsList::class, GetFleetsListImpl::class);
 
         $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
         $this->app->singleton(DateProvider::class, FakeDateProvider::class);
@@ -59,10 +65,11 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(BoatTripRepository::class, InMemoryBoatTripRepository::class);
             $this->app->singleton(TranslationService::class, FakeTranslationService::class);
         }
-        if(config('app.env') == 'testing-db') {
+        if(config('app.env') == 'testing-db' || config('app.env') == 'local') {
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);
+            $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
         }
     }

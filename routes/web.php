@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard',  [\App\Http\Controllers\Signing\BoatTripController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('dashboard');
 
 Route::get('/profile', [\App\Http\Controllers\UserController::class, 'profile'])
     ->middleware(['auth'])
@@ -18,12 +18,14 @@ Route::post('/ships', [\App\Http\Controllers\Ships\ShipsController::class, 'add'
     ->middleware(['auth'])
     ->name('ships.add');
 
+Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
+    ->middleware(['auth'])
+    ->name('boat-trips.list.data');
+
+
 require __DIR__.'/auth.php';
 
 
-/**
- * Teamwork routes
- */
 Route::group(['prefix' => 'teams', 'namespace' => 'Teamwork'], function()
 {
     Route::get('/', [App\Http\Controllers\Teamwork\TeamController::class, 'index'])->name('teams.index');

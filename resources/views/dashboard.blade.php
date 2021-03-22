@@ -1,92 +1,40 @@
 @extends('adminlte::page')
 
 @section('content')
+    <div class="row d-block d-sm-none">
+        <div class="col-12">
+            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">Ajouter une sortie</button>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <div class="card">
-                <div class="card-header d-flex p-0">
-                    <h3 class="card-title p-3">Les sorties en cours</h3>
-                    <ul class="nav nav-pills ml-auto p-2">
-                        <li class="nav-item"><a class="nav-link active" href="#all" data-toggle="tab">Toutes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#coming" data-toggle="tab">A venir</a></li>
+                <div class="card-header p-0 pt-1 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#in-progress" role="tab"
+                               aria-controls="custom-tabs-three-home" aria-selected="false">En cours</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#ended" role="tab"
+                               aria-controls="custom-tabs-three-profile" aria-selected="false" style="">Terminées</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body p-0">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="all">
-                            <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Bateaux</th>
-                            <th>Nom</th>
-                            <th>Heure départ</th>
-                            <th>Nombre d'heures</th>
-                            <th>Heure retour prévisionnel</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>2 kayaks simples</td>
-                            <td><i class="text-blue fa fa-user"></i>Rado</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr>
-                        <tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr>
-                        <tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr><tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr><tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr><tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr><tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr><tr>
-                            <td>2 kayaks simples</td>
-                            <td>Dupont</td>
-                            <td>14h15 (il y a 5 min)</td>
-                            <td>1</td>
-                            <td>15h15</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <div class="tab-pane active" style="padding:10px;" id="in-progress">
+                            @include('boattrips.datatable')
                         </div>
-                        <div class="tab-pane" id="coming">
+                        <div class="tab-pane" id="ended">
+                            1
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-4">
-            <button class="btn btn-primary btn-block mb-3" id="btn-add-boat-trip">Ajouter une sortie</button>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">Ajouter une sortie</button>
             <div class="card">
                 <div class="card-body p-0">
                     <table class="table table-striped">
@@ -145,7 +93,7 @@
 
 @section('adminlte_js')
     <script type="text/javascript">
-        $('#btn-add-boat-trip').click(function(){
+        $('.btn-add-boat-trip').click(function(){
             $('#modal-add-boat-trip').modal('show');
         });
     </script>

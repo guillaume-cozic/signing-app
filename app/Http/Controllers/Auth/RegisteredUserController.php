@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class RegisteredUserController extends Controller
 {
@@ -41,9 +42,11 @@ class RegisteredUserController extends Controller
         ]);
 
         Auth::login($user = User::create([
-            'name' => $request->name,
+            'firstname' => $request->name,
+            'surname' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'uuid' => Uuid::uuid4()->toString()
         ]));
 
         if(!$request->invite) {

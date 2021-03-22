@@ -15,7 +15,7 @@ class CreateFleetTable extends Migration
     {
         Schema::create('fleet', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
             $table->integer('total_available');
             $table->json('name')->default(null)->nullable();
             $table->timestamps();

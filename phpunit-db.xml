@@ -16,7 +16,7 @@
     </coverage>
     <php>
         <server name="APP_ENV" value="testing-db"/>
-        <server name="DB_HOST" value="172.23.0.2"/>
+        <server name="DB_HOST" value="mysql_signing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="MAIL_MAILER" value="array"/>
