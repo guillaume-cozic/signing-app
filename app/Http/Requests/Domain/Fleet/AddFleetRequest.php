@@ -17,7 +17,6 @@ class AddFleetRequest extends FormRequest
         return [
             'name' => 'required|string|max:200',
             'total_available' => 'required|min:0|integer',
-            'state' => 'required',
         ];
     }
 }
