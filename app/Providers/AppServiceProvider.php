@@ -15,6 +15,8 @@ use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\AddTimeToBoatTrip;
 use App\Signing\Signing\Domain\UseCases\DelayBoatTripStart;
+use App\Signing\Signing\Domain\UseCases\DisableFleet;
+use App\Signing\Signing\Domain\UseCases\EnableFleet;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
@@ -23,6 +25,8 @@ use App\Signing\Signing\Domain\UseCases\Impl\AddMemberBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\AddFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\AddTimeToBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\DelayBoatTripStartImpl;
+use App\Signing\Signing\Domain\UseCases\Impl\DisableFleetImpl;
+use App\Signing\Signing\Domain\UseCases\Impl\EnableFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\EndBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetBoatTripsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetFleetsListImpl;
@@ -52,6 +56,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AddTimeToBoatTrip::class, AddTimeToBoatTripImpl::class);
         $this->app->singleton(UpdateFleet::class, UpdateFleetImpl::class);
         $this->app->singleton(DelayBoatTripStart::class, DelayBoatTripStartImpl::class);
+        $this->app->singleton(DisableFleet::class, DisableFleetImpl::class);
+        $this->app->singleton(EnableFleet::class, EnableFleetImpl::class);
         $this->app->singleton(CreateFleetWhenTeamCreated::class, CreateFleetWhenTeamCreatedImpl::class);
 
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);

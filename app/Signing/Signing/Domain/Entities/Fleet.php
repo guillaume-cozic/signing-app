@@ -52,6 +52,18 @@ class Fleet implements HasState
         $this->fleetRepository->save($this->getState());
     }
 
+    public function disable()
+    {
+        $this->state = self::STATE_INACTIVE;
+        $this->fleetRepository->save($this->getState());
+    }
+
+    public function enable()
+    {
+        $this->state = self::STATE_ACTIVE;
+        $this->fleetRepository->save($this->getState());
+    }
+
     public function isBoatAvailable(int $qtyAsked):bool
     {
         return $this->totalAvailable >= $qtyAsked;
