@@ -19,13 +19,13 @@
 
         {{-- team field --}}
         <input type="hidden" name="invite" value={{$invite}}/>
-        @if(isset($invite) && $invite === true)
+        @if(isset($invite) && $invite === false)
             <div class="input-group mb-3">
                 <input type="text" name="team_name" class="form-control {{ $errors->has('team_name') ? 'is-invalid' : '' }}"
-                       value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.team_name') }}" autofocus>
+                       value="{{ old('team_name') }}" placeholder="{{ __('adminlte::adminlte.team_name') }}" autofocus>
                 <div class="input-group-append">
                     <div class="input-group-text">
-                        <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                        <span class="fas fa-ship {{ config('adminlte.classes_auth_icon', '') }}"></span>
                     </div>
                 </div>
                 @if($errors->has('team_name'))
@@ -38,16 +38,31 @@
 
         {{-- Name field --}}
         <div class="input-group mb-3">
-            <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
-                   value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
+            <input type="text" name="firstname" class="form-control {{ $errors->has('firstname') ? 'is-invalid' : '' }}"
+                   value="{{ old('firstname') }}" placeholder="{{ __('adminlte::adminlte.firstname') }}" autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
                 </div>
             </div>
-            @if($errors->has('name'))
+            @if($errors->has('firstname'))
                 <div class="invalid-feedback">
-                    <strong>{{ $errors->first('name') }}</strong>
+                    <strong>{{ $errors->first('firstname') }}</strong>
+                </div>
+            @endif
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="text" name="surname" class="form-control {{ $errors->has('surname') ? 'is-invalid' : '' }}"
+                   value="{{ old('surname') }}" placeholder="{{ __('adminlte::adminlte.surname') }}" autofocus>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                </div>
+            </div>
+            @if($errors->has('surname'))
+                <div class="invalid-feedback">
+                    <strong>{{ $errors->first('surname') }}</strong>
                 </div>
             @endif
         </div>
@@ -107,7 +122,6 @@
             <span class="fas fa-user-plus"></span>
             {{ __('adminlte::adminlte.register') }}
         </button>
-
     </form>
 @stop
 

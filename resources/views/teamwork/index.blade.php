@@ -25,29 +25,14 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if(is_null(auth()->user()->currentTeam) || auth()->user()->currentTeam->getKey() !== $team->getKey())
-                                            <a href="{{route('teams.switch', $team)}}" class="btn btn-sm btn-default">
-                                                <i class="fa fa-sign-in"></i> Switch
-                                            </a>
-                                        @else
-                                            <span class="label label-default">Current team</span>
-                                        @endif
-
                                         <a href="{{route('teams.members.show', $team)}}" class="btn btn-sm btn-default">
-                                            <i class="fa fa-users"></i> Members
+                                            <i class="fa fa-users"></i> Membres de l'équipe
                                         </a>
 
                                         @if(auth()->user()->isOwnerOfTeam($team))
-
                                             <a href="{{route('teams.edit', $team)}}" class="btn btn-sm btn-default">
-                                                <i class="fa fa-pencil"></i> Edit
+                                                <i class="fa fa-pencil"></i> Editer
                                             </a>
-
-                                            <form style="display: inline-block;" action="{{route('teams.destroy', $team)}}" method="post">
-                                                {!! csrf_field() !!}
-                                                <input type="hidden" name="_method" value="DELETE" />
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Delete</button>
-                                            </form>
                                         @endif
                                     </td>
                                 </tr>

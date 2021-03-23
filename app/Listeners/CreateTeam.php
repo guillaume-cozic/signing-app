@@ -23,7 +23,5 @@ class CreateTeam
         ]);
         unset($user->team_name);
         $user->attachTeam($team);
-
-
     }
 }
