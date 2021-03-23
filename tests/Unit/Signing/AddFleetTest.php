@@ -15,12 +15,25 @@ class AddFleetTest extends TestCase
     /**
      * @test
      */
-    public function shouldAddSupport()
+    public function shouldAddFleet()
     {
         $this->identityProvider->add($supportId = 'abc');
-        app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = 20);
+        app(AddFleet::class)->execute($title = 'hobie cat 15', 'desc', $totalSupportAvailable = 20, $state = Fleet::STATE_ACTIVE);
 
-        $supportExpected = new Fleet(new Id($supportId), $totalSupportAvailable);
+        $supportExpected = new Fleet(new Id($supportId), $totalSupportAvailable, $state);
+        $supportSaved = $this->fleetRepository->get($supportId);
+        self::assertEquals($supportExpected, $supportSaved);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddFleetWithInactiveState()
+    {
+        $this->identityProvider->add($supportId = 'abc');
+        app(AddFleet::class)->execute($title = 'hobie cat 15', 'desc', $totalSupportAvailable = 20, $state = Fleet::STATE_INACTIVE);
+
+        $supportExpected = new Fleet(new Id($supportId), $totalSupportAvailable, $state);
         $supportSaved = $this->fleetRepository->get($supportId);
         self::assertEquals($supportExpected, $supportSaved);
     }
@@ -33,7 +46,7 @@ class AddFleetTest extends TestCase
         $this->identityProvider->add($supportId = 'abc');
         self::expectException(NumberBoatsCantBeNegative::class);
         self::expectExceptionMessage('error.qty_can_not_be_lt_0');
-        app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = -1);
+        app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = -1, Fleet::STATE_INACTIVE);
     }
 
     /**
@@ -42,12 +55,9 @@ class AddFleetTest extends TestCase
     public function shouldAddSupportTranslation()
     {
         $this->identityProvider->add($supportId = 'abc');
-        app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = 20);
+        app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = 20, Fleet::STATE_INACTIVE);
 
-        $translationsSaved = $this->translationService->get('title', $supportId, $type = 'support');
+        $translationsSaved = $this->translationService->get('name', $supportId, $type = 'support');
         self::assertEquals($title, $translationsSaved);
-
-        $translationsSaved = $this->translationService->get('description', $supportId, $type = 'support');
-        self::assertEquals($description, $translationsSaved);
     }
 }

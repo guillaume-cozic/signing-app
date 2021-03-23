@@ -22,11 +22,11 @@ class FleetModel extends Model
 
     public function toDomain():Fleet
     {
-        return new Fleet(new Id($this->uuid), $this->total_available);
+        return new Fleet(new Id($this->uuid), $this->total_available, $this->state);
     }
 
     public function toDto():FleetDto
     {
-        return new FleetDto($this->uuid, $this->name);
+        return new FleetDto($this->uuid, $this->name, $this->total_available, $this->state);
     }
 }

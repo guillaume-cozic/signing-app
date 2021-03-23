@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFleetTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('fleet', function (Blueprint $table) {
@@ -18,15 +13,11 @@ class CreateFleetTable extends Migration
             $table->uuid('uuid')->unique();
             $table->integer('total_available');
             $table->json('name')->default(null)->nullable();
+            $table->enum('state', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('fleet');

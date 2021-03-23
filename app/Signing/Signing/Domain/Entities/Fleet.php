@@ -16,9 +16,13 @@ class Fleet implements HasState
     private FleetRepository $fleetRepository;
     private TranslationService $translationService;
 
+    const STATE_ACTIVE = 'active';
+    const STATE_INACTIVE = 'inactive';
+
     public function __construct(
         private Id $id,
-        private int $totalAvailable
+        private int $totalAvailable,
+        private string $state = self::STATE_ACTIVE,
     )
     {
         if($this->totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
@@ -55,6 +59,6 @@ class Fleet implements HasState
 
     public function getState(): FleetState
     {
-        return new FleetState($this->id->id(), $this->totalAvailable);
+        return new FleetState($this->id->id(), $this->totalAvailable, $this->state);
     }
 }

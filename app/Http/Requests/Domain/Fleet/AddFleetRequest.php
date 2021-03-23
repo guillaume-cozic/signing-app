@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Http\Requests\Domain\Supports;
+namespace App\Http\Requests\Domain\Fleet;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddSupportRequest extends FormRequest
+class AddFleetRequest extends FormRequest
 {
     public function authorize()
     {

@@ -8,6 +8,8 @@ class FleetDto
 {
     public function __construct(
         public string $id,
-        public string $name
+        public string $name,
+        public int $totalAvailable,
+        public string $state,
     ){}
 }

@@ -8,7 +8,11 @@ use App\Signing\Shared\Entities\Id;
 
 class FleetState implements State
 {
-    public function __construct(private string $id, private int $totalAvailable){}
+    public function __construct(
+        private string $id,
+        private int $totalAvailable,
+        private string $state
+    ){}
 
     public function id(): string
     {
@@ -20,8 +24,13 @@ class FleetState implements State
         return $this->totalAvailable;
     }
 
+    public function state(): string
+    {
+        return $this->state;
+    }
+
     public function toDomain()
     {
-        return new Fleet(new Id($this->id), $this->totalAvailable);
+        return new Fleet(new Id($this->id), $this->totalAvailable, $this->state);
     }
 }

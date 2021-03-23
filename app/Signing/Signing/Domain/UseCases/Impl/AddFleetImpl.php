@@ -14,8 +14,8 @@ class AddFleetImpl implements AddFleet
 {
     public function __construct(private TranslationService $translationService){}
 
-    public function execute(string $title, string $description, int $totalAvailable)
+    public function execute(string $title, string $description, int $totalAvailable, string $state)
     {
-        (new Fleet($id = new Id(), $totalAvailable))->create($title, $description);
+        (new Fleet($id = new Id(), $totalAvailable, $state))->create($title, $description);
     }
 }

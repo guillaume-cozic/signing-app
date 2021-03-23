@@ -10,13 +10,13 @@ Route::get('/profile', [\App\Http\Controllers\UserController::class, 'profile'])
     ->middleware(['auth'])
     ->name('dashboard');
 
-Route::get('/ships', [\App\Http\Controllers\Ships\ShipsController::class, 'listShips'])
+Route::get('/ships', [\App\Http\Controllers\Signing\FleetController::class, 'listShips'])
     ->middleware(['auth'])
-    ->name('ships.list');
+    ->name('fleet.list');
 
-Route::post('/ships', [\App\Http\Controllers\Ships\ShipsController::class, 'add'])
+Route::post('/ships', [\App\Http\Controllers\Signing\FleetController::class, 'add'])
     ->middleware(['auth'])
-    ->name('ships.add');
+    ->name('fleet.add');
 
 Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
     ->middleware(['auth'])
