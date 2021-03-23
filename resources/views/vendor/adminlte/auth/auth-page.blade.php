@@ -16,6 +16,9 @@
 @section('classes_body'){{ ($auth_type ?? 'login') . '-page' }}@stop
 
 @section('body')
+
+    @yield('message-auth')
+
     <div class="{{ $auth_type ?? 'login' }}-box">
 
         {{-- Logo --}}

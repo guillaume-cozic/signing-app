@@ -11,6 +11,17 @@
     @php( $register_url = $register_url ? url($register_url) : '' )
 @endif
 
+@section('message-auth')
+    @if($invite)
+        <div class="row">
+            <div class="callout callout-info">
+                <h5>Vous avez été invité à rejoindre : club nautique du Pradet</h5>
+                <p>Enregistrez vous pour accèder à l'espace de collaboration</p>
+            </div>
+        </div>
+    @endif
+@endsection
+
 @section('auth_header', __('adminlte::adminlte.register_message'))
 
 @section('auth_body')
