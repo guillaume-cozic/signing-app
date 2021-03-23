@@ -37,7 +37,9 @@ class RegisteredUserController extends Controller
             'uuid' => Uuid::uuid4()->toString()
         ]));
 
-        $user->team_name = $request->team_name;
+        if(isset($request->team_name)) {
+            $user->team_name = $request->team_name;
+        }
 
         event(new Registered($user));
 
