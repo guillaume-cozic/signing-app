@@ -8,7 +8,11 @@ Route::get('/dashboard',  [\App\Http\Controllers\Signing\BoatTripController::cla
 
 Route::get('/profile', [\App\Http\Controllers\UserController::class, 'profile'])
     ->middleware(['auth'])
-    ->name('dashboard');
+    ->name('user.profile');
+
+Route::post('/profile', [\App\Http\Controllers\UserController::class, 'update'])
+    ->middleware(['auth'])
+    ->name('user.profile.save');
 
 Route::get('/ships', [\App\Http\Controllers\Signing\FleetController::class, 'listShips'])
     ->middleware(['auth'])

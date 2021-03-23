@@ -12,11 +12,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, UserHasTeams;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'firstname',
         'surname',
@@ -25,21 +20,11 @@ class User extends Authenticatable
         'uuid'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -51,11 +36,14 @@ class User extends Authenticatable
 
     public function adminlte_image()
     {
+        if(isset($this->avatar)){
+            return asset($this->avatar);
+        }
         return 'http://dev.signing.com:8002/vendor/adminlte/dist/img/AdminLTELogo.png';
     }
 
     public function adminlte_desc()
     {
-        return $this->firstname;
+        return $this->firstname.' '.$this->surname;
     }
 }
