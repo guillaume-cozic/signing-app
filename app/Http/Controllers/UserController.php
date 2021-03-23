@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\Domain\Account\UserUpdateRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -24,28 +24,22 @@ class UserController extends Controller
         $user->firstname = $request->input('firstname');
         $user->surname = $request->input('surname');
         $user->email = $request->input('email');
+
+        if ($request->hasFile('file')) {
+            $avatar = $request->file('file');
+            $filename = 'avatar.'.$avatar->getClientOriginalExtension();
+            $save_path = storage_path().'/app/public/users/id/'.$user->id.'/';
+            $public_path = '/storage/users/id/'.$user->id.'/'.$filename;
+
+            File::makeDirectory($save_path, $mode = 0755, true, true);
+
+            Image::make($avatar)->resize(300, 300)->save($save_path.$filename);
+
+            $user->avatar = $public_path;
+        }
+
         $user->save();
         return redirect()->route('user.profile');
     }
 
-    public function upload(Request $request)
-    {
-        if ($request->hasFile('file')) {
-            $currentUser = Auth::user();
-            $avatar = $request->file('file');
-            $filename = 'avatar.'.$avatar->getClientOriginalExtension();
-            $save_path = storage_path().'/users/id/'.$currentUser->id.'/uploads/images/avatar/';
-            $path = $save_path.$filename;
-            $public_path = '/images/profile/'.$currentUser->id.'/avatar/'.$filename;
-
-            File::makeDirectory($save_path, $mode = 0755, true, true);
-            Image::make($avatar)->resize(300, 300)->save($save_path.$filename);
-
-            $currentUser->profile->avatar = $public_path;
-            $currentUser->profile->save();
-
-            return response()->json(['path' => $path], 200);
-        }
-        return response()->json(false, 200);
-    }
 }
