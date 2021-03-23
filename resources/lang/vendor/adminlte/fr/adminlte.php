@@ -3,6 +3,9 @@
 return [
 
     'full_name'                   => 'Nom',
+    'firstname'                   => 'Prénom',
+    'surname'                    => 'Nom',
+    'team_name'                   => 'Club nautique',
     'email'                       => 'Email',
     'password'                    => 'Mot de passe',
     'retype_password'             => 'Entrez à nouveau le mot de passe',
