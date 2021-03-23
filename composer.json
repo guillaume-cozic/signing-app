@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "wellsail/signing",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Well sail",
     "keywords": [
         "framework",
         "laravel"
@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.5",
         "mpociot/teamwork": "^6.1",
         "spatie/laravel-permission": "^4.0",
-        "spatie/laravel-translatable": "^4.6"
+        "spatie/laravel-translatable": "^4.6",
+        "intervention/image": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
