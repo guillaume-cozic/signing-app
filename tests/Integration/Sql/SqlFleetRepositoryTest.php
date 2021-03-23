@@ -18,7 +18,7 @@ class SqlFleetRepositoryTest extends TestCase
      */
     public function shouldInsertFleet()
     {
-        $fleet = new Fleet(new Id($id = 'abc'), 20);
+        $fleet = new Fleet(new Id($id = 'abc'), 20, Fleet::STATE_INACTIVE);
 
         $this->fleetRepository->save($fleet->getState());
 

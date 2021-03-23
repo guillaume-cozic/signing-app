@@ -235,7 +235,7 @@ return [
             'icon' => 'nav-icon fas fa-tachometer-alt',
         ],
         [
-            'text' => 'Les supports',
+            'text' => 'Les flottes',
             'url'  => 'ships',
             'icon' => 'nav-icon fas fa-ship',
         ],

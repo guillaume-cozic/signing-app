@@ -31,10 +31,12 @@ class GetFleetsListTest extends TestCase
     public function shouldReturnEmptyList()
     {
         $support1 = new Fleet(new Id($supportId1 = Uuid::uuid4()->toString()), 20);
-        $support2 = new Fleet(new Id($supportId2 = Uuid::uuid4()->toString()), 20);
+        $support2 = new Fleet(new Id($supportId2 = Uuid::uuid4()->toString()), 15);
+        $support3 = new Fleet(new Id($supportId3 = Uuid::uuid4()->toString()), 15);
 
         $this->fleetRepository->save($support1->getState());
         $this->fleetRepository->save($support2->getState());
+        $this->fleetRepository->save($support3->getState());
 
         $support1Model = FleetModel::where('uuid', $supportId1)->first();
         $support1Model->name = $hobieCatName = 'Hobie cat 15';
@@ -44,10 +46,13 @@ class GetFleetsListTest extends TestCase
         $support2Model->name = 'Hobie cat 16';
         $support2Model->save();
 
+        $support3Model = FleetModel::where('uuid', $supportId3)->first();
+        $support3Model->name = 'First class 8';
+        $support3Model->save();
 
         $fleetsExpected = [
-            new FleetDto($supportId1, 'Hobie cat 15'),
-            new FleetDto($supportId2, 'Hobie cat 16'),
+            new FleetDto($supportId1, 'Hobie cat 15', 20, 'active'),
+            new FleetDto($supportId2, 'Hobie cat 16', 15, 'active'),
         ];
         $fleetsRetrieved = $this->getFleetsList->execute();
         self::assertEquals($fleetsExpected[0], $fleetsRetrieved[0]);
