@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\CreateFleets;
 use App\Listeners\CreateTeam;
 use App\Listeners\Teamwork\JoinTeamListener;
 use Illuminate\Auth\Events\Registered;
@@ -10,16 +11,13 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
+
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
             CreateTeam::class,
-            JoinTeamListener::class
+            JoinTeamListener::class,
+            CreateFleets::class
         ],
         \Mpociot\Teamwork\Events\UserJoinedTeam::class => [
         ],
@@ -29,11 +27,6 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
     public function boot()
     {
         //

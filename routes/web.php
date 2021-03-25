@@ -14,13 +14,33 @@ Route::post('/profile', [\App\Http\Controllers\UserController::class, 'update'])
     ->middleware(['auth'])
     ->name('user.profile.save');
 
-Route::get('/ships', [\App\Http\Controllers\Signing\FleetController::class, 'listShips'])
+Route::get('/fleets', [\App\Http\Controllers\Signing\FleetController::class, 'listShips'])
     ->middleware(['auth'])
     ->name('fleet.list');
 
-Route::post('/ships', [\App\Http\Controllers\Signing\FleetController::class, 'add'])
+Route::post('/fleet', [\App\Http\Controllers\Signing\FleetController::class, 'add'])
     ->middleware(['auth'])
     ->name('fleet.add');
+
+Route::post('/fleets', [\App\Http\Controllers\Signing\FleetController::class, 'getFleetList'])
+    ->middleware(['auth'])
+    ->name('fleet.list.data');
+
+Route::get('{fleetId}/fleet', [\App\Http\Controllers\Signing\FleetController::class, 'showEdit'])
+    ->middleware(['auth'])
+    ->name('page.fleet.edit');
+
+Route::post('{fleetId}/fleet', [\App\Http\Controllers\Signing\FleetController::class, 'edit'])
+    ->middleware(['auth'])
+    ->name('fleet.edit');
+
+Route::post('fleets/disable', [\App\Http\Controllers\Signing\FleetController::class, 'disable'])
+    ->middleware(['auth'])
+    ->name('fleet.disable');
+
+Route::post('fleets/enable', [\App\Http\Controllers\Signing\FleetController::class, 'enable'])
+    ->middleware(['auth'])
+    ->name('fleet.enable');
 
 Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
     ->middleware(['auth'])

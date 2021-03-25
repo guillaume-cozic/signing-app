@@ -4,36 +4,8 @@
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
             <div class="card">
-                <div class="card-body p-0">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nom du support</th>
-                                <th>Total disponible</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($fleets as $fleet)
-                                <tr>
-                                    <td>{{ $fleet->name }}</td>
-                                    <td>{{ $fleet->totalAvailable }}</td>
-                                    <td>
-                                        @if($fleet->state == 'active')
-                                            <span class="badge bg-success">Actif</span>
-                                        @else
-                                            <span class="badge bg-danger">Inactif</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <i class="text-red fa fa-ban m-2"></i>
-                                        <i class="text-blue fa fa-edit m-2"></i>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card-body p-2">
+                    @include('signing.fleet.datatable')
                 </div>
             </div>
         </div>
@@ -65,7 +37,9 @@
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                <input type="checkbox" checked class="custom-control-input" id="support_status" name="state">
+                                <input type="checkbox"
+                                       @if(old('state', 'active') === 'on') checked @endif
+                                       class="custom-control-input" id="support_status" name="state">
                                 <label class="custom-control-label" for="support_status">Support actif</label>
                             </div>
                         </div>
@@ -77,4 +51,49 @@
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('adminlte_js')
+    @parent
+
+    <script type="text/javascript">
+        var routeEnable = '{{ route('fleet.enable') }}';
+        var routeDisable = '{{ route('fleet.disable') }}';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#fleets-table').on('click', '.btn-disable', function(){
+            if(!confirm('Voulez vous vraiment désactiver cette flotte')){
+                return;
+            }
+            var fleetId = $(this).data('fleet-id')
+            $.ajax({
+                url: routeDisable,
+                method: 'POST',
+                data: {fleet_id:fleetId},
+                success: function (){
+                    table.ajax.reload(null, false);
+                }
+            });
+        });
+
+        $('#fleets-table').on('click', '.btn-enable', function(){
+            if(!confirm('Voulez vous vraiment activer cette flotte')){
+                return;
+            }
+            var fleetId = $(this).data('fleet-id')
+            $.ajax({
+                url: routeEnable,
+                method: 'POST',
+                data: {fleet_id:fleetId},
+                success: function (){
+                    table.ajax.reload(null, false);
+                }
+            });
+        });
+    </script>
 @endsection

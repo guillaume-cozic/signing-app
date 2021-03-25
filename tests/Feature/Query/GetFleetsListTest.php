@@ -28,7 +28,7 @@ class GetFleetsListTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnEmptyList()
+    public function shouldGetListFleets()
     {
         $support1 = new Fleet(new Id($supportId1 = Uuid::uuid4()->toString()), 20);
         $support2 = new Fleet(new Id($supportId2 = Uuid::uuid4()->toString()), 15);

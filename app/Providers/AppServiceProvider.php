@@ -31,6 +31,8 @@ use App\Signing\Signing\Domain\UseCases\Impl\EndBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetBoatTripsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetFleetsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\UpdateFleetImpl;
+use App\Signing\Signing\Domain\UseCases\Query\GetFleet;
+use App\Signing\Signing\Domain\UseCases\Query\Impl\GetFleetImpl;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
@@ -62,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);
         $this->app->singleton(GetFleetsList::class, GetFleetsListImpl::class);
+        $this->app->singleton(GetFleet::class, GetFleetImpl::class);
 
         $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
         $this->app->singleton(DateProvider::class, FakeDateProvider::class);

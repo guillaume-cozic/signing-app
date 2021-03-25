@@ -9,11 +9,17 @@ use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 
 class SqlReadFleetRepository implements ReadFleetRepository
 {
-    public function all()
+    public function all(int $page = 1, int $perPage = 10)
     {
-        return FleetModel::all()
-            ->transform(function (FleetModel $item) {
+        return FleetModel::query()
+            ->paginate($perPage, ['*'], 'page', $page)
+            ->through(function (FleetModel $item) {
                 return $item->toDto();
             });
+    }
+
+    public function getById(string $id)
+    {
+        return FleetModel::where('uuid', $id)->first()?->toDto();
     }
 }
