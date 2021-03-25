@@ -17,19 +17,17 @@ use Tests\TestCase;
 
 class FleetController extends TestCase
 {
-    public function listShips(GetFleetsList $getFleetsList)
+    public function listShips()
     {
-        $fleets = $getFleetsList->execute();
-        return view('signing.fleet.list', [
-            'fleets' => $fleets
-        ]);
+        return view('signing.fleet.list');
     }
 
     public function getFleetList(Request $request, GetFleetsList $getFleetsList)
     {
         $start = $request->input('start', 0);
+        $search = $request->input('search.value', '');
         $perPage = $request->input('length', 10);
-        $fleets = $getFleetsList->execute($start, $perPage);
+        $fleets = $getFleetsList->execute($search, $start, $perPage);
 
         foreach ($fleets as $fleet) {
             $fleetsData[] = [

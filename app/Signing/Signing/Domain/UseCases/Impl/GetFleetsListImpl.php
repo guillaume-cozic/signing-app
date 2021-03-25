@@ -11,9 +11,9 @@ class GetFleetsListImpl implements GetFleetsList
 {
     public function __construct(private ReadFleetRepository $readFleetRepository){}
 
-    public function execute(int $start = 0, int $perPage = 10)
+    public function execute(?string $search, int $start = 0, int $perPage = 10)
     {
         $page = $start/$perPage +1;
-        return $this->readFleetRepository->all($page, $perPage);
+        return $this->readFleetRepository->search($search, $page, $perPage);
     }
 }
