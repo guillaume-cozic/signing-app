@@ -11,13 +11,18 @@ use Illuminate\Support\Facades\App;
 
 class SqlReadFleetRepository implements ReadFleetRepository
 {
-    public function search(?string $search = '', int $page = 1, int $perPage = 10)
+    public function search(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc")
     {
         return FleetModel::query()
             ->when($search !== '', function (Builder $query) use($search){
                 $query->where('total_available', 'LIKE', '%'.$search.'%')
-                    ->orWhere('name->' . App::getLocale(), 'LIKE', '%'.$search.'%');
-                })
+                    ->orWhere('name->' . App::getLocale(), 'LIKE', '%'.$search.'%')
+                    ->orWhere('state', 'LIKE', '%'.$search.'%');
+            })
+            ->when(isset($sort), function (Builder $query) use($sort, $dirSort){
+                $sort = $sort === 'name' ? 'name->'.App::getLocale() : $sort;
+                $query->orderBy($sort, $dirSort);
+            })
             ->paginate($perPage, ['*'], 'page', $page)
             ->through(function (FleetModel $item) {
                 return $item->toDto();
