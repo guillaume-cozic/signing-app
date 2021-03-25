@@ -236,7 +236,7 @@ return [
         ],
         [
             'text' => 'Les flottes',
-            'url'  => 'ships',
+            'url'  => 'fleets',
             'icon' => 'nav-icon fas fa-ship',
         ],
         [
@@ -244,11 +244,11 @@ return [
             'url'  => 'teams',
             'icon' => 'nav-icon fas fa-user',
         ],
-        [
+        /*[
             'text' => 'Facturation',
             'url'  => 'billing',
             'icon' => 'nav-icon fas fa-shopping-cart',
-        ],
+        ],*/
     ],
 
     /*
