@@ -57,6 +57,34 @@ class GetFleetsListTest extends TestCase
         $fleetsRetrieved = $this->getFleetsList->execute();
         self::assertEquals($fleetsExpected[0], $fleetsRetrieved[0]);
         self::assertEquals($fleetsExpected[1], $fleetsRetrieved[1]);
+        self::assertCount(3, $fleetsRetrieved);
+    }
+
+    /**
+     * @test
+     */
+    public function getFleetsOfMySailingClub()
+    {
+        $support1 = new Fleet(new Id($supportId1 = Uuid::uuid4()->toString()), 20);
+        $support2 = new Fleet(new Id($supportId2 = Uuid::uuid4()->toString()), 15);
+
+        $this->fleetRepository->save($support1->getState());
+        $this->fleetRepository->save($support2->getState());
+
+        // we change the sailing club id
+        $this->contextService->setSailingClubId(2);
+        $this->contextService->set();
+
+        $support3 = new Fleet(new Id($supportId3 = Uuid::uuid4()->toString()), 15);
+        $this->fleetRepository->save($support3->getState());
+
+
+        // we restore the sailing club id
+        $this->contextService->setSailingClubId(1);
+        $this->contextService->set();
+        $fleetsRetrieved = $this->getFleetsList->execute();
+
+        self::assertCount(2, $fleetsRetrieved);
     }
 }
 

@@ -13,6 +13,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
     {
         return BoatTripModel::query()
             ->whereNull('end_at')
+            ->sailingClub()
             ->paginate($perPage, ['*'], 'page', $page)
             ->through(function (BoatTripModel $item) {
                 return $item->toDto();

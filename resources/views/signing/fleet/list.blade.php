@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                 <input type="checkbox"
-                                       @if(old('state', 'active') === 'on') checked @endif
+                                       @if(old('state', 'on') === 'on') checked @endif
                                        class="custom-control-input" id="support_status" name="state">
                                 <label class="custom-control-label" for="support_status">Support actif</label>
                             </div>

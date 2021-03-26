@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BoatTripModel extends Model
 {
+    use ScopeSailingClub;
+
     protected $table = 'boat_trip';
 
     protected $casts = [

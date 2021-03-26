@@ -23,6 +23,7 @@ class SqlReadFleetRepository implements ReadFleetRepository
                 $sort = $sort === 'name' ? 'name->'.App::getLocale() : $sort;
                 $query->orderBy($sort, $dirSort);
             })
+            ->sailingClub()
             ->paginate($perPage, ['*'], 'page', $page)
             ->through(function (FleetModel $item) {
                 return $item->toDto();
