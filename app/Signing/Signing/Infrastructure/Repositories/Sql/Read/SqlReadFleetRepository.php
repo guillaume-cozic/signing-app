@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Read;
 
 
+use App\Signing\Shared\Services\ContextService;
 use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\App;
 
 class SqlReadFleetRepository implements ReadFleetRepository
 {
+    public function __construct(private ContextService $contextService){}
+
     public function search(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc")
     {
         return FleetModel::query()
@@ -23,6 +26,7 @@ class SqlReadFleetRepository implements ReadFleetRepository
                 $sort = $sort === 'name' ? 'name->'.App::getLocale() : $sort;
                 $query->orderBy($sort, $dirSort);
             })
+            ->where('sailing_club_id', $this->contextService->get()->sailingClubId())
             ->paginate($perPage, ['*'], 'page', $page)
             ->through(function (FleetModel $item) {
                 return $item->toDto();

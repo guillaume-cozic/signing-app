@@ -17,6 +17,7 @@ class CreateBoatTripTable extends Migration
             $table->string('name')->nullable();
             $table->integer('member_id')->nullable();
             $table->json('boats')->nullable();
+            $table->integer('sailing_club_id');
             $table->timestamps();
         });
     }
