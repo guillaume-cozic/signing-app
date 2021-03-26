@@ -12,7 +12,7 @@ use Spatie\Translatable\HasTranslations;
 
 class FleetModel extends Model
 {
-    use HasTranslations;
+    use HasTranslations, ScopeSailingClub;
 
     protected $table = 'fleet';
 

@@ -10,6 +10,7 @@ use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\BoatTripState;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class SqlBoatTripRepository implements BoatTripRepository
 {
@@ -43,9 +44,10 @@ class SqlBoatTripRepository implements BoatTripRepository
     public function getInProgressByBoat(string $boatId): array
     {
         return BoatTripModel::query()
-            ->whereHas('support', function ($query) use($boatId){
+            ->whereHas('support', function (Builder $query) use($boatId){
                 return $query->where('uuid', $boatId);
             })
+            ->sailingClub()
             ->get()
             ?->transform(function (BoatTripModel $model){
                 return $model->toDomain();
