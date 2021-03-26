@@ -14,6 +14,7 @@ class CreateFleetTable extends Migration
             $table->integer('total_available');
             $table->json('name')->default(null)->nullable();
             $table->enum('state', ['active', 'inactive'])->default('active');
+            $table->integer('sailing_club_id');
             $table->timestamps();
         });
     }

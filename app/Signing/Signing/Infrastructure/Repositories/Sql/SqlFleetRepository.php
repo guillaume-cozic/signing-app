@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 
 
+use App\Signing\Shared\Services\ContextService;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\Entities\FleetState;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
@@ -25,6 +26,7 @@ class SqlFleetRepository implements FleetRepository
         $fleetModel->total_available = $fleetState->totalAvailable();
         $fleetModel->uuid = $fleetState->id();
         $fleetModel->state = $fleetState->state();
+        $fleetModel->sailing_club_id = app(ContextService::class)->get()->sailingClubId();
         $fleetModel->save();
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Signing\Shared\Providers\DateProvider;
+use App\Signing\Shared\Services\ContextService;
 use App\Signing\Shared\Services\Translations\TranslationService;
 use App\Signing\Signing\Domain\Provider\IdentityProvider;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
@@ -18,6 +19,7 @@ abstract class TestCase extends BaseTestCase
     protected BoatTripRepository $boatTripRepository;
     protected DateProvider $dateProvider;
     protected TranslationService $translationService;
+    protected ContextService $contextService;
 
     protected function setUp() :void
     {
@@ -27,5 +29,7 @@ abstract class TestCase extends BaseTestCase
         $this->boatTripRepository = app(BoatTripRepository::class);
         $this->dateProvider = app(DateProvider::class);
         $this->translationService = app(TranslationService::class);
+        $this->contextService = app(ContextService::class);
+        $this->contextService->setSailingClubId(1);
     }
 }
