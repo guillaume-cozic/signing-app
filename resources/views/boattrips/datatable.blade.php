@@ -44,7 +44,7 @@
                 $('[data-toggle="tooltip"]').tooltip();
             },
             ajax: {
-                url: 'http://dev.signing.com:8002/boat-trips',
+                url: 'http://dev.signing.com:8002/boat-trips/list',
                 type: 'POST',
             },
             iDisplayLength: 10,

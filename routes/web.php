@@ -42,10 +42,17 @@ Route::post('fleets/enable', [\App\Http\Controllers\Signing\FleetController::cla
     ->middleware(['auth'])
     ->name('fleet.enable');
 
-Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
+Route::post('/boat-trips/list', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
     ->middleware(['auth'])
     ->name('boat-trips.list.data');
 
+Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'add'])
+    ->middleware(['auth'])
+    ->name('boat-trips.add');
+
+Route::post('modal/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'serveHtmlModal'])
+    ->middleware(['auth'])
+    ->name('boat-trips.modal');
 
 require __DIR__.'/auth.php';
 

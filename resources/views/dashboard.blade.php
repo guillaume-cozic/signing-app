@@ -92,6 +92,7 @@
 @endsection
 
 @section('adminlte_js')
+
     <script type="text/javascript">
         $('.btn-add-boat-trip').click(function(){
             $('#modal-add-boat-trip').modal('show');
