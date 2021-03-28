@@ -40,9 +40,9 @@ class BoatTripController extends Controller
                 $boats,
                 $boatTrip->name,
                 '<div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar bg-success" style="width: 90%"></div>
-                                </div>'
-                //$boatTrip->startAt->add(\DateInterval::createFromDateString('+1 hours'))->format('H:i'),
+                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                </div><br/><i class="fas fa-clock"></i> '.$boatTrip->startAt->add(\DateInterval::createFromDateString('+1 hours'))->format('H:i'),
+                '<i class="fa fa-hourglass-start text-green"></i><i class="fa fa-clock text-blue"></i><i class="fa fa-trash text-red"></i>'
             ];
         }
 
@@ -76,5 +76,6 @@ class BoatTripController extends Controller
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
         $addBoatTrip->execute($boatsProcessed, $name, $hours);
+        return [];
     }
 }

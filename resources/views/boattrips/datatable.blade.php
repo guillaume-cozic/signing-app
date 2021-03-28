@@ -5,6 +5,7 @@
             <th>Bateaux</th>
             <th>Nom</th>
             <th>Retour</th>
+            <th>Actions</th>
         </tr>
     </thead>
 </table>
@@ -21,7 +22,7 @@
             }
         });
 
-        var table = $('#boat-trips-table').DataTable( {
+        var tableBoatTrips = $('#boat-trips-table').DataTable( {
             processing: true,
             responsive: true,
             serverSide: true,
@@ -52,6 +53,7 @@
             columns: [
                 {"name": "boats"},
                 {"name": "name"},
+                {"name": "return"},
                 {"name": "return"},
             ],
             "order": [[ 1, "asc" ]],

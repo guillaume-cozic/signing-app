@@ -12,6 +12,6 @@ trait ScopeSailingClub
     public function scopeSailingClub($query):Builder
     {
         $sailingClubId = app(ContextService::class)->get()->sailingClubId();
-        return $query->where('sailing_club_id', $sailingClubId);
+        return $query->where($this->table.'.sailing_club_id', $sailingClubId);
     }
 }

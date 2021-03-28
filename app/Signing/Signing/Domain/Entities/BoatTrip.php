@@ -67,6 +67,12 @@ class BoatTrip implements HasState
         $this->boatTripRepository->save($this->getState());
     }
 
+    public function cancel()
+    {
+        if($this->duration->isEnded()) throw new BoatTripAlreadyEnded();
+        $this->boatTripRepository->delete($this->id());
+    }
+
     public function quantity(string $boatId):int
     {
         return $this->boats->quantity($boatId) ?? 0;

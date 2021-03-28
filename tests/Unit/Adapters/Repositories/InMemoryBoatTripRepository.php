@@ -14,7 +14,7 @@ class InMemoryBoatTripRepository implements BoatTripRepository
 
     public function get(string $id): ?BoatTrip
     {
-        return $this->boatTrips[$id]?->toBoatTrip();
+        return isset($this->boatTrips[$id]) ? $this->boatTrips[$id]->toBoatTrip() : null;
     }
 
     public function save(BoatTripState $b)
@@ -31,4 +31,11 @@ class InMemoryBoatTripRepository implements BoatTripRepository
         }
         return $boatTrips ?? [];
     }
+
+    public function delete(string $boatTripId)
+    {
+        unset($this->boatTrips[$boatTripId]);
+    }
+
+
 }

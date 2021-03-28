@@ -12,4 +12,5 @@ interface BoatTripRepository
     public function get(string $id):?BoatTrip;
     public function save(BoatTripState $b);
     public function getInProgressByBoat(string $boatId):array;
+    public function delete(string $boatTripId);
 }
