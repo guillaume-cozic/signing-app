@@ -52,4 +52,8 @@ class SqlBoatTripRepository implements BoatTripRepository
             ->toArray();
     }
 
+    public function delete(string $boatTripId)
+    {
+        return BoatTripModel::query()->where('uuid', $boatTripId)->delete();
+    }
 }
