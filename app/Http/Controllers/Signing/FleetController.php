@@ -31,7 +31,7 @@ class FleetController extends TestCase
         $sortIndex = $request->input('order.0.column', null);
         $sort = $request->input('columns.'.$sortIndex.'.name', null);
 
-        $fleets = $getFleetsList->execute($search, $start, $perPage, $sort, $sortDir);
+        $fleets = $getFleetsList->execute(['search' => $search], $start, $perPage, $sort, $sortDir);
 
         foreach ($fleets as $fleet) {
             $fleetsData[] = [
