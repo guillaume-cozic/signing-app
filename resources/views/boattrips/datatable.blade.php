@@ -1,14 +1,14 @@
 <div>
-<table class="table table-striped" id="boat-trips-table">
-    <thead>
-        <tr>
-            <th>Bateaux</th>
-            <th>Nom</th>
-            <th>Retour</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-</table>
+    <table class="table table-striped" id="boat-trips-table">
+        <thead>
+            <tr>
+                <th>Bateaux</th>
+                <th>Nom</th>
+                <th>Retour</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 @section('adminlte_js')
     @parent
@@ -16,6 +16,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript">
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -57,8 +58,22 @@
                 {"name": "return", 'orderable': false },
             ],
             "order": [[ 1, "asc" ]],
-            fnRowCallback: function( row, data) {}
+            fnRowCallback: function(row, data) {}
         });
 
+
+        $('#boat-trips-table').on('click', '.btn-cancel', function (){
+            if(!confirm('Voulez vous vraiment supprimer cette sortie ?')){
+                return;
+            }
+            $.ajax({
+                url: '1',
+                dataType: ' json',
+                method: 'post',
+                success:function (data){
+                    tableBoatTrips.ajax.reload(null, false);
+                }
+            });
+        });
     </script>
 @endsection

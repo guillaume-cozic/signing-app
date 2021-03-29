@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Signing;
 use App\Http\Controllers\Controller;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use Carbon\Carbon;
@@ -61,7 +62,9 @@ class BoatTripController extends Controller
                 '<div class="progress progress-xs progress-striped active">
                     <div class="progress-bar bg-'.$state.'" style="width: '.$percentageCompletion.'%"></div>
                 </div><br/><i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
-                '<i class="fa fa-hourglass-start text-green p-2"></i><i class="fa fa-clock text-blue p-2"></i><i class="fa fa-trash text-red p-2"></i>'
+                '<i class="fa fa-hourglass-start text-green p-2"></i>
+                <i class="fa fa-clock text-blue p-2"></i>
+                <i data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'" class="fa fa-trash text-red p-2"></i>'
             ];
         }
 
@@ -95,6 +98,13 @@ class BoatTripController extends Controller
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
         $addBoatTrip->execute($boatsProcessed, $name, $hours);
+        return [];
+    }
+
+
+    public function cancel(string $boatTripId, CancelBoatTrip $cancelBoatTrip)
+    {
+        $cancelBoatTrip->execute($boatTripId);
         return [];
     }
 }
