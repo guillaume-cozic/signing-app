@@ -67,7 +67,7 @@
                 return;
             }
             $.ajax({
-                url: '1',
+                url: $(this).data('href'),
                 dataType: ' json',
                 method: 'post',
                 success:function (data){

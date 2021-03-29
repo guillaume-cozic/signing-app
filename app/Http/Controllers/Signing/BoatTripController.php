@@ -64,7 +64,7 @@ class BoatTripController extends Controller
                 </div><br/><i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
                 '<i class="fa fa-hourglass-start text-green p-2"></i>
                 <i class="fa fa-clock text-blue p-2"></i>
-                <i data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'" class="fa fa-trash text-red p-2"></i>'
+                <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'" class="btn-cancel fa fa-trash text-red p-2"></i>'
             ];
         }
 
