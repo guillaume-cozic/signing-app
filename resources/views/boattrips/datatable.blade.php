@@ -17,6 +17,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript">
 
+        var route = '{{ route('boat-trips.list.data') }}';
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -46,7 +47,7 @@
                 $('[data-toggle="tooltip"]').tooltip();
             },
             ajax: {
-                url: 'http://dev.signing.com:8002/boat-trips/list',
+                url: route,
                 type: 'POST',
             },
             iDisplayLength: 10,
@@ -64,6 +65,20 @@
 
         $('#boat-trips-table').on('click', '.btn-cancel', function (){
             if(!confirm('Voulez vous vraiment supprimer cette sortie ?')){
+                return;
+            }
+            $.ajax({
+                url: $(this).data('href'),
+                dataType: ' json',
+                method: 'post',
+                success:function (data){
+                    tableBoatTrips.ajax.reload(null, false);
+                }
+            });
+        });
+
+        $('#boat-trips-table').on('click', '.btn-end', function (){
+            if(!confirm('Terminer la sortie ?')){
                 return;
             }
             $.ajax({

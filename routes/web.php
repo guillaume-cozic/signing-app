@@ -54,6 +54,10 @@ Route::post('{boatTripId}/boat-trip/cancel', [\App\Http\Controllers\Signing\Boat
     ->middleware(['auth'])
     ->name('boat-trip.cancel');
 
+Route::post('{boatTripId}/boat-trip/end', [\App\Http\Controllers\Signing\BoatTripController::class, 'end'])
+    ->middleware(['auth'])
+    ->name('boat-trip.end');
+
 Route::post('modal/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'serveHtmlModal'])
     ->middleware(['auth'])
     ->name('boat-trips.modal');

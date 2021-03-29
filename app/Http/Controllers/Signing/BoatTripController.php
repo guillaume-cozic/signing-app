@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
+use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use Carbon\Carbon;
@@ -62,8 +63,8 @@ class BoatTripController extends Controller
                 '<div class="progress progress-xs progress-striped active">
                     <div class="progress-bar bg-'.$state.'" style="width: '.$percentageCompletion.'%"></div>
                 </div><br/><i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
-                '<i class="fa fa-hourglass-start text-green p-2"></i>
-                <i class="fa fa-clock text-blue p-2"></i>
+                '
+                <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'" class="btn-end fa fa-edit text-blue p-2"></i>
                 <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'" class="btn-cancel fa fa-trash text-red p-2"></i>'
             ];
         }
@@ -105,6 +106,12 @@ class BoatTripController extends Controller
     public function cancel(string $boatTripId, CancelBoatTrip $cancelBoatTrip)
     {
         $cancelBoatTrip->execute($boatTripId);
+        return [];
+    }
+
+    public function end(string $boatTripId, EndBoatTrip $endBoatTrip)
+    {
+        $endBoatTrip->execute($boatTripId);
         return [];
     }
 }
