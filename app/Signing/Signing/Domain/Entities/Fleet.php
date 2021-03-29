@@ -45,11 +45,16 @@ class Fleet implements HasState
         $this->translationService->add($trans, $this->id(), 'support');
     }
 
-    public function update(int $totalAvailable)
+    public function update(int $totalAvailable, string $title, string $state)
     {
         if($totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
         $this->totalAvailable = $totalAvailable;
+        $this->state = $state;
         $this->fleetRepository->save($this->getState());
+        $trans = [
+            'name' => [App::getLocale() => $title],
+        ];
+        $this->translationService->add($trans, $this->id(), 'support');
     }
 
     public function disable()

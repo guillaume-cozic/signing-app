@@ -7,6 +7,7 @@ namespace Tests\Feature\Query;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Dto\FleetDto;
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\State;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -58,6 +59,24 @@ class GetFleetsListTest extends TestCase
         self::assertEquals($fleetsExpected[0], $fleetsRetrieved[0]);
         self::assertEquals($fleetsExpected[1], $fleetsRetrieved[1]);
         self::assertCount(3, $fleetsRetrieved);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldGetOnlyEnableFleet()
+    {
+        $support1 = new Fleet(new Id($supportId1 = 'ab'), 20);
+        $support2 = new Fleet(new Id($supportId2 = 'abc'), 15, Fleet::STATE_INACTIVE);
+        $support3 = new Fleet(new Id($supportId3 = 'abcd'), 15, Fleet::STATE_INACTIVE);
+
+        $this->fleetRepository->save($support1->getState());
+        $this->fleetRepository->save($support2->getState());
+        $this->fleetRepository->save($support3->getState());
+
+        $fleetsRetrieved = $this->getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]]);
+
+        self::assertCount(1, $fleetsRetrieved);
     }
 
     /**

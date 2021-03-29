@@ -76,7 +76,7 @@ class FleetController extends TestCase
         $total = $request->input('total_available', 0);
         $state = $request->input('state');
         $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
-        $updateFleet->execute($fleetId, $total);
+        $updateFleet->execute($fleetId, $total, $name, $state);
         return redirect()->route('fleet.list');
     }
 
