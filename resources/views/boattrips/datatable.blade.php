@@ -51,10 +51,10 @@
             iDisplayLength: 10,
             showExportButton: false,
             columns: [
-                {"name": "boats"},
+                {"name": "boats", 'orderable': false },
                 {"name": "name"},
-                {"name": "return"},
-                {"name": "return"},
+                {"name": "should_return"},
+                {"name": "return", 'orderable': false },
             ],
             "order": [[ 1, "asc" ]],
             fnRowCallback: function( row, data) {}

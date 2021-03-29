@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BoatTripController extends Controller
@@ -36,13 +37,30 @@ class BoatTripController extends Controller
                 $boats .= $qty. ' '.$boat.'</br>';
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
+
+            $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
+            if($shouldEndAt < new Carbon(new \DateTime())) {
+
+                $state = 'success';
+                if(abs($shouldEndAt->getTimestamp() - (new \DateTime())->getTimestamp()) > 30*60){
+                    $state = 'danger';
+                }
+
+                $percentageCompletion = 100;
+            }else {
+                $diff = $shouldEndAt->diff(new Carbon(new \DateTime()));
+                $h = $diff->h + round($diff->i / 60, 1);
+
+                $percentageCompletion = ($boatTrip->hours - $h) / $boatTrip->hours * 100;
+                $state = 'info';
+            }
             $boatTripsData[] = [
                 $boats,
                 $boatTrip->name,
                 '<div class="progress progress-xs progress-striped active">
-                    <div class="progress-bar bg-success" style="width: 90%"></div>
-                </div><br/><i class="fas fa-clock"></i> '.$boatTrip->startAt->add(\DateInterval::createFromDateString('+1 hours'))->format('H:i'),
-                '<i class="fa fa-hourglass-start text-green"></i><i class="fa fa-clock text-blue"></i><i class="fa fa-trash text-red"></i>'
+                    <div class="progress-bar bg-'.$state.'" style="width: '.$percentageCompletion.'%"></div>
+                </div><br/><i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
+                '<i class="fa fa-hourglass-start text-green p-2"></i><i class="fa fa-clock text-blue p-2"></i><i class="fa fa-trash text-red p-2"></i>'
             ];
         }
 
