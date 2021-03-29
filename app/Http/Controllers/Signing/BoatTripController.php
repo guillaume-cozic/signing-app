@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Signing;
 
 
 use App\Http\Controllers\Controller;
+use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
@@ -15,7 +16,7 @@ class BoatTripController extends Controller
 {
     public function index(GetFleetsList $getFleetsList)
     {
-        $fleets = $getFleetsList->execute();
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]]);
         return view('dashboard', [
             'fleets' => $fleets
         ]);
@@ -75,7 +76,7 @@ class BoatTripController extends Controller
     public function serveHtmlModal(Request $request, GetFleetsList $getFleetsList)
     {
         $count = $request->input('count');
-        $fleets = $getFleetsList->execute();
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]]);
         return view('modal.partials.add-boat-trip-form', [
             'fleets' => $fleets,
             'count' => $count

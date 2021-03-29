@@ -6,5 +6,5 @@ namespace App\Signing\Signing\Domain\UseCases;
 
 interface UpdateFleet
 {
-    public function execute(string $id, int $newTotal);
+    public function execute(string $id, int $newTotal, string $title, string $state);
 }

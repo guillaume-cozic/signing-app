@@ -30,10 +30,12 @@ class UpdateFleetTest extends TestCase
         $fleet = new Fleet(new Id($fleetId), 15);
         $this->fleetRepository->save($fleet->getState());
 
-        $this->updateFleet->execute($fleetId, $newTotal = 20);
+
+        $title = 'hobie cat';
+        $this->updateFleet->execute($fleetId, $newTotal = 20, $title, Fleet::STATE_INACTIVE);
 
         $fleetUpdated = $this->fleetRepository->get($fleetId);
-        $fleetExpected = new Fleet(new Id($fleetId), $newTotal);
+        $fleetExpected = new Fleet(new Id($fleetId), $newTotal, Fleet::STATE_INACTIVE);
         self::assertEquals($fleetExpected, $fleetUpdated, 'Fleet has not been updated');
     }
 
@@ -47,7 +49,7 @@ class UpdateFleetTest extends TestCase
         $this->fleetRepository->save($fleet->getState());
 
         self::expectException(NumberBoatsCantBeNegative::class);
-        $this->updateFleet->execute($fleetId, $newTotal = -1);
+        $this->updateFleet->execute($fleetId, $newTotal = -1, $title = 'hobie cat', Fleet::STATE_INACTIVE);
     }
 
     /**
@@ -58,6 +60,6 @@ class UpdateFleetTest extends TestCase
         $fleetId = 'abc';
 
         self::expectException(FleetNotFound::class);
-        $this->updateFleet->execute($fleetId, $newTotal = 20);
+        $this->updateFleet->execute($fleetId, $newTotal = 20, $title = 'hobie cat', Fleet::STATE_INACTIVE);
     }
 }
