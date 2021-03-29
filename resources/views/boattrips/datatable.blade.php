@@ -5,6 +5,7 @@
             <th>Bateaux</th>
             <th>Nom</th>
             <th>Retour</th>
+            <th>Actions</th>
         </tr>
     </thead>
 </table>
@@ -21,7 +22,7 @@
             }
         });
 
-        var table = $('#boat-trips-table').DataTable( {
+        var tableBoatTrips = $('#boat-trips-table').DataTable( {
             processing: true,
             responsive: true,
             serverSide: true,
@@ -44,15 +45,16 @@
                 $('[data-toggle="tooltip"]').tooltip();
             },
             ajax: {
-                url: 'http://dev.signing.com:8002/boat-trips',
+                url: 'http://dev.signing.com:8002/boat-trips/list',
                 type: 'POST',
             },
             iDisplayLength: 10,
             showExportButton: false,
             columns: [
-                {"name": "boats"},
+                {"name": "boats", 'orderable': false },
                 {"name": "name"},
-                {"name": "return"},
+                {"name": "should_return"},
+                {"name": "return", 'orderable': false },
             ],
             "order": [[ 1, "asc" ]],
             fnRowCallback: function( row, data) {}

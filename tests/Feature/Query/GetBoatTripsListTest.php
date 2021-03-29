@@ -66,8 +66,8 @@ class GetBoatTripsListTest extends TestCase
 
         $boatTrips = app(GetBoatTripsList::class)->execute();
 
-        $boatTripDto1 = new BoatTripsDTo('abc', new Carbon($this->dateProvider->current()), null, 'Tabarly', [$hobieCatName => 1]);
-        $boatTripDto2 = new BoatTripsDTo('abcd', new Carbon($this->dateProvider->current()), null, 'Gaston Cozic', []);
+        $boatTripDto1 = new BoatTripsDTo('abc', new Carbon($this->dateProvider->current()), null, 'Tabarly', [$hobieCatName => 1], 1);
+        $boatTripDto2 = new BoatTripsDTo('abcd', new Carbon($this->dateProvider->current()), null, 'Gaston Cozic', [], 1);
 
         self::assertEquals($boatTripDto1, $boatTrips[0]);
         self::assertEquals($boatTripDto2, $boatTrips[1]);
@@ -123,8 +123,8 @@ class GetBoatTripsListTest extends TestCase
 
         $boatTrips = app(GetBoatTripsList::class)->execute();
 
-        $boatTripDto1 = new BoatTripsDTo('abc', new Carbon($this->dateProvider->current()), null, 'Tabarly', [$hobieCatName => 1]);
-        $boatTripDto2 = new BoatTripsDTo('abcd', new Carbon($this->dateProvider->current()), null, 'Cousteau', []);
+        $boatTripDto1 = new BoatTripsDTo('abc', new Carbon($this->dateProvider->current()), null, 'Tabarly', [$hobieCatName => 1], 1);
+        $boatTripDto2 = new BoatTripsDTo('abcd', new Carbon($this->dateProvider->current()), null, 'Cousteau', [], 1);
 
         self::assertEquals($boatTripDto1, $boatTrips[0]);
         self::assertEquals($boatTripDto2, $boatTrips[1]);

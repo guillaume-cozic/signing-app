@@ -65,7 +65,8 @@ class BoatTripModel extends Model
             new Carbon($this->start_at),
             $this->end_at ? new Carbon($this->end_at) : null,
             $this->member !== null ? $this->member->firstname.' '.$this->member->surname : $this->name,
-            $boats
+            $boats,
+            $this->number_hours
         );
     }
 }

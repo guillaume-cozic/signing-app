@@ -16,6 +16,8 @@ use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\AddTimeToBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\CancelBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\DelayBoatTripStart;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
@@ -64,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(DisableFleet::class, DisableFleetImpl::class);
         $this->app->singleton(EnableFleet::class, EnableFleetImpl::class);
         $this->app->singleton(CreateFleetWhenTeamCreated::class, CreateFleetWhenTeamCreatedImpl::class);
+        $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
 
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);
         $this->app->singleton(GetFleetsList::class, GetFleetsListImpl::class);

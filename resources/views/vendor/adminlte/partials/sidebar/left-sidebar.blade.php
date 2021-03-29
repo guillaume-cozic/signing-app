@@ -14,7 +14,7 @@
                 <img src="http://dev.signing.com:8002/vendor/adminlte/dist/img/AdminLTELogo.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Club nautique du Pradet</a>
+                <a href="#" class="d-block">{{\Illuminate\Support\Facades\Auth::user()->currentTeam->name}}</a>
             </div>
         </div>
         <nav class="mt-2">

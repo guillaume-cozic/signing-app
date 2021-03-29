@@ -79,7 +79,6 @@ class SqlBoatTripRepositoryTest extends TestCase
             ->inProgress(1);
         $this->boatTripRepository->save($boatTrip->getState());
 
-
         $boatTrip = BoatTripBuilder::build($id = 'abcd')
             ->withSailor(name:$name = 'Tabarly')
             ->withBoats([$fleetId => 2])
@@ -89,5 +88,23 @@ class SqlBoatTripRepositoryTest extends TestCase
         self::assertDatabaseHas('boat_trip', ['uuid' => 'abcd']);
         $boatTripSaved = $this->boatTripRepository->get($id);
         self::assertEquals($boatTrip, $boatTripSaved);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDeleteBoatTrip()
+    {
+        $fleet = new Fleet(new Id($fleetId = 'abcde'), 10);
+        $this->fleetRepository->save($fleet->getState());
+
+        $boatTrip = BoatTripBuilder::build($id = 'abcd')
+            ->withSailor(name:$name = 'Tabarly')
+            ->withBoats([$fleetId => 1])
+            ->inProgress(1);
+        $this->boatTripRepository->save($boatTrip->getState());
+
+        $this->boatTripRepository->delete($boatTrip->id());
+        self::assertDatabaseMissing('boat_trip', ['uuid' => 'abcde']);
     }
 }

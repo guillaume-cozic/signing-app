@@ -12,5 +12,6 @@ class BoatTripsDTo
         public ?\DateTime $endAt,
         public string $name,
         public ?array $boats = [],
+        public float $hours = 0
     ){}
 }

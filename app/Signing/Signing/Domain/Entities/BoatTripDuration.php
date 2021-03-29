@@ -36,7 +36,7 @@ class BoatTripDuration implements HasState
         $this->start->add(\DateInterval::createFromDateString('+'.$minutes.' minutes'));
     }
 
-    private function isEnded()
+    public function isEnded()
     {
         return $this->end !== null;
     }
