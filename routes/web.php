@@ -50,6 +50,10 @@ Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::cl
     ->middleware(['auth'])
     ->name('boat-trips.add');
 
+Route::post('/boat-trips/force', [\App\Http\Controllers\Signing\BoatTripController::class, 'forceAdd'])
+    ->middleware(['auth'])
+    ->name('boat-trips.force-add');
+
 Route::post('{boatTripId}/boat-trip/cancel', [\App\Http\Controllers\Signing\BoatTripController::class, 'cancel'])
     ->middleware(['auth'])
     ->name('boat-trip.cancel');

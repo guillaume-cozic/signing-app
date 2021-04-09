@@ -31,9 +31,11 @@ class BoatTrip implements HasState
     /**
      * @throws BoatNotAvailable
      */
-    public function create()
+    public function create(bool $force = false)
     {
-        (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
+        if(!$force) {
+            (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
+        }
         $this->boatTripRepository->save($this->getState());
     }
 

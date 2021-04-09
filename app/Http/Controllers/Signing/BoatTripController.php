@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
@@ -99,6 +100,21 @@ class BoatTripController extends Controller
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
         $addBoatTrip->execute($boatsProcessed, $name, $hours);
+        return [];
+    }
+
+    public function forceAdd(Request $request, ForceAddBoatTrip $forceAddBoatTrip)
+    {
+        $boats = $request->input('boats');
+        $name = $request->input('name');
+        $hours = $request->input('hours', 1);
+        $startAt = $request->input('start_at');
+
+        $boatsProcessed = [];
+        foreach($boats as $boat){
+            $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
+        }
+        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours);
         return [];
     }
 
