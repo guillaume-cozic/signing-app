@@ -68,7 +68,7 @@
                         <h5><i class="icon fas fa-ban"></i> Attention!</h5>
                         Au moins un support demandé n'est pas disponible.<br/>
                         Voulez vous tout de même continuer et créer la sortie en mer.
-                        <button type="button" class="btn btn-default">Forcer la création de la sortie</button>
+                        <button id="btn-force" type="button" class="btn btn-default">Forcer la création de la sortie</button>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -118,11 +118,11 @@
                 format: 'LT'
             });
 
-            $('#form-add-boat-trip').submit(function (){
+            function addBoatTrip(url, form) {
                 $.ajax({
-                    url : $(this).attr('action'),
+                    url : url,
                     method : 'POST',
-                    data : $(this).serialize(),
+                    data : form.serialize(),
                     dataType : 'json',
                     success:function (data){
                         tableBoatTrips.ajax.reload(null, false);
@@ -133,6 +133,16 @@
                         $('#alert-boat-not-available').slideDown();
                     }
                 });
+                return false;
+            }
+
+            $('#form-add-boat-trip').submit(function (){
+                addBoatTrip($(this).attr('action'), $(this));
+                return false;
+            });
+
+            $('#btn-force').click(function (){
+                addBoatTrip($('#form-add-boat-trip').attr('action')+'/force', $('#form-add-boat-trip'));
                 return false;
             });
         });
