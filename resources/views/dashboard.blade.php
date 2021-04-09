@@ -35,57 +35,7 @@
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
             <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">Ajouter une sortie</button>
-            <div class="card">
-                <div class="card-body p-0">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Bateau</th>
-                            <th>Total</th>
-                            <th style="width: 40px">Disponibilité</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Update software</td>
-                            <td>
-                                <div class="progress progress-xs">
-                                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-danger">55%</span></td>
-                        </tr>
-                        <tr>
-                            <td>Clean database</td>
-                            <td>
-                                <div class="progress progress-xs">
-                                    <div class="progress-bar bg-warning" style="width: 70%"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-warning">70%</span></td>
-                        </tr>
-                        <tr>
-                            <td>Cron job running</td>
-                            <td>
-                                <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar bg-primary" style="width: 30%"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-primary">30%</span></td>
-                        </tr>
-                        <tr>
-                            <td>Fix and squish bugs</td>
-                            <td>
-                                <div class="progress progress-xs progress-striped active">
-                                    <div class="progress-bar bg-success" style="width: 90%"></div>
-                                </div>
-                            </td>
-                            <td><span class="badge bg-success">90%</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @include('dashboard.availability-loader')
         </div>
     </div>
     @include('modal.add-boat-trip')

@@ -20,7 +20,7 @@ class ContextServiceTestImpl implements ContextService
         return $this->context;
     }
 
-    public function set()
+    public function set(int $teamId = null)
     {
         $this->context = new Context($this->sailingClubId);
     }

@@ -126,6 +126,7 @@
                     dataType : 'json',
                     success:function (data){
                         tableBoatTrips.ajax.reload(null, false);
+                        loadAvailability();
                         $('#modal-add-boat-trip').modal('hide');
                     },
                     error:function (){

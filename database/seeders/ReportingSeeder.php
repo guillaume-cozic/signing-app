@@ -45,7 +45,7 @@ class ReportingSeeder extends Seeder
             $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
                 ->withBoats($boats)
                 ->withSailor($users->random(1)->first()->uuid)
-                ->fromState(rand(1, 3), $startAt, null);
+                ->fromState(rand(1, 3), $startAt, $startAt);
             app(BoatTripRepository::class)->save($boatTrip->getState());
 
 
@@ -54,7 +54,7 @@ class ReportingSeeder extends Seeder
             $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
                 ->withBoats($boats)
                 ->withSailor($users->random(1)->first()->uuid)
-                ->fromState(rand(1, 3), $startAt, null);
+                ->fromState(rand(1, 3), $startAt, $startAt);
 
             app(BoatTripRepository::class)->save($boatTrip->getState());
         }

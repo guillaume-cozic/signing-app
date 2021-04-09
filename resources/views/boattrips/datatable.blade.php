@@ -69,10 +69,11 @@
             }
             $.ajax({
                 url: $(this).data('href'),
-                dataType: ' json',
+                dataType: 'json',
                 method: 'post',
                 success:function (data){
                     tableBoatTrips.ajax.reload(null, false);
+                    loadAvailability();
                 }
             });
         });
@@ -87,6 +88,7 @@
                 method: 'post',
                 success:function (data){
                     tableBoatTrips.ajax.reload(null, false);
+                    loadAvailability();
                 }
             });
         });

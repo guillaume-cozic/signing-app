@@ -67,6 +67,10 @@ Route::get('reporting', [\App\Http\Controllers\Reporting\ReportingController::cl
     ->middleware(['auth'])
     ->name('reporting.show');
 
+Route::get('dashboard/availability', [\App\Http\Controllers\Signing\FleetController::class, 'showAvailabilityBoats'])
+    ->middleware(['auth'])
+    ->name('dashboard.availability');
+
 require __DIR__.'/auth.php';
 
 
