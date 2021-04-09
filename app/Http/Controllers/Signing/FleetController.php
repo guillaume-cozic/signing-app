@@ -11,6 +11,7 @@ use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Query\GetFleet;
+use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use Illuminate\Http\Request;
 use Tests\TestCase;
@@ -90,5 +91,13 @@ class FleetController extends TestCase
     {
         $enableFleet->execute($request->input('fleet_id'));
         return [];
+    }
+
+    public function showAvailabilityBoats(GetNumberBoatsOfFleetAvailable $getNumberBoatsOfFleetAvailable)
+    {
+        $fleets = $getNumberBoatsOfFleetAvailable->execute();
+        return view('dashboard.availability-fleet', [
+            'fleets' => $fleets
+        ]);
     }
 }

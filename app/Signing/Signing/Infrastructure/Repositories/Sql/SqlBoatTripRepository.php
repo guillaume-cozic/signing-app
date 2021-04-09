@@ -43,7 +43,7 @@ class SqlBoatTripRepository implements BoatTripRepository
     public function getInProgressByBoat(string $boatId): array
     {
         return BoatTripModel::query()
-            ->where('boats->uuid', $boatId)
+            ->whereNotNull('boats->'.$boatId)
             ->sailingClub()
             ->get()
             ?->transform(function (BoatTripModel $model){
@@ -54,6 +54,8 @@ class SqlBoatTripRepository implements BoatTripRepository
 
     public function delete(string $boatTripId)
     {
-        return BoatTripModel::query()->where('uuid', $boatTripId)->delete();
+        return BoatTripModel::query()
+            ->where('uuid', $boatTripId)
+            ->delete();
     }
 }
