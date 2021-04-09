@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
+use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Shared\Services\ContextService;
 use App\Signing\Shared\Services\ContextServiceImpl;
@@ -51,6 +53,8 @@ use Tests\Unit\Adapters\Provider\FakeIdentityProvider;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
+use ConsoleTVs\Charts\Registrar as Charts;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -96,11 +100,15 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);
             $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
+            $this->app->singleton(BoatTripReportingRepository::class, SqlBoatTripReportingRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
         }
     }
 
-    public function boot()
+    public function boot(Charts $charts)
     {
+        $charts->register([
+            \App\Charts\BoatTripsByDay::class
+        ]);
     }
 }

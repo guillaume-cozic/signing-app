@@ -19,9 +19,9 @@ class ContextServiceImpl implements ContextService
         return $this->context;
     }
 
-    public function set()
+    public function set(int $teamId = null)
     {
-        $sailingClubId = Auth::user()->currentTeam->id;
+        $sailingClubId = Auth::user() !== null ? Auth::user()->currentTeam->id : $teamId;
         $this->context = new Context($sailingClubId);
     }
 

@@ -120,6 +120,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-translatable" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/intervention/image" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/chartisan/php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/consoletvs/charts" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
