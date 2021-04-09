@@ -62,6 +62,11 @@ Route::post('modal/boat-trips', [\App\Http\Controllers\Signing\BoatTripControlle
     ->middleware(['auth'])
     ->name('boat-trips.modal');
 
+
+Route::get('reporting', [\App\Http\Controllers\Reporting\ReportingController::class, 'showReporting'])
+    ->middleware(['auth'])
+    ->name('reporting.show');
+
 require __DIR__.'/auth.php';
 
 

@@ -244,6 +244,11 @@ return [
             'url'  => 'teams',
             'icon' => 'nav-icon fas fa-user',
         ],
+        [
+            'text' => 'Reporting',
+            'url'  => 'reporting',
+            'icon' => 'nav-icon fas fa-chart-bar',
+        ],
         /*[
             'text' => 'Facturation',
             'url'  => 'billing',

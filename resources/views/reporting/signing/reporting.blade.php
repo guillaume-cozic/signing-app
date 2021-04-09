@@ -1,19 +1,20 @@
-<div class="card card-success">
-    <div class="card-header">
-        <h3 class="card-title">Bar Chart</h3>
-
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
+<div class="card card-default">
     <div class="card-body">
-        <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 410px;" width="410" height="250" class="chartjs-render-monitor"></canvas>
-        </div>
+        <div id="chart" style="height: 400px;width: 100%;"></div>
     </div>
 </div>
+
+@section('adminlte_js')
+    @parent
+    <script>
+        const chart = new Chartisan({
+            el: '#chart',
+            url: "@chart('boat_trips_by_day')",
+            hooks: new ChartisanHooks()
+                .colors(['#ECC94B', '#4299E1'])
+                .legend()
+                .tooltip()
+                .title('Nombre de sortie par jour'),
+        });
+    </script>
+@endsection
