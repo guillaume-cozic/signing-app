@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="button" id="btn-add-boats" class="btn btn-primary btn-sm pull-right" value="Ajouter un type d'embarcation">
+                                    <input data-href="{{ route('boat-trips.modal') }}" type="button" id="btn-add-boats" class="btn btn-primary btn-sm pull-right" value="Ajouter un type d'embarcation">
                                 </div>
                             </div>
                         </div>
@@ -80,71 +80,3 @@
     </div>
 </div>
 
-@section('adminlte_js')
-    @parent
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg==" crossorigin="anonymous" />
-
-
-    <script type="text/javascript">
-        $(function(){
-            var route = '{{ route('boat-trips.modal') }}';
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            var countBoatsList = 2;
-            $('#btn-add-boats').click(function (){
-                $.ajax({
-                    url : route,
-                    method: 'POST',
-                    data: {count:countBoatsList},
-                    success:function (data){
-                        $('#list-add-boat-trip').append(data);
-                        countBoatsList++;
-                    }
-                });
-            });
-
-            $('#modal-add-boat-trip').on('click', '.delete-boat', function (){
-                $(this).parents('.row-boat-trip').remove();
-            });
-
-            $('#timepicker').datetimepicker({
-                format: 'LT'
-            });
-
-            function addBoatTrip(url, form) {
-                $.ajax({
-                    url : url,
-                    method : 'POST',
-                    data : form.serialize(),
-                    dataType : 'json',
-                    success:function (data){
-                        tableBoatTrips.ajax.reload(null, false);
-                        loadAvailability();
-                        $('#modal-add-boat-trip').modal('hide');
-                    },
-                    error:function (){
-                        $('#alert-boat-not-available').slideDown();
-                    }
-                });
-                return false;
-            }
-
-            $('#form-add-boat-trip').submit(function (){
-                addBoatTrip($(this).attr('action'), $(this));
-                return false;
-            });
-
-            $('#btn-force').click(function (){
-                addBoatTrip($('#form-add-boat-trip').attr('action')+'/force', $('#form-add-boat-trip'));
-                return false;
-            });
-        });
-    </script>
-@endsection
