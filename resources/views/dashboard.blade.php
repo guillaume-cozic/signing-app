@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 
+
 @section('content')
     <div class="row d-block d-sm-none">
         <div class="col-12">
@@ -41,11 +42,3 @@
     @include('modal.add-boat-trip')
 @endsection
 
-@section('adminlte_js')
-
-    <script type="text/javascript">
-        $('.btn-add-boat-trip').click(function(){
-            $('#modal-add-boat-trip').modal('show');
-        });
-    </script>
-@endsection

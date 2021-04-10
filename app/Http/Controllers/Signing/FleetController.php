@@ -41,7 +41,9 @@ class FleetController extends TestCase
                 $fleet->totalAvailable,
                 $fleet->state,
                 '',
-                route('page.fleet.edit', ['fleetId' => $fleet->id])
+                route('page.fleet.edit', ['fleetId' => $fleet->id]),
+                route('fleet.enable'),
+                route('fleet.disable')
             ];
         }
 
