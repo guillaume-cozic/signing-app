@@ -45,6 +45,7 @@ class SqlBoatTripRepository implements BoatTripRepository
         return BoatTripModel::query()
             ->whereNotNull('boats->'.$boatId)
             ->sailingClub()
+            ->whereNull('end_at')
             ->get()
             ?->transform(function (BoatTripModel $model){
                 return $model->toDomain();

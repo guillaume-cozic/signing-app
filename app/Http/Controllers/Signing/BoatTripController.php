@@ -78,6 +78,41 @@ class BoatTripController extends Controller
         ];
     }
 
+    public function endedBoatTripList(Request $request, GetBoatTripsList $getBoatTripsList)
+    {
+        $start = $request->input('start', 0);
+        $search = $request->input('search.value', '');
+        $perPage = $request->input('length', 10);
+        $sortDir = $request->input('order.0.dir', null);
+        $sortIndex = $request->input('order.0.column', null);
+        $sort = $request->input('columns.'.$sortIndex.'.name', null);
+        $filters = ['ended' => true];
+        $boatTrips = $getBoatTripsList->execute($search, $start, $perPage, $sort, $sortDir, $filters);
+
+        foreach ($boatTrips as $boatTrip) {
+            $boats = '';
+            foreach($boatTrip->boats as $boat => $qty){
+                $boats .= $qty. ' '.$boat.'</br>';
+            }
+            $boats = $boats !== '' ? $boats : 'Matériel perso';
+
+            $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
+
+            $boatTripsData[] = [
+                $boats,
+                $boatTrip->name,
+                '<i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
+          ];
+        }
+
+        return [
+            'draw' => $request->get('draw'),
+            'recordsTotal' => count($boatTrips),
+            'recordsFiltered' => $boatTrips->total(),
+            'data' => $boatTripsData ?? [],
+        ];
+    }
+
     public function serveHtmlModal(Request $request, GetFleetsList $getFleetsList)
     {
         $count = $request->input('count');

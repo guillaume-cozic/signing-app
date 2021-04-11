@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\App;
 
 class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
-    public function getInProgress(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc")
+    public function getInProgress(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc", array $filters = [])
     {
         $fleets = [];
         if(!empty($search)){
@@ -30,7 +30,13 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                 }
                 return $query;
             })
-            ->whereNull('end_at')
+            ->when(!isset($filters['ended']), function (Builder $query) {
+                return $query->whereNull('end_at');
+            })
+            ->when(isset($filters['ended']), function (Builder $query) {
+                return $query->whereNotNull('end_at')
+                    ->whereRaw('date(end_at) = ?', (new \DateTime())->format('Y-m-d'));
+            })
             ->sailingClub()
             ->when(isset($sort), function (Builder $query) use($sort, $dirSort){
                 return $query->orderBy($sort, $dirSort);

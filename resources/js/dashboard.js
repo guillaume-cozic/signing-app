@@ -131,4 +131,44 @@ $(document).ready(function() {
         addBoatTrip($('#form-add-boat-trip').attr('action')+'/force', $('#form-add-boat-trip'));
         return false;
     });
+
+
+    if($('#ended-boat-trips-table').length != 0) {
+        var tableBoatTripsEnded = $('#ended-boat-trips-table').DataTable({
+            processing: true,
+            responsive: true,
+            serverSide: true,
+            tabIndex: -1,
+            "language": {
+                "lengthMenu": "Display _MENU_ records per page",
+                "zeroRecords": "Nothing found - sorry",
+                "info": "",
+                "infoEmpty": "No records available",
+                "infoFiltered": ""
+            },
+            stateSave: true,
+            stateSaveCallback: function (settings, data) {
+                localStorage.setItem("boattrips-ended", JSON.stringify(data));
+            },
+            stateLoadCallback: function (settings) {
+                return JSON.parse(localStorage.getItem("boattrips-ended"));
+            },
+            drawCallback: function (settings) {
+                //$('[data-toggle="tooltip"]').tooltip();
+            },
+            ajax: {
+                url: $('#ended-boat-trips-table').data('href'),
+                type: 'POST',
+            },
+            iDisplayLength: 10,
+            showExportButton: false,
+            columns: [
+                {"name": "boats", 'orderable': false},
+                {"name": "name"},
+                {"name": "end_at"},
+            ],
+            "order": [[1, "asc"]],
+            fnRowCallback: function (row, data) {}
+        });
+    }
 });

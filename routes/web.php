@@ -46,6 +46,10 @@ Route::post('/boat-trips/list', [\App\Http\Controllers\Signing\BoatTripControlle
     ->middleware(['auth'])
     ->name('boat-trips.list.data');
 
+Route::post('/boat-trips/list/ended', [\App\Http\Controllers\Signing\BoatTripController::class, 'endedBoatTripList'])
+    ->middleware(['auth'])
+    ->name('ended-boat-trips.list.data');
+
 Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'add'])
     ->middleware(['auth'])
     ->name('boat-trips.add');
@@ -65,7 +69,6 @@ Route::post('{boatTripId}/boat-trip/end', [\App\Http\Controllers\Signing\BoatTri
 Route::post('modal/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'serveHtmlModal'])
     ->middleware(['auth'])
     ->name('boat-trips.modal');
-
 
 Route::get('reporting', [\App\Http\Controllers\Reporting\ReportingController::class, 'showReporting'])
     ->middleware(['auth'])
