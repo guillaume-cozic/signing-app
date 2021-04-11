@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 
-
 @section('content')
     <div class="row d-block d-sm-none">
         <div class="col-12">
@@ -28,7 +27,7 @@
                             @include('boattrips.datatable')
                         </div>
                         <div class="tab-pane" id="ended">
-                            1
+                            @include('boattrips.datatable-ended')
                         </div>
                     </div>
                 </div>
