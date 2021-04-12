@@ -65,8 +65,12 @@ class BoatTripController extends Controller
                     <div class="progress-bar bg-'.$state.'" style="width: '.$percentageCompletion.'%"></div>
                 </div><br/><i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
                 '
-                <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'" class="btn-end fa fa-stopwatch text-blue p-2"></i>
-                <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'" class="btn-cancel fa fa-trash text-red p-2"></i>'
+                <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                 data-toggle="tooltip" data-placement="top" title="Emarger"
+                class="btn-end fa fa-stopwatch text-blue p-2"></i>
+                <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+                 data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
+                class="btn-cancel fa fa-trash text-red p-2"></i>'
             ];
         }
 
