@@ -11,11 +11,19 @@ $(document).ready(function() {
             serverSide: true,
             tabIndex: -1,
             "language": {
-                "lengthMenu": "Display _MENU_ records per page",
-                "zeroRecords": "Nothing found - sorry",
+                "lengthMenu": "Afficher _MENU_ lignes par page",
+                "zeroRecords": "Aucun résultat",
                 "info": "",
-                "infoEmpty": "No records available",
-                "infoFiltered": ""
+                "infoEmpty": "Aucun résultat",
+                "infoFiltered": "",
+                "sSearch": "Rechercher",
+                "sProcessing" : 'Chargement...',
+                "oPaginate": {
+                    "sFirst": "Première",
+                    "sPrevious": "Précédent",
+                    "sNext": "Suivant",
+                    "sLast": "Dernière"
+                },
             },
             stateSave: true,
             stateSaveCallback: function (settings, data) {
@@ -25,7 +33,7 @@ $(document).ready(function() {
                 return JSON.parse(localStorage.getItem("boattrips"));
             },
             drawCallback: function (settings) {
-                //$('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="tooltip"]').tooltip();
             },
             ajax: {
                 url: $('#boat-trips-table').data('href'),
@@ -140,11 +148,19 @@ $(document).ready(function() {
             serverSide: true,
             tabIndex: -1,
             "language": {
-                "lengthMenu": "Display _MENU_ records per page",
-                "zeroRecords": "Nothing found - sorry",
+                "lengthMenu": "Afficher _MENU_ lignes par page",
+                "zeroRecords": "Aucun résultat",
                 "info": "",
-                "infoEmpty": "No records available",
-                "infoFiltered": ""
+                "infoEmpty": "Aucun résultat",
+                "infoFiltered": "",
+                "sSearch": "Rechercher",
+                "sProcessing" : 'Chargement...',
+                "oPaginate": {
+                    "sFirst": "Première",
+                    "sPrevious": "Précédent",
+                    "sNext": "Suivant",
+                    "sLast": "Dernière"
+                },
             },
             stateSave: true,
             stateSaveCallback: function (settings, data) {

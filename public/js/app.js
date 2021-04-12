@@ -1928,11 +1928,19 @@ $(document).ready(function () {
       serverSide: true,
       tabIndex: -1,
       "language": {
-        "lengthMenu": "Display _MENU_ records per page",
-        "zeroRecords": "Nothing found - sorry",
+        "lengthMenu": "Afficher _MENU_ lignes par page",
+        "zeroRecords": "Aucun résultat",
         "info": "",
-        "infoEmpty": "No records available",
-        "infoFiltered": ""
+        "infoEmpty": "Aucun résultat",
+        "infoFiltered": "",
+        "sSearch": "Rechercher",
+        "sProcessing": 'Chargement...',
+        "oPaginate": {
+          "sFirst": "Première",
+          "sPrevious": "Précédent",
+          "sNext": "Suivant",
+          "sLast": "Dernière"
+        }
       },
       stateSave: true,
       stateSaveCallback: function stateSaveCallback(settings, data) {
@@ -1941,7 +1949,8 @@ $(document).ready(function () {
       stateLoadCallback: function stateLoadCallback(settings) {
         return JSON.parse(localStorage.getItem("boattrips"));
       },
-      drawCallback: function drawCallback(settings) {//$('[data-toggle="tooltip"]').tooltip();
+      drawCallback: function drawCallback(settings) {
+        $('[data-toggle="tooltip"]').tooltip();
       },
       ajax: {
         url: $('#boat-trips-table').data('href'),
@@ -2062,11 +2071,19 @@ $(document).ready(function () {
       serverSide: true,
       tabIndex: -1,
       "language": {
-        "lengthMenu": "Display _MENU_ records per page",
-        "zeroRecords": "Nothing found - sorry",
+        "lengthMenu": "Afficher _MENU_ lignes par page",
+        "zeroRecords": "Aucun résultat",
         "info": "",
-        "infoEmpty": "No records available",
-        "infoFiltered": ""
+        "infoEmpty": "Aucun résultat",
+        "infoFiltered": "",
+        "sSearch": "Rechercher",
+        "sProcessing": 'Chargement...',
+        "oPaginate": {
+          "sFirst": "Première",
+          "sPrevious": "Précédent",
+          "sNext": "Suivant",
+          "sLast": "Dernière"
+        }
       },
       stateSave: true,
       stateSaveCallback: function stateSaveCallback(settings, data) {
@@ -2112,11 +2129,19 @@ if ($('#fleets-table').length != 0) {
     serverSide: true,
     tabIndex: -1,
     "language": {
-      "lengthMenu": "Display _MENU_ records per page",
-      "zeroRecords": "Nothing found - sorry",
+      "lengthMenu": "Afficher _MENU_ lignes par page",
+      "zeroRecords": "Aucun résultat",
       "info": "",
-      "infoEmpty": "No records available",
-      "infoFiltered": ""
+      "infoEmpty": "Aucun résultat",
+      "infoFiltered": "",
+      "sSearch": "Rechercher",
+      "sProcessing": 'Chargement...',
+      "oPaginate": {
+        "sFirst": "Première",
+        "sPrevious": "Précédent",
+        "sNext": "Suivant",
+        "sLast": "Dernière"
+      }
     },
     stateSave: true,
     stateSaveCallback: function stateSaveCallback(settings, data) {
@@ -2125,7 +2150,8 @@ if ($('#fleets-table').length != 0) {
     stateLoadCallback: function stateLoadCallback(settings) {
       return JSON.parse(localStorage.getItem("fleets"));
     },
-    drawCallback: function drawCallback(settings) {//$('[data-toggle="tooltip"]').tooltip();
+    drawCallback: function drawCallback(settings) {
+      $('[data-toggle="tooltip"]').tooltip();
     },
     ajax: {
       url: $('#fleets-table').data('href'),
@@ -2165,12 +2191,12 @@ if ($('#fleets-table').length != 0) {
       var actions = '';
 
       if (data[indexState] === 'active') {
-        actions += '<i class="text-red fa fa-ban m-2 btn-disable" data-href="' + data[indexRouteDisable] + '" data-fleet-id="' + data[indexId] + '" style="cursor: pointer;"></i>';
+        actions += '<i class="text-red fa fa-ban m-2 btn-disable" ' + 'data-toggle="tooltip" data-placement="top" title="Désactiver la flotte"' + 'data-href="' + data[indexRouteDisable] + '" data-fleet-id="' + data[indexId] + '" style="cursor: pointer;"></i>';
       } else {
-        actions += '<i class="text-green fa fa-play m-2 btn-enable" data-href="' + data[indexRouteEnable] + '" data-fleet-id="' + data[indexId] + '" style="cursor: pointer;"></i>';
+        actions += '<i class="text-green fa fa-play m-2 btn-enable" ' + 'data-toggle="tooltip" data-placement="top" title="Activer la flotte"' + 'data-href="' + data[indexRouteEnable] + '" data-fleet-id="' + data[indexId] + '" style="cursor: pointer;"></i>';
       }
 
-      actions += '<a href="' + data[indexRoute] + '"><i class="text-blue fa fa-edit m-2" style="cursor: pointer;"></i></a>';
+      actions += '<a href="' + data[indexRoute] + '">' + '<i ' + 'data-toggle="tooltip" data-placement="top" title="Modifier la flotte"' + 'class="text-blue fa fa-edit m-2" style="cursor: pointer;"></i></a>';
       $('td', row).eq(indexTdState).html(state);
       $('td', row).last().html(actions);
     }
