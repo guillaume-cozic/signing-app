@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripEndedNotificationImpl;
+use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripEndedNotification;
 use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
+use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Shared\Providers\DateProvider;
+use App\Signing\Shared\Providers\Impl\AuthGatewayImpl;
 use App\Signing\Shared\Services\ContextService;
 use App\Signing\Shared\Services\ContextServiceImpl;
 use App\Signing\Shared\Services\Translations\TranslationService;
@@ -54,6 +58,7 @@ use Illuminate\Support\ServiceProvider;
 use Tests\Adapters\ContextServiceTestImpl;
 use Tests\Unit\Adapters\Provider\FakeDateProvider;
 use Tests\Unit\Adapters\Provider\FakeIdentityProvider;
+use Tests\Unit\Adapters\Provider\InMemoryAuthGateway;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
@@ -77,6 +82,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
 
+
+        $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
+
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);
         $this->app->singleton(GetFleetsList::class, GetFleetsListImpl::class);
         $this->app->singleton(GetFleet::class, GetFleetImpl::class);
@@ -85,12 +93,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
         $this->app->singleton(DateProvider::class, FakeDateProvider::class);
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);
+        $this->app->singleton(AuthGateway::class, AuthGatewayImpl::class);
 
         if(config('app.env') == 'testing') {
             $this->app->singleton(FleetRepository::class, InMemoryFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, InMemoryBoatTripRepository::class);
             $this->app->singleton(TranslationService::class, FakeTranslationService::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
+            $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
         }
         if(config('app.env') == 'testing-db') {
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
@@ -99,6 +109,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
+            $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
         }
 
         if(config('app.env') == 'local') {

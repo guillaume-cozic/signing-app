@@ -4,10 +4,13 @@
 namespace Tests\Unit\Signing;
 
 
+use App\Events\BoatTrip\BoatTripEnded;
+use App\Signing\Shared\Entities\User;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
+use Illuminate\Support\Facades\Event;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
@@ -19,6 +22,7 @@ class EndBoatTripTest extends TestCase
     {
         parent::setUp();
         $this->endBoatTrip = app(EndBoatTrip::class);
+        $this->authGateway->setUser(new User('abcde'));
     }
 
     /**
@@ -40,6 +44,9 @@ class EndBoatTripTest extends TestCase
             ->ended(numberHours:2);
 
         $this->assertBoatTripHasBeenEnded($id, $boatTripExpected);
+        Event::assertDispatched(BoatTripEnded::class, function (BoatTripEnded $boatTripEnded){
+            return $boatTripEnded->userId = 'abcde' && $boatTripEnded->boatTripId = 'abc';
+        });
     }
 
     /**

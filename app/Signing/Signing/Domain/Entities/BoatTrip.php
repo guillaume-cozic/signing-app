@@ -4,7 +4,9 @@
 namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Events\BoatTrip\BoatTripEnded;
 use App\Signing\Shared\Entities\Id;
+use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
@@ -13,6 +15,7 @@ use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 class BoatTrip implements HasState
 {
     private BoatTripRepository $boatTripRepository;
+    private AuthGateway $authGateway;
 
     public function __construct(
         private Id $id,
@@ -21,6 +24,7 @@ class BoatTrip implements HasState
         private ?BoatsCollection $boats = null,
     ){
         $this->boatTripRepository = app(BoatTripRepository::class);
+        $this->authGateway = app(AuthGateway::class);
     }
 
     public function id():string
@@ -46,6 +50,8 @@ class BoatTrip implements HasState
     {
         $this->duration->end($endDate);
         $this->boatTripRepository->save($this->getState());
+        $currentUser = $this->authGateway->user();
+        event(new BoatTripEnded($this->id->id(), $currentUser->id()));
     }
 
     /**
