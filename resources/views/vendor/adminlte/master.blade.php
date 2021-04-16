@@ -89,6 +89,7 @@
         <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @else
         @routes
+        <script type="text/javascript" src="//{{ \Illuminate\Support\Facades\Request::getHost() }}:6001/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
 
