@@ -34,4 +34,9 @@ class BoatTripEnded extends Notification
             'user_id' => $this->userId,
         ];
     }
+
+    public function format()
+    {
+
+    }
 }

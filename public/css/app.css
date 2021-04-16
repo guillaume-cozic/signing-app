@@ -26435,4 +26435,25 @@ div.dataTables_scrollHead table.table-bordered{border-bottom-width:0}
 div.table-responsive>div.dataTables_wrapper>div.row{margin:0}
 div.table-responsive>div.dataTables_wrapper>div.row>div[class^=col-]:first-child{padding-left:0}
 div.table-responsive>div.dataTables_wrapper>div.row>div[class^=col-]:last-child{padding-right:0}
+.alert-minimalist {
+    z-index: 2000 !important;
+    background-color: rgb(241, 242, 240);
+    border-color: rgba(149, 149, 149, 0.3);
+    border-radius: 3px;
+    color: rgb(149, 149, 149);
+    padding: 10px !important;
+}
+.alert-minimalist > [data-notify="icon"] {
+    height: 50px !important;
+    margin-right: 12px !important;
+}
+.alert-minimalist > [data-notify="title"] {
+    color: rgb(51, 51, 51);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.alert-minimalist > [data-notify="message"] {
+    font-size: 80%;
+    display: block !important;
+}
 

@@ -27,6 +27,19 @@ let echo = new Echo({
 
 echo.channel('notification')
     .listen('NotificationCreated', (e) => {
-        console.log(4, e);
+        $.notify({
+            icon: e.avatar,
+            title: e.title,
+            message: e.message
+        },{
+            type: 'minimalist',
+            delay: 5000,
+            icon_type: 'image',
+            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<img data-notify="icon" class="img-circle pull-left">' +
+                '<span data-notify="title">{1}</span>' +
+                '<span data-notify="message">{2}</span>' +
+                '</div>'
+        });
     });
 

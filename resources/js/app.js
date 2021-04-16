@@ -1,3 +1,4 @@
+require('bootstrap-notify')
 require('./bootstrap');
 require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
 
