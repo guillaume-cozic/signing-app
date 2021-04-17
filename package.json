@@ -24,6 +24,8 @@
         "bootstrap-show-modal": "^1.4.2",
         "datatables.net": "^1.10.24",
         "datatables.net-bs4": "^1.10.24",
+        "datatables.net-responsive": "^2.2.7",
+        "datatables.net-rowreorder": "^1.2.7",
         "icheck-bootstrap": "^3.0.1",
         "jquery": "^3.5.1",
         "laravel-echo": "^1.10.0",

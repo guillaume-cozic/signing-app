@@ -3,7 +3,9 @@
 @section('content')
     <div class="row d-block d-sm-none">
         <div class="col-12">
-            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">Ajouter une sortie</button>
+            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">
+                <i class="fa fa-plus-circle"></i> Ajouter une sortie
+            </button>
         </div>
     </div>
     <div class="row">
@@ -34,7 +36,9 @@
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">Ajouter une sortie</button>
+            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">
+                <i class="fa fa-plus-circle"></i> Ajouter une sortie
+            </button>
             @include('dashboard.availability-loader')
         </div>
     </div>

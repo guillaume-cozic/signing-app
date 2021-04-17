@@ -5,7 +5,10 @@ require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
 //require('alpinejs');
 require('overlayscrollbars');
 require('datatables.net');
+require('datatables.net');
 require('datatables.net-bs4');
+require('datatables.net-responsive');
+require('datatables.net-rowreorder');
 require('popper.js');
 require('bootstrap');
 global.moment = require('moment');
@@ -21,4 +24,5 @@ $.ajaxSetup({
 
 require('./dashboard');
 require('./fleet');
+
 

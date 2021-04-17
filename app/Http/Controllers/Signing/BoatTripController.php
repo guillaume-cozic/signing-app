@@ -37,40 +37,41 @@ class BoatTripController extends Controller
 
         foreach ($boatTrips as $boatTrip) {
             $boats = '';
+            $total = 0;
             foreach($boatTrip->boats as $boat => $qty){
                 $boats .= $qty. ' '.$boat.'</br>';
+                $total += $qty;
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
             $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
             if($shouldEndAt < new Carbon(new \DateTime())) {
-
                 $state = 'success';
-                if(abs($shouldEndAt->getTimestamp() - (new \DateTime())->getTimestamp()) > 30*60){
+                $message = 'Sur le retour';
+                if(abs($shouldEndAt->getTimestamp() - (new \DateTime())->getTimestamp()) > 15*60){
                     $state = 'danger';
+                    $message = 'En retard';
                 }
-
-                $percentageCompletion = 100;
             }else {
-                $diff = $shouldEndAt->diff(new Carbon(new \DateTime()));
-                $h = $diff->h + round($diff->i / 60, 1);
-
-                $percentageCompletion = ($boatTrip->hours - $h) / $boatTrip->hours * 100;
                 $state = 'info';
+                $message = 'En navigation';
             }
             $boatTripsData[] = [
                 $boats,
+                '<span class="badge bg-info">'.$total.'</span>',
                 $boatTrip->name,
-                '<div class="progress progress-xs progress-striped active">
-                    <div class="progress-bar bg-'.$state.'" style="width: '.$percentageCompletion.'%"></div>
-                </div><br/><i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
+                '   <span style="display: inline-block;">
+                        <span class="badge bg-'.$state.'">'.$message.'</span>
+                        <i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'). '
+                    </span>',
                 '
-                <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
-                 data-toggle="tooltip" data-placement="top" title="Emarger"
-                class="btn-end fa fa-stopwatch text-blue p-2"></i>
-                <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
-                 data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
-                class="btn-cancel fa fa-trash text-red p-2"></i>'
+                    <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                     data-toggle="tooltip" data-placement="top" title="Emarger"
+                    class="btn-end fa fa-stopwatch text-blue p-1"></i>
+                    <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+                     data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
+                    class="btn-cancel fa fa-trash text-red p-1"></i>
+                '
             ];
         }
 
@@ -105,7 +106,7 @@ class BoatTripController extends Controller
             $boatTripsData[] = [
                 $boats,
                 $boatTrip->name,
-                '<i class="fas fa-clock"></i> '.$shouldEndAt->format('H:i'),
+                '<i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'),
           ];
         }
 
