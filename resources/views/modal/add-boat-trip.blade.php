@@ -21,7 +21,7 @@
                                     <div class="col-8">
                                         <div class="form-group">
                                             <label for="name">Embarcation</label>
-                                            <select class="form-control" name="boats[1][id]">
+                                            <select id="main-boat" class="form-control" name="boats[1][id]">
                                                 @if(isset($fleets))
                                                     @foreach($fleets as $fleet)
                                                         <option value="{{ $fleet->id }}">{{ $fleet->name }}</option>
@@ -44,13 +44,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-sm-4 col-6">
                             <div class="form-group">
                                 <label for="name">Nombre d'heure</label>
                                 <input class="form-control" name="hours" value="1" type="number" step="0.5" min="0.5"/>
                             </div>
                         </div>
-                        <div class="col-8">
+                        <div class="col-sm-8 col-6">
                             <div class="bootstrap-timepicker">
                                 <div class="form-group">
                                     <label>Heure de départ</label>

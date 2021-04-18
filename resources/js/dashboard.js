@@ -4,10 +4,20 @@ $(document).ready(function() {
         $('#modal-add-boat-trip').modal('show');
     });
 
+    $('#availability').on('click', '.btn-add-boat-trip', function(){
+        var fleetId = $(this).data('fleet-id');
+        $('#main-boat option[value='+fleetId+']').prop('selected', true);
+        $('#modal-add-boat-trip').modal('show');
+    });
+
     if($('#boat-trips-table').length != 0) {
         var tableBoatTrips = $('#boat-trips-table').DataTable({
             processing: true,
-            responsive: true,
+            responsive: {
+                details: {
+                    type: 'inline',
+                }
+            },
             serverSide: true,
             tabIndex: -1,
             "language": {
@@ -43,11 +53,13 @@ $(document).ready(function() {
             showExportButton: false,
             columns: [
                 {"name": "boats", 'orderable': false},
+                {"name": "total", 'orderable': false},
                 {"name": "name"},
+                {"name": "start_at"},
                 {"name": "should_return"},
                 {"name": "return", 'orderable': false},
             ],
-            "order": [[1, "asc"]],
+            "order": [[3, "asc"]],
             fnRowCallback: function (row, data) {}
         });
 
@@ -122,6 +134,15 @@ $(document).ready(function() {
                 tableBoatTrips.ajax.reload(null, false);
                 loadAvailability();
                 $('#modal-add-boat-trip').modal('hide');
+                form.trigger('reset');
+                $('.row-boat-trip').html('');
+                $.notify({
+                    title: '<strong></strong>',
+                    message: 'La sortie a bien été créée'
+                },{
+                    type: 'success',
+                    z_index: 20000
+                });
             },
             error:function (){
                 $('#alert-boat-not-available').slideDown();
