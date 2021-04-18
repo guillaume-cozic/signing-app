@@ -55,6 +55,7 @@ $(document).ready(function() {
                 {"name": "boats", 'orderable': false},
                 {"name": "total", 'orderable': false},
                 {"name": "name"},
+                {"name": "start_at"},
                 {"name": "should_return"},
                 {"name": "return", 'orderable': false},
             ],

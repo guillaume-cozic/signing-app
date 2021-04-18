@@ -44,6 +44,7 @@ class BoatTripController extends Controller
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
+            $startAt = clone $boatTrip->startAt;
             $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
             if($shouldEndAt < new Carbon(new \DateTime())) {
                 $state = 'success';
@@ -60,6 +61,7 @@ class BoatTripController extends Controller
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
                 $boatTrip->name,
+                '<i class="fas fa-clock time-icon"></i> '.$startAt->format('H:i').' <small>'.$boatTrip->hours.' heure(s)</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                         <i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'). '
