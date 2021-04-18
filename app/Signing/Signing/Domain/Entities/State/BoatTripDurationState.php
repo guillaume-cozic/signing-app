@@ -9,14 +9,20 @@ use App\Signing\Signing\Domain\Entities\State;
 class BoatTripDurationState implements State
 {
     public function __construct(
-        private \DateTime $start,
+        private ?\DateTime $start = null,
         private ?float $numberHours = null,
-        private ?\DateTime $end = null
+        private ?\DateTime $end = null,
+        private ?\DateTime $shouldStartAt = null
     ){}
 
-    public function startAt(): \DateTime
+    public function startAt(): ?\DateTime
     {
         return $this->start;
+    }
+
+    public function shouldStartAt(): ?\DateTime
+    {
+        return $this->shouldStartAt;
     }
 
     public function numberHours(): ?float

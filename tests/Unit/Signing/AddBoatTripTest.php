@@ -26,7 +26,7 @@ class AddBoatTripTest extends TestCase
     /**
      * @test
      */
-    public function shouldAddABoatTrip()
+    public function shouldAddABoatTripWithShouldStartAtPlus5Minutes()
     {
         $s1 = new Fleet(new Id('abc'), 20);
         $this->fleetRepository->save($s1->getState());
@@ -39,9 +39,62 @@ class AddBoatTripTest extends TestCase
             $s2->id() => $qty2 = 5,
         ];
 
+        $shouldStartAt =  $this->dateProvider->current()->add(new \DateInterval('PT5M'));
         $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3);
 
-        $boatTripExpected = BoatTripBuilder::build($id)->withBoats($boats)->withSailor(name:$name)->inProgress($numberHours);
+        $boatTripExpected = BoatTripBuilder::build($id)
+            ->withDates(shouldStartAt: $shouldStartAt,  numberHours: 3)
+            ->withBoats($boats)
+            ->withSailor(name:$name)
+            ->inProgress($numberHours);
+        $this->assertBoatTripAdded($id, $boatTripExpected);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddABoatTripWithShouldStartAtTime()
+    {
+        $s1 = new Fleet(new Id('abc'), 20);
+        $this->fleetRepository->save($s1->getState());
+        $s2 = new Fleet(new Id('abcd'), 15);
+        $this->fleetRepository->save($s2->getState());
+
+        $this->identityProvider->add($id = 'abc');
+        $boats = [
+            $s1->id() => $qty1 = 2,
+            $s2->id() => $qty2 = 5,
+        ];
+
+        $shouldStartAt = $this->dateProvider->current()->setTime(13, 10);
+        $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3, '13:10');
+
+        $boatTripExpected = BoatTripBuilder::build($id)
+            ->withDates(shouldStartAt: $shouldStartAt,  numberHours: 3)
+            ->withBoats($boats)
+            ->withSailor(name:$name)
+            ->inProgress($numberHours);
+        $this->assertBoatTripAdded($id, $boatTripExpected);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddBoatTripStartedNow()
+    {
+        $s1 = new Fleet(new Id('abc'), 20);
+        $this->fleetRepository->save($s1->getState());
+
+        $this->identityProvider->add($id = 'abc');
+        $boats = [$s1->id() => $qty1 = 2];
+
+        $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3, null, true);
+
+        $boatTripExpected = BoatTripBuilder::build($id)
+            ->withDates(startAt: $this->dateProvider->current(),  numberHours: 3)
+            ->withBoats($boats)
+            ->withSailor(name:$name)
+            ->inProgress($numberHours);
         $this->assertBoatTripAdded($id, $boatTripExpected);
     }
 

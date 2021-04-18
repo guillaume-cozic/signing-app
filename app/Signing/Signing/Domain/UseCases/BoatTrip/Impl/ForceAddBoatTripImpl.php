@@ -20,7 +20,7 @@ class ForceAddBoatTripImpl implements ForceAddBoatTrip
 
     public function execute(array $boats, string $name, int $numberHours)
     {
-        $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
+        $boatTripDuration = new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours);
         $boatTrip = new BoatTrip(new Id(), $boatTripDuration, new Sailor(name:$name), new BoatsCollection($boats));
         $boatTrip->create(true);
     }

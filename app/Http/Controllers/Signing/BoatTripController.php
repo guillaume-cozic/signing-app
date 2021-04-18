@@ -68,8 +68,11 @@ class BoatTripController extends Controller
                     </span>',
                 '
                     <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                     data-toggle="tooltip" data-placement="top" title="Démarrer"
+                    class="btn-end fa fa-play text-green p-1"></i>
+                    <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
                      data-toggle="tooltip" data-placement="top" title="Emarger"
-                    class="btn-end fa fa-stopwatch text-blue p-1"></i>
+                    class="btn-end fa fa-pause text-blue p-1"></i>
                     <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
                      data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
                     class="btn-cancel fa fa-trash text-red p-1"></i>

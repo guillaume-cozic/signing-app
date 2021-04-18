@@ -22,7 +22,7 @@ class BoatTripState implements State
         return BoatTripBuilder::build($this->id)
             ->withBoats($this->boats)
             ->withSailor($this->memberId(), $this->name())
-            ->fromState($this->numberHours(), $this->startAt(), $this->endAt());
+            ->fromState($this->numberHours(), $this->startAt(), $this->endAt(), $this->shouldStartAt());
     }
 
     public function hasBoat(string $boatIdAsked):bool
@@ -40,9 +40,14 @@ class BoatTripState implements State
         return $this->id;
     }
 
-    public function startAt(): \DateTime
+    public function startAt(): ?\DateTime
     {
         return $this->duration->startAt();
+    }
+
+    public function shouldStartAt(): ?\DateTime
+    {
+        return $this->duration->shouldStartAt();
     }
 
     public function endAt(): ?\DateTime

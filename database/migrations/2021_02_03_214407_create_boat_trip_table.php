@@ -11,6 +11,7 @@ class CreateBoatTripTable extends Migration
         Schema::create('boat_trip', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
+            $table->dateTime('should_start_at', 6)->nullable();
             $table->dateTime('start_at', 6)->nullable();
             $table->dateTime('end_at', 6)->nullable();
             $table->float('number_hours')->nullable();

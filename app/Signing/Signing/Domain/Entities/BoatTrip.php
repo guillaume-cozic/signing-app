@@ -37,9 +37,7 @@ class BoatTrip implements HasState
      */
     public function create(bool $force = false)
     {
-        if(!$force) {
-            (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
-        }
+        if(!$force) (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
         $this->boatTripRepository->save($this->getState());
     }
 

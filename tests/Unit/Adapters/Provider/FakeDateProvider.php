@@ -15,7 +15,7 @@ class FakeDateProvider implements DateProvider
 
     public function current(): \DateTime
     {
-        return $this->current;
+        return clone $this->current;
     }
 
 }

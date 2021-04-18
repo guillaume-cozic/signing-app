@@ -21,7 +21,7 @@ class AddMemberBoatTripImpl implements AddMemberBoatTrip
 
     public function execute(string $memberId, array $boats = [], ?int $numberHours = null)
     {
-        $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
+        $boatTripDuration = new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours);
         $boatTrip = new BoatTrip(new Id(), $boatTripDuration, new Sailor(memberId:$memberId), new BoatsCollection($boats));
         $boatTrip->create();
     }

@@ -38,7 +38,7 @@ class DelayBoatTripStartTest extends TestCase
         $newStartDate = $startAt->add(\DateInterval::createFromDateString('+10 minutes'));
         $boatTripExpected = BoatTripBuilder::build($id)
             ->withSailor('Tabarly')
-            ->fromState(1, $newStartDate, null);
+            ->fromState(1, $newStartDate, null, null);
 
         $this->assertBoatTripStartHasBeenDelayed($id, $boatTripExpected);
     }

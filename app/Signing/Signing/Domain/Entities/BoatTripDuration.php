@@ -11,7 +11,8 @@ use App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 class BoatTripDuration implements HasState
 {
     public function __construct(
-        private \DateTime $start,
+        private ?\DateTime $shouldStartAt = null,
+        private ?\DateTime $start = null,
         private ?float $numberHours = null,
         private ?\DateTime $end = null
     ){}
@@ -43,6 +44,6 @@ class BoatTripDuration implements HasState
 
     public function getState(): BoatTripDurationState
     {
-        return new BoatTripDurationState($this->start, $this->numberHours, $this->end);
+        return new BoatTripDurationState($this->start, $this->numberHours, $this->end, $this->shouldStartAt);
     }
 }
