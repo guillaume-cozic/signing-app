@@ -34,7 +34,7 @@ class BoatTripModel extends Model
 
     public function toDomain():BoatTrip
     {
-        $boatTripDuration = new BoatTripDuration($this->start_at, $this->number_hours, $this->end_at);
+        $boatTripDuration = new BoatTripDuration($this->should_start_at, $this->start_at, $this->number_hours, $this->end_at);
         return new BoatTrip(
             new Id($this->uuid),
             $boatTripDuration,
