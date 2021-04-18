@@ -63,6 +63,13 @@ class BoatTrip implements HasState
     }
 
 
+    public function start()
+    {
+        if($this->duration->isStarted()) return;
+        $this->duration->start();
+        $this->boatTripRepository->save($this->getState());
+    }
+
     /**
      * @throws BoatTripAlreadyEnded
      * @throws TimeCantBeNegative

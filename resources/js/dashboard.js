@@ -1,4 +1,4 @@
-
+import notifySuccess from './notify';
 $(document).ready(function() {
     $('.btn-add-boat-trip').click(function(){
         $('#modal-add-boat-trip').modal('show');
@@ -76,6 +76,26 @@ $(document).ready(function() {
                             success: function (){
                                 tableBoatTrips.ajax.reload(null, false);
                                 loadAvailability();
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        $('#boat-trips-table').on('click', '.btn-start', function () {
+            var url = $(this).data('href');
+            $.showConfirm({
+                title: "Voulez vous vraiment démarrer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
+                onSubmit: function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            success: function (){
+                                tableBoatTrips.ajax.reload(null, false);
+                                loadAvailability();
+                                //notifySuccess('', 'La sortie a bien été démarrée')
                             }
                         });
                     }

@@ -68,6 +68,10 @@ Route::post('{boatTripId}/boat-trip/end', [\App\Http\Controllers\Signing\BoatTri
     ->middleware(['auth'])
     ->name('boat-trip.end');
 
+Route::post('{boatTripId}/boat-trip/start', [\App\Http\Controllers\Signing\BoatTripController::class, 'start'])
+    ->middleware(['auth'])
+    ->name('boat-trip.start');
+
 Route::post('modal/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'serveHtmlModal'])
     ->middleware(['auth'])
     ->name('boat-trips.modal');

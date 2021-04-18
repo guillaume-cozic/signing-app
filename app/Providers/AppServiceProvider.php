@@ -26,6 +26,8 @@ use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\CancelBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\ForceAddBoatTripImpl;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\StartBoatTripImpl;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
 use App\Signing\Signing\Domain\UseCases\DelayBoatTripStart;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
@@ -81,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CreateFleetWhenTeamCreated::class, CreateFleetWhenTeamCreatedImpl::class);
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
+        $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
 
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);

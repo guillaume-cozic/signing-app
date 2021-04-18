@@ -1880,6 +1880,8 @@ $.ajaxSetup({
   }
 });
 
+__webpack_require__(/*! ./notify */ "./resources/js/notify.js");
+
 __webpack_require__(/*! ./dashboard */ "./resources/js/dashboard.js");
 
 __webpack_require__(/*! ./fleet */ "./resources/js/fleet.js");
@@ -1935,7 +1937,11 @@ echo.channel('notification').listen('NotificationCreated', function (e) {
 /*!***********************************!*\
   !*** ./resources/js/dashboard.js ***!
   \***********************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
 
 $(document).ready(function () {
   $('.btn-add-boat-trip').click(function () {
@@ -2022,6 +2028,27 @@ $(document).ready(function () {
               success: function success() {
                 tableBoatTrips.ajax.reload(null, false);
                 loadAvailability();
+              }
+            });
+          }
+        }
+      });
+    });
+    $('#boat-trips-table').on('click', '.btn-start', function () {
+      var url = $(this).data('href');
+      $.showConfirm({
+        title: "Voulez vous vraiment démarrer cette sortie ?",
+        body: "",
+        textTrue: "Oui",
+        textFalse: "Non",
+        onSubmit: function onSubmit(result) {
+          if (result) {
+            $.ajax({
+              url: url,
+              method: 'POST',
+              success: function success() {
+                tableBoatTrips.ajax.reload(null, false);
+                loadAvailability(); //notifySuccess('', 'La sortie a bien été démarrée')
               }
             });
           }
@@ -2294,6 +2321,33 @@ if ($('#fleets-table').length != 0) {
     });
   });
 }
+
+/***/ }),
+
+/***/ "./resources/js/notify.js":
+/*!********************************!*\
+  !*** ./resources/js/notify.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var notifySuccess = function notifySuccess(title, message) {
+  $.notify({
+    title: '<strong>' + title + '</strong>',
+    message: message
+  }, {
+    type: 'success',
+    z_index: 20000
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  notifySuccess: notifySuccess
+});
 
 /***/ }),
 

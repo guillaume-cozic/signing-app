@@ -9,6 +9,7 @@ use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
@@ -67,9 +68,9 @@ class BoatTripController extends Controller
                         <i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'). '
                     </span>',
                 '
-                    <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                    <i style="cursor: pointer;" data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'"
                      data-toggle="tooltip" data-placement="top" title="Démarrer"
-                    class="btn-end fa fa-play text-green p-1"></i>
+                    class="btn-start fa fa-play text-green p-1"></i>
                     <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
                      data-toggle="tooltip" data-placement="top" title="Emarger"
                     class="btn-end fa fa-pause text-blue p-1"></i>
@@ -163,6 +164,11 @@ class BoatTripController extends Controller
         return [];
     }
 
+    public function start(string $boatTripId, StartBoatTrip $startBoatTrip)
+    {
+        $startBoatTrip->execute($boatTripId);
+        return [];
+    }
 
     public function cancel(string $boatTripId, CancelBoatTrip $cancelBoatTrip)
     {

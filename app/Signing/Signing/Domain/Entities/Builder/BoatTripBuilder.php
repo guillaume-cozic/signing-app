@@ -65,7 +65,7 @@ class BoatTripBuilder
         return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
     }
 
-    public function fromState(?float $numberHours, ?\DateTime $startAt, ?\DateTime $endAt, ?\DateTime $shouldStartAt)
+    public function fromState(?float $numberHours, ?\DateTime $startAt, ?\DateTime $endAt = null, ?\DateTime $shouldStartAt = null)
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration($shouldStartAt, $startAt, $numberHours, $endAt);
         return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
