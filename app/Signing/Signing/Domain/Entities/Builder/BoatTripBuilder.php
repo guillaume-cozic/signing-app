@@ -16,6 +16,7 @@ class BoatTripBuilder
     private DateProvider $dateProvider;
     private BoatsCollection $boats;
     private Sailor $sailor;
+    private BoatTripDuration $boatTripDuration;
 
     private function __construct(private string $id)
     {
@@ -40,21 +41,33 @@ class BoatTripBuilder
         return $this;
     }
 
+    public function withDates(?\DateTime $shouldStartAt = null, ?\DateTime $startAt = null, ?\DateTime $endAt = null, ?float $numberHours = null):self
+    {
+        $this->boatTripDuration = new BoatTripDuration($shouldStartAt, $startAt, $numberHours, $endAt);
+        return $this;
+    }
+
     public function inProgress(?float $numberHours):BoatTrip
     {
-        $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours);
+        $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
+    }
+
+    public function notStarted(?\DateTime $shouldStartAt, ?float $numberHours):BoatTrip
+    {
+        $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(shouldStartAt: $shouldStartAt, numberHours: $numberHours);
         return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
     }
 
     public function ended(?float $numberHours):BoatTrip
     {
-        $boatTripDuration = new BoatTripDuration($this->dateProvider->current(), $numberHours, $this->dateProvider->current());
+        $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours, end: $this->dateProvider->current());
         return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
     }
 
-    public function fromState(?float $numberHours, ?\DateTime $startAt, ?\DateTime $endAt)
+    public function fromState(?float $numberHours, ?\DateTime $startAt, ?\DateTime $endAt = null, ?\DateTime $shouldStartAt = null)
     {
-        $boatTripDuration = new BoatTripDuration($startAt, $numberHours, $endAt);
+        $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration($shouldStartAt, $startAt, $numberHours, $endAt);
         return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
     }
 }

@@ -24,6 +24,7 @@ class BoatTripModel extends Model
     protected $casts = [
         'start_at' => 'datetime',
         'end_at' => 'datetime',
+        'should_start_at' => 'datetime',
         'boats' => 'array'
     ];
 
@@ -34,7 +35,7 @@ class BoatTripModel extends Model
 
     public function toDomain():BoatTrip
     {
-        $boatTripDuration = new BoatTripDuration($this->start_at, $this->number_hours, $this->end_at);
+        $boatTripDuration = new BoatTripDuration($this->should_start_at, $this->start_at, $this->number_hours, $this->end_at);
         return new BoatTrip(
             new Id($this->uuid),
             $boatTripDuration,
@@ -51,6 +52,11 @@ class BoatTripModel extends Model
     public function setEndAtAttribute(?\DateTime $value)
     {
         $this->attributes['end_at'] = $value?->format('Y-m-d H:i:s.u');
+    }
+
+    public function setShouldStartAtAttribute(?\DateTime $value)
+    {
+        $this->attributes['should_start_at'] = $value?->format('Y-m-d H:i:s.u');
     }
 
     public function totalBoats()
@@ -71,11 +77,12 @@ class BoatTripModel extends Model
         }
         return new BoatTripsDTo(
             $this->uuid,
-            new Carbon($this->start_at),
+            $this->start_at ? new Carbon($this->start_at) : null,
             $this->end_at ? new Carbon($this->end_at) : null,
             $this->member !== null ? $this->member->firstname.' '.$this->member->surname : $this->name,
             $boats,
-            $this->number_hours
+            $this->number_hours,
+            $this->should_start_at ? new Carbon($this->should_start_at) : null
         );
     }
 }

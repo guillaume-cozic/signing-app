@@ -16,7 +16,7 @@ class FleetModel extends Model
 
     protected $table = 'fleet';
 
-    protected $fillable = ['uuid', 'total_available'];
+    protected $fillable = ['uuid', 'total_available', 'sailing_club_id'];
 
     public $translatable = ['name'];
 

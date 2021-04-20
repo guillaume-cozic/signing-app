@@ -9,6 +9,7 @@ use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
@@ -44,36 +45,57 @@ class BoatTripController extends Controller
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
-            $startAt = clone $boatTrip->startAt;
-            $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
-            if($shouldEndAt < new Carbon(new \DateTime())) {
+            $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
+            $shouldEndAt = (new Carbon($startAt))->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
+
+            $actions = [];
+            if($boatTrip->startAt !== null){
+                $state = 'info';
+                $message = 'En navigation';
+                $actions[] = 'end';
+            }else{
+                $state = 'warning';
+                $message = 'A terre';
+                $actions[] = 'start';
+                $actions[] = 'cancel';
+            }
+
+            if($boatTrip->startAt !== null && $shouldEndAt < new Carbon(new \DateTime())) {
                 $state = 'success';
                 $message = 'Sur le retour';
                 if(abs($shouldEndAt->getTimestamp() - (new \DateTime())->getTimestamp()) > 15*60){
                     $state = 'danger';
                     $message = 'En retard';
                 }
-            }else {
-                $state = 'info';
-                $message = 'En navigation';
             }
+
+            $buttons = '';
+            if(in_array('start', $actions)) {
+                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'"
+                     data-toggle="tooltip" data-placement="top" title="Démarrer"
+                    class="btn-start fa fa-play text-green p-1"></i>';
+            }
+            if(in_array('end', $actions)) {
+                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                     data-toggle="tooltip" data-placement="top" title="Emarger"
+                    class="btn-end fa fa-pause text-blue p-1"></i>';
+            }
+            if(in_array('cancel', $actions)) {
+                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+                     data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
+                    class="btn-cancel fa fa-trash text-red p-1"></i>';
+            }
+
             $boatTripsData[] = [
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
                 $boatTrip->name,
-                '<i class="fas fa-clock time-icon"></i> '.$startAt->format('H:i').' <small>'.$boatTrip->hours.' heure(s)</small>',
+                '<i class="fas fa-clock time-icon"></i> '.$startAt->format('H:i').' <small>'.$boatTrip->hours.' h</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                         <i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'). '
                     </span>',
-                '
-                    <i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Emarger"
-                    class="btn-end fa fa-stopwatch text-blue p-1"></i>
-                    <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
-                    class="btn-cancel fa fa-trash text-red p-1"></i>
-                '
+                $buttons
             ];
         }
 
@@ -135,13 +157,14 @@ class BoatTripController extends Controller
         $boats = $request->input('boats');
         $name = $request->input('name');
         $hours = $request->input('hours', 1);
-        $startAt = $request->input('start_at');
+        $startAt = $request->input('start_at', null);
+        $startNow = $request->input('start_now');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours);
+        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow);
         return [];
     }
 
@@ -150,16 +173,22 @@ class BoatTripController extends Controller
         $boats = $request->input('boats');
         $name = $request->input('name');
         $hours = $request->input('hours', 1);
-        $startAt = $request->input('start_at');
+        $startAt = $request->input('start_at', null);
+        $startNow = $request->input('start_now');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours);
+        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow);
         return [];
     }
 
+    public function start(string $boatTripId, StartBoatTrip $startBoatTrip)
+    {
+        $startBoatTrip->execute($boatTripId);
+        return [];
+    }
 
     public function cancel(string $boatTripId, CancelBoatTrip $cancelBoatTrip)
     {

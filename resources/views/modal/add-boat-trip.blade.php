@@ -44,21 +44,45 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4 col-6">
+                        <div class="col-sm-6 col-6">
                             <div class="form-group">
-                                <label for="name">Nombre d'heure</label>
-                                <input class="form-control" name="hours" value="1" type="number" step="0.5" min="0.5"/>
+                                <label for="hours">Nombre d'heure(s)</label>
+                                <input id="hours" class="form-control" name="hours" value="1" type="number" step="0.5" min="0.5"/>
                             </div>
                         </div>
-                        <div class="col-sm-8 col-6">
-                            <div class="bootstrap-timepicker">
+                        <div class="col-sm-6 col-6">
+                            <div class="form-group time-setter">
+                                <label for="hour-start">Heure de départ</label>
+                                <select id="hour-start" class="form-control">
+                                    <option value="5">Dans 5 minutes</option>
+                                    <option value="10">Dans 10 minutes</option>
+                                    <option value="15">Dans 15 minutes</option>
+                                    <option value="20">Dans 20 minutes</option>
+                                    <option value="30">Dans 30 minutes</option>
+                                    <option value="60">Dans 1 heure</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="bootstrap-timepicker time-setter">
                                 <div class="form-group">
-                                    <label>Heure de départ</label>
+                                    <label>Ou</label>
                                     <div class="input-group date" id="timepicker" data-target-input="nearest">
                                         <input type="text" name="start_at" class="form-control datetimepicker-input" data-target="#timepicker">
                                         <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="far fa-clock"></i></div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="start_now" type="checkbox" name="start_now"> Faire partir maintenant
+                                        </label>
                                     </div>
                                 </div>
                             </div>

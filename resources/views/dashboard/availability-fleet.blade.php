@@ -12,6 +12,7 @@
             <tbody>
                 @foreach($fleets as $fleet)
                     @php
+                        $fleet['total'] = $fleet['total'] !== 0 ? $fleet['total'] : 1;
                         $state = 'success';
                         $percentage = $fleet['available'] / $fleet['total'] * 100;
                         if($percentage < 10){
@@ -27,7 +28,11 @@
                             {{$fleet['total']}}
                         </td>
                         <td><span class="badge bg-{{$state}}">{{$fleet['available']}}</span></td>
-                        <td><i data-fleet-id="{{ $fleet['id'] }}" class="fa fa-plus-circle text-blue btn-add-boat-trip" style="cursor: pointer;"></i></td>
+                        <td>
+                            <i
+                                data-toggle="tooltip" data-placement="top" title="Ajouter une sortie"
+                                data-fleet-id="{{ $fleet['id'] }}" class="fa fa-plus-circle text-blue btn-add-boat-trip" style="cursor: pointer;"></i>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

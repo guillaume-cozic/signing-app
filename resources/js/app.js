@@ -22,6 +22,8 @@ $.ajaxSetup({
     }
 });
 
+
+require('./notify');
 require('./dashboard');
 require('./fleet');
 

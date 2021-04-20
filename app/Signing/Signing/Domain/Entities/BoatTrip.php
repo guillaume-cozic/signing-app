@@ -37,9 +37,7 @@ class BoatTrip implements HasState
      */
     public function create(bool $force = false)
     {
-        if(!$force) {
-            (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
-        }
+        if(!$force) (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
         $this->boatTripRepository->save($this->getState());
     }
 
@@ -64,6 +62,13 @@ class BoatTrip implements HasState
         $this->boatTripRepository->save($this->getState());
     }
 
+
+    public function start()
+    {
+        if($this->duration->isStarted()) return;
+        $this->duration->start();
+        $this->boatTripRepository->save($this->getState());
+    }
 
     /**
      * @throws BoatTripAlreadyEnded

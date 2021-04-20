@@ -1,5 +1,36 @@
-
+import notifySuccess from './notify';
 $(document).ready(function() {
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('#timepicker').datetimepicker({
+        format: 'H:m',
+    });
+
+    function initTimePicker(minutes) {
+        var timestamp = Date.now() + minutes * 60 * 1000;
+        var date = new Date(timestamp);
+        var hours = date.getHours();
+        var minutesD = "0" + date.getMinutes();
+        var formattedTime = hours + ':' + minutesD.substr(-2);
+        $('#timepicker > input').val(formattedTime);
+    }
+
+    initTimePicker(5);
+    $('#hour-start').change(function (){
+        var minutes = $(this).val();
+        initTimePicker(minutes);
+    });
+
+    $('#start_now').change(function (){
+        console.log('change', $(this).val());
+        if($(this).prop('checked') === true){
+            $('.time-setter').fadeOut();
+        }else{
+            $('.time-setter').fadeIn();
+        }
+    });
+
     $('.btn-add-boat-trip').click(function(){
         $('#modal-add-boat-trip').modal('show');
     });
@@ -83,6 +114,26 @@ $(document).ready(function() {
             });
         });
 
+        $('#boat-trips-table').on('click', '.btn-start', function () {
+            var url = $(this).data('href');
+            $.showConfirm({
+                title: "Voulez vous vraiment démarrer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
+                onSubmit: function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            success: function (){
+                                tableBoatTrips.ajax.reload(null, false);
+                                loadAvailability();
+                                //notifySuccess('', 'La sortie a bien été démarrée')
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
         $('#boat-trips-table').on('click', '.btn-end', function () {
             var url = $(this).data('href');
             $.showConfirm({
@@ -118,10 +169,6 @@ $(document).ready(function() {
 
     $('#modal-add-boat-trip').on('click', '.delete-boat', function (){
         $(this).parents('.row-boat-trip').remove();
-    });
-
-    $('#timepicker').datetimepicker({
-        format: 'LT'
     });
 
     function addBoatTrip(url, form) {

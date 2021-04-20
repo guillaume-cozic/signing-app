@@ -37,7 +37,7 @@ class ForceAddBoatTripTest extends TestCase
 
         $this->identityProvider->add($id = 'abcde');
 
-        $this->forceAddBoatTrip->execute($boats = [$s1->id() => 3], $name, $numberHours = 3);
+        $this->forceAddBoatTrip->execute($boats = [$s1->id() => 3], $name, $numberHours = 3, null, true);
 
         $boatTripExpected = BoatTripBuilder::build($id)->withBoats($boats)->withSailor(name:$name)->inProgress($numberHours);
         $this->assertBoatTripAdded($id, $boatTripExpected);

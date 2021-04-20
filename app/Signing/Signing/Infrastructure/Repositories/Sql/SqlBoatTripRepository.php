@@ -37,6 +37,7 @@ class SqlBoatTripRepository implements BoatTripRepository
         $boatTripModel->end_at = $boatTripState->endAt();
         $boatTripModel->start_at = $boatTripState->startAt();
         $boatTripModel->sailing_club_id = $this->contextService->get()->sailingClubId();
+        $boatTripModel->should_start_at = $boatTripState->shouldStartAt();
         $boatTripModel->save();
     }
 

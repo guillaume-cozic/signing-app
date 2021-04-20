@@ -4,17 +4,23 @@
 namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 
 class BoatTripDuration implements HasState
 {
+    private DateProvider $dateProvider;
+
     public function __construct(
-        private \DateTime $start,
+        private ?\DateTime $shouldStartAt = null,
+        private ?\DateTime $start = null,
         private ?float $numberHours = null,
         private ?\DateTime $end = null
-    ){}
+    ){
+        $this->dateProvider = app(DateProvider::class);
+    }
 
     public function end(\DateTime $endDate)
     {
@@ -29,6 +35,11 @@ class BoatTripDuration implements HasState
         $this->numberHours += $numberHours;
     }
 
+    public function start()
+    {
+        $this->start = $this->dateProvider->current();
+    }
+
     public function delayStart(int $minutes)
     {
         if($minutes < 0) throw new TimeCantBeNegative();
@@ -41,8 +52,13 @@ class BoatTripDuration implements HasState
         return $this->end !== null;
     }
 
+    public function isStarted()
+    {
+        return $this->start !== null;
+    }
+
     public function getState(): BoatTripDurationState
     {
-        return new BoatTripDurationState($this->start, $this->numberHours, $this->end);
+        return new BoatTripDurationState($this->start, $this->numberHours, $this->end, $this->shouldStartAt);
     }
 }

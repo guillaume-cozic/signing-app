@@ -19,7 +19,12 @@ class TranslationServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        (new FleetModel())->fill(['uuid' => $this->id = Uuid::uuid4(), 'total_available' => 1])->save();
+        (new FleetModel())->fill(
+            [
+                'uuid' => $this->id = Uuid::uuid4(),
+                'total_available' => 1,
+                'sailing_club_id' => 1
+            ])->save();
     }
 
     /**
