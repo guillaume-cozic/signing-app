@@ -19,3 +19,8 @@
     font-size: 80%;
     display: block !important;
 }
+
+
+div > [data-notify="container"]{
+    width: 90%;
+}

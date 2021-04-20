@@ -1925,9 +1925,10 @@ echo.channel('notification').listen('NotificationCreated', function (e) {
     message: e.message
   }, {
     type: 'minimalist',
-    delay: 5000,
+    delay: 3000,
     icon_type: 'image',
-    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' + '<img data-notify="icon" class="img-circle pull-left">' + '<span data-notify="title">{1}</span>' + '<span data-notify="message">{2}</span>' + '</div>'
+    element: "#main-content",
+    template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' + '<img data-notify="icon" class="img-circle pull-left">' + '<span data-notify="title">{1}</span>' + '<span data-notify="message">{2}</span>' + '</div>'
   });
 });
 
@@ -1937,11 +1938,7 @@ echo.channel('notification').listen('NotificationCreated', function (e) {
 /*!***********************************!*\
   !*** ./resources/js/dashboard.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
+/***/ (() => {
 
 $(document).ready(function () {
   $('[data-toggle="tooltip"]').tooltip();
@@ -1964,8 +1961,6 @@ $(document).ready(function () {
     initTimePicker(minutes);
   });
   $('#start_now').change(function () {
-    console.log('change', $(this).val());
-
     if ($(this).prop('checked') === true) {
       $('.time-setter').fadeOut();
     } else {
@@ -2056,6 +2051,14 @@ $(document).ready(function () {
               success: function success() {
                 tableBoatTrips.ajax.reload(null, false);
                 loadAvailability();
+                $.notify({
+                  message: 'La sortie a bien été supprimée'
+                }, {
+                  type: 'success',
+                  z_index: 20000,
+                  delay: 3000,
+                  element: "#main-content"
+                });
               }
             });
           }
@@ -2076,7 +2079,15 @@ $(document).ready(function () {
               method: 'POST',
               success: function success() {
                 tableBoatTrips.ajax.reload(null, false);
-                loadAvailability(); //notifySuccess('', 'La sortie a bien été démarrée')
+                loadAvailability();
+                $.notify({
+                  message: 'La sortie a bien été démarée'
+                }, {
+                  type: 'success',
+                  z_index: 20000,
+                  delay: 3000,
+                  element: "#main-content"
+                });
               }
             });
           }
@@ -2098,6 +2109,14 @@ $(document).ready(function () {
               success: function success() {
                 tableBoatTrips.ajax.reload(null, false);
                 loadAvailability();
+                $.notify({
+                  message: 'La sortie a bien été terminée'
+                }, {
+                  type: 'success',
+                  z_index: 20000,
+                  delay: 3000,
+                  element: "#main-content"
+                });
               }
             });
           }
@@ -2137,11 +2156,12 @@ $(document).ready(function () {
         form.trigger('reset');
         $('.row-boat-trip').html('');
         $.notify({
-          title: '<strong></strong>',
           message: 'La sortie a bien été créée'
         }, {
           type: 'success',
-          z_index: 20000
+          z_index: 20000,
+          delay: 3000,
+          element: "#main-content"
         });
       },
       error: function error() {
@@ -2188,7 +2208,8 @@ $(document).ready(function () {
       stateLoadCallback: function stateLoadCallback(settings) {
         return JSON.parse(localStorage.getItem("boattrips-ended"));
       },
-      drawCallback: function drawCallback(settings) {//$('[data-toggle="tooltip"]').tooltip();
+      drawCallback: function drawCallback(settings) {
+        $('[data-toggle="tooltip"]').tooltip();
       },
       ajax: {
         url: $('#ended-boat-trips-table').data('href'),

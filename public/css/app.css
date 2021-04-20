@@ -26456,6 +26456,9 @@ div.table-responsive>div.dataTables_wrapper>div.row>div[class^=col-]:last-child{
     font-size: 80%;
     display: block !important;
 }
+div > [data-notify="container"]{
+    width: 90%;
+}
 .time-icon{
     color: #999;
     font-size: 12px;

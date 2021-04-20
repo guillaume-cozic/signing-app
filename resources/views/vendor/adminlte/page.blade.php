@@ -72,7 +72,7 @@
             </div>
 
             {{-- Main Content --}}
-            <div class="content">
+            <div class="content" id="main-content">
                 <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
                     @yield('content')
                 </div>

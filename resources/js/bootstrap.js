@@ -33,9 +33,10 @@ echo.channel('notification')
             message: e.message
         },{
             type: 'minimalist',
-            delay: 5000,
+            delay: 3000,
             icon_type: 'image',
-            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+            element: "#main-content",
+            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
                 '<img data-notify="icon" class="img-circle pull-left">' +
                 '<span data-notify="title">{1}</span>' +
                 '<span data-notify="message">{2}</span>' +
