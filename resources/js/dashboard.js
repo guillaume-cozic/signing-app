@@ -1,4 +1,3 @@
-import notifySuccess from './notify';
 $(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -23,7 +22,6 @@ $(document).ready(function() {
     });
 
     $('#start_now').change(function (){
-        console.log('change', $(this).val());
         if($(this).prop('checked') === true){
             $('.time-setter').fadeOut();
         }else{
@@ -107,6 +105,14 @@ $(document).ready(function() {
                             success: function (){
                                 tableBoatTrips.ajax.reload(null, false);
                                 loadAvailability();
+                                $.notify({
+                                    message: 'La sortie a bien été supprimée'
+                                },{
+                                    type: 'success',
+                                    z_index: 20000,
+                                    delay: 3000,
+                                    element: "#main-content"
+                                });
                             }
                         });
                     }
@@ -126,7 +132,14 @@ $(document).ready(function() {
                             success: function (){
                                 tableBoatTrips.ajax.reload(null, false);
                                 loadAvailability();
-                                //notifySuccess('', 'La sortie a bien été démarrée')
+                                $.notify({
+                                    message: 'La sortie a bien été démarée'
+                                },{
+                                    type: 'success',
+                                    z_index: 20000,
+                                    delay: 3000,
+                                    element: "#main-content"
+                                });
                             }
                         });
                     }
@@ -146,6 +159,14 @@ $(document).ready(function() {
                             success: function (){
                                 tableBoatTrips.ajax.reload(null, false);
                                 loadAvailability();
+                                $.notify({
+                                    message: 'La sortie a bien été terminée'
+                                },{
+                                    type: 'success',
+                                    z_index: 20000,
+                                    delay: 3000,
+                                    element: "#main-content"
+                                });
                             }
                         });
                     }
@@ -184,11 +205,12 @@ $(document).ready(function() {
                 form.trigger('reset');
                 $('.row-boat-trip').html('');
                 $.notify({
-                    title: '<strong></strong>',
                     message: 'La sortie a bien été créée'
                 },{
                     type: 'success',
-                    z_index: 20000
+                    z_index: 20000,
+                    delay: 3000,
+                    element: "#main-content"
                 });
             },
             error:function (){
@@ -238,7 +260,7 @@ $(document).ready(function() {
                 return JSON.parse(localStorage.getItem("boattrips-ended"));
             },
             drawCallback: function (settings) {
-                //$('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="tooltip"]').tooltip();
             },
             ajax: {
                 url: $('#ended-boat-trips-table').data('href'),
