@@ -7,7 +7,7 @@
                 <th data-priority="10"><i class="fa fa-anchor"></i> Marin</th>
                 <th data-priority="50">Départ</th>
                 <th data-priority="40">Retour</th>
-                <th data-priority="20">Actions</th>
+                <th data-priority="20"><i class="fa fa-cogs"></i> Actions</th>
             </tr>
         </thead>
     </table>

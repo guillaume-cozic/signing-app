@@ -8,10 +8,11 @@ class BoatTripsDTo
 {
     public function __construct(
         public string $id,
-        public \DateTime $startAt,
+        public ?\DateTime $startAt,
         public ?\DateTime $endAt,
         public string $name,
         public ?array $boats = [],
-        public float $hours = 0
+        public float $hours = 0,
+        public ?\DateTime $shouldStartAt = null
     ){}
 }

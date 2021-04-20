@@ -54,7 +54,7 @@ class GetBoatTripsListTest extends TestCase
 
         $boatTrip2 = BoatTripBuilder::build('abcd')
             ->withSailor(memberId:$memberId)
-            ->inProgress(1);
+            ->notStarted($shouldStartAt = (new \DateTime('+10 minutes')), 1);
 
         $boatTrip3 = BoatTripBuilder::build('abcde')
             ->withSailor(memberId:$memberId)
@@ -67,7 +67,7 @@ class GetBoatTripsListTest extends TestCase
         $boatTrips = app(GetBoatTripsList::class)->execute();
 
         $boatTripDto1 = new BoatTripsDTo('abc', new Carbon($this->dateProvider->current()), null, 'Tabarly', [$hobieCatName => 1], 1);
-        $boatTripDto2 = new BoatTripsDTo('abcd', new Carbon($this->dateProvider->current()), null, 'Gaston Cozic', [], 1);
+        $boatTripDto2 = new BoatTripsDTo('abcd', null, null, 'Gaston Cozic', [], 1, new Carbon($shouldStartAt));
 
         self::assertEquals($boatTripDto1, $boatTrips[0]);
         self::assertEquals($boatTripDto2, $boatTrips[1]);
