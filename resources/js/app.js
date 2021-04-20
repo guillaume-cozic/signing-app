@@ -22,7 +22,7 @@ $.ajaxSetup({
     }
 });
 
-
+require('./realtime');
 require('./notify');
 require('./dashboard');
 require('./fleet');
