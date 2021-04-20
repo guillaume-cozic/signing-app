@@ -1,11 +1,10 @@
-const notifySuccess = function notifySuccess(title, message) {
+export default function notify(message, type = 'success') {
     $.notify({
-        title: '<strong>'+title+'</strong>',
         message: message
     },{
-        type: 'success',
-        z_index: 20000
+        type: type,
+        z_index: 20000,
+        delay: 3000,
+        element: "#main-content"
     });
 }
-
-export default {notifySuccess};

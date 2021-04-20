@@ -1880,6 +1880,8 @@ $.ajaxSetup({
   }
 });
 
+__webpack_require__(/*! ./realtime */ "./resources/js/realtime.js");
+
 __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
 
 __webpack_require__(/*! ./dashboard */ "./resources/js/dashboard.js");
@@ -1892,11 +1894,8 @@ __webpack_require__(/*! ./fleet */ "./resources/js/fleet.js");
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -1907,30 +1906,6 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
-
-var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
-  broadcaster: 'socket.io',
-  host: window.location.hostname + ':6001'
-});
-echo.channel('notification').listen('NotificationCreated', function (e) {
-  $.notify({
-    icon: e.avatar,
-    title: e.title,
-    message: e.message
-  }, {
-    type: 'minimalist',
-    delay: 3000,
-    icon_type: 'image',
-    element: "#main-content",
-    template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' + '<img data-notify="icon" class="img-circle pull-left">' + '<span data-notify="title">{1}</span>' + '<span data-notify="message">{2}</span>' + '</div>'
-  });
-});
 
 /***/ }),
 
@@ -1938,298 +1913,273 @@ echo.channel('notification').listen('NotificationCreated', function (e) {
 /*!***********************************!*\
   !*** ./resources/js/dashboard.js ***!
   \***********************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-$(document).ready(function () {
-  $('[data-toggle="tooltip"]').tooltip();
-  $('#timepicker').datetimepicker({
-    format: 'H:m'
-  });
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
 
-  function initTimePicker(minutes) {
-    var timestamp = Date.now() + minutes * 60 * 1000;
-    var date = new Date(timestamp);
-    var hours = date.getHours();
-    var minutesD = "0" + date.getMinutes();
-    var formattedTime = hours + ':' + minutesD.substr(-2);
-    $('#timepicker > input').val(formattedTime);
-  }
+window.tableBoatTrips = null;
+$('[data-toggle="tooltip"]').tooltip();
+$('#timepicker').datetimepicker({
+  format: 'H:m'
+});
 
-  initTimePicker(5);
-  $('#hour-start').change(function () {
-    var minutes = $(this).val();
-    initTimePicker(minutes);
-  });
-  $('#start_now').change(function () {
-    if ($(this).prop('checked') === true) {
-      $('.time-setter').fadeOut();
-    } else {
-      $('.time-setter').fadeIn();
-    }
-  });
-  $('.btn-add-boat-trip').click(function () {
-    $('#modal-add-boat-trip').modal('show');
-  });
-  $('#availability').on('click', '.btn-add-boat-trip', function () {
-    var fleetId = $(this).data('fleet-id');
-    $('#main-boat option[value=' + fleetId + ']').prop('selected', true);
-    $('#modal-add-boat-trip').modal('show');
-  });
+function initTimePicker(minutes) {
+  var timestamp = Date.now() + minutes * 60 * 1000;
+  var date = new Date(timestamp);
+  var hours = date.getHours();
+  var minutesD = "0" + date.getMinutes();
+  var formattedTime = hours + ':' + minutesD.substr(-2);
+  $('#timepicker > input').val(formattedTime);
+}
 
-  if ($('#boat-trips-table').length != 0) {
-    var tableBoatTrips = $('#boat-trips-table').DataTable({
-      processing: true,
-      responsive: {
-        details: {
-          type: 'inline'
-        }
-      },
-      serverSide: true,
-      tabIndex: -1,
-      "language": {
-        "lengthMenu": "Afficher _MENU_ lignes par page",
-        "zeroRecords": "Aucun résultat",
-        "info": "",
-        "infoEmpty": "Aucun résultat",
-        "infoFiltered": "",
-        "sSearch": "Rechercher",
-        "sProcessing": 'Chargement...',
-        "oPaginate": {
-          "sFirst": "Première",
-          "sPrevious": "Précédent",
-          "sNext": "Suivant",
-          "sLast": "Dernière"
-        }
-      },
-      stateSave: true,
-      stateSaveCallback: function stateSaveCallback(settings, data) {
-        localStorage.setItem("boattrips", JSON.stringify(data));
-      },
-      stateLoadCallback: function stateLoadCallback(settings) {
-        return JSON.parse(localStorage.getItem("boattrips"));
-      },
-      drawCallback: function drawCallback(settings) {
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      ajax: {
-        url: $('#boat-trips-table').data('href'),
-        type: 'POST'
-      },
-      iDisplayLength: 10,
-      showExportButton: false,
-      columns: [{
-        "name": "boats",
-        'orderable': false
-      }, {
-        "name": "total",
-        'orderable': false
-      }, {
-        "name": "name"
-      }, {
-        "name": "start_at"
-      }, {
-        "name": "should_return"
-      }, {
-        "name": "return",
-        'orderable': false
-      }],
-      "order": [[3, "asc"]],
-      fnRowCallback: function fnRowCallback(row, data) {}
-    });
-    $('#boat-trips-table').on('click', '.btn-cancel', function () {
-      var url = $(this).data('href');
-      $.showConfirm({
-        title: "Voulez vous vraiment supprimer cette sortie ?",
-        body: "",
-        textTrue: "Oui",
-        textFalse: "Non",
-        onSubmit: function onSubmit(result) {
-          if (result) {
-            $.ajax({
-              url: url,
-              method: 'POST',
-              success: function success() {
-                tableBoatTrips.ajax.reload(null, false);
-                loadAvailability();
-                $.notify({
-                  message: 'La sortie a bien été supprimée'
-                }, {
-                  type: 'success',
-                  z_index: 20000,
-                  delay: 3000,
-                  element: "#main-content"
-                });
-              }
-            });
-          }
-        }
-      });
-    });
-    $('#boat-trips-table').on('click', '.btn-start', function () {
-      var url = $(this).data('href');
-      $.showConfirm({
-        title: "Voulez vous vraiment démarrer cette sortie ?",
-        body: "",
-        textTrue: "Oui",
-        textFalse: "Non",
-        onSubmit: function onSubmit(result) {
-          if (result) {
-            $.ajax({
-              url: url,
-              method: 'POST',
-              success: function success() {
-                tableBoatTrips.ajax.reload(null, false);
-                loadAvailability();
-                $.notify({
-                  message: 'La sortie a bien été démarée'
-                }, {
-                  type: 'success',
-                  z_index: 20000,
-                  delay: 3000,
-                  element: "#main-content"
-                });
-              }
-            });
-          }
-        }
-      });
-    });
-    $('#boat-trips-table').on('click', '.btn-end', function () {
-      var url = $(this).data('href');
-      $.showConfirm({
-        title: "Terminer la sortie ?",
-        body: "",
-        textTrue: "Oui",
-        textFalse: "Non",
-        onSubmit: function onSubmit(result) {
-          if (result) {
-            $.ajax({
-              url: url,
-              method: 'POST',
-              success: function success() {
-                tableBoatTrips.ajax.reload(null, false);
-                loadAvailability();
-                $.notify({
-                  message: 'La sortie a bien été terminée'
-                }, {
-                  type: 'success',
-                  z_index: 20000,
-                  delay: 3000,
-                  element: "#main-content"
-                });
-              }
-            });
-          }
-        }
-      });
-    });
-  }
-
-  var countBoatsList = 2;
-  $('#btn-add-boats').click(function () {
-    $.ajax({
-      url: $(this).data('href'),
-      method: 'POST',
-      data: {
-        count: countBoatsList
-      },
-      success: function success(data) {
-        $('#list-add-boat-trip').append(data);
-        countBoatsList++;
-      }
-    });
-  });
-  $('#modal-add-boat-trip').on('click', '.delete-boat', function () {
-    $(this).parents('.row-boat-trip').remove();
-  });
-
-  function addBoatTrip(url, form) {
-    $.ajax({
-      url: url,
-      method: 'POST',
-      data: form.serialize(),
-      dataType: 'json',
-      success: function success(data) {
-        tableBoatTrips.ajax.reload(null, false);
-        loadAvailability();
-        $('#modal-add-boat-trip').modal('hide');
-        form.trigger('reset');
-        $('.row-boat-trip').html('');
-        $.notify({
-          message: 'La sortie a bien été créée'
-        }, {
-          type: 'success',
-          z_index: 20000,
-          delay: 3000,
-          element: "#main-content"
-        });
-      },
-      error: function error() {
-        $('#alert-boat-not-available').slideDown();
-      }
-    });
-    return false;
-  }
-
-  $('#form-add-boat-trip').submit(function () {
-    addBoatTrip($(this).attr('action'), $(this));
-    return false;
-  });
-  $('#btn-force').click(function () {
-    addBoatTrip($('#form-add-boat-trip').attr('action') + '/force', $('#form-add-boat-trip'));
-    return false;
-  });
-
-  if ($('#ended-boat-trips-table').length != 0) {
-    var tableBoatTripsEnded = $('#ended-boat-trips-table').DataTable({
-      processing: true,
-      responsive: true,
-      serverSide: true,
-      tabIndex: -1,
-      "language": {
-        "lengthMenu": "Afficher _MENU_ lignes par page",
-        "zeroRecords": "Aucun résultat",
-        "info": "",
-        "infoEmpty": "Aucun résultat",
-        "infoFiltered": "",
-        "sSearch": "Rechercher",
-        "sProcessing": 'Chargement...',
-        "oPaginate": {
-          "sFirst": "Première",
-          "sPrevious": "Précédent",
-          "sNext": "Suivant",
-          "sLast": "Dernière"
-        }
-      },
-      stateSave: true,
-      stateSaveCallback: function stateSaveCallback(settings, data) {
-        localStorage.setItem("boattrips-ended", JSON.stringify(data));
-      },
-      stateLoadCallback: function stateLoadCallback(settings) {
-        return JSON.parse(localStorage.getItem("boattrips-ended"));
-      },
-      drawCallback: function drawCallback(settings) {
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      ajax: {
-        url: $('#ended-boat-trips-table').data('href'),
-        type: 'POST'
-      },
-      iDisplayLength: 10,
-      showExportButton: false,
-      columns: [{
-        "name": "boats",
-        'orderable': false
-      }, {
-        "name": "name"
-      }, {
-        "name": "end_at"
-      }],
-      "order": [[1, "asc"]],
-      fnRowCallback: function fnRowCallback(row, data) {}
-    });
+initTimePicker(5);
+$('#hour-start').change(function () {
+  var minutes = $(this).val();
+  initTimePicker(minutes);
+});
+$('#start_now').change(function () {
+  if ($(this).prop('checked') === true) {
+    $('.time-setter').fadeOut();
+  } else {
+    $('.time-setter').fadeIn();
   }
 });
+$('.btn-add-boat-trip').click(function () {
+  $('#modal-add-boat-trip').modal('show');
+});
+$('#availability').on('click', '.btn-add-boat-trip', function () {
+  var fleetId = $(this).data('fleet-id');
+  $('#main-boat option[value=' + fleetId + ']').prop('selected', true);
+  $('#modal-add-boat-trip').modal('show');
+});
+
+if ($('#boat-trips-table').length != 0) {
+  window.tableBoatTrips = $('#boat-trips-table').DataTable({
+    processing: true,
+    responsive: {
+      details: {
+        type: 'inline'
+      }
+    },
+    serverSide: true,
+    tabIndex: -1,
+    "language": {
+      "lengthMenu": "Afficher _MENU_ lignes par page",
+      "zeroRecords": "Aucun résultat",
+      "info": "",
+      "infoEmpty": "Aucun résultat",
+      "infoFiltered": "",
+      "sSearch": "Rechercher",
+      "sProcessing": 'Chargement...',
+      "oPaginate": {
+        "sFirst": "Première",
+        "sPrevious": "Précédent",
+        "sNext": "Suivant",
+        "sLast": "Dernière"
+      }
+    },
+    stateSave: true,
+    stateSaveCallback: function stateSaveCallback(settings, data) {
+      localStorage.setItem("boattrips", JSON.stringify(data));
+    },
+    stateLoadCallback: function stateLoadCallback(settings) {
+      return JSON.parse(localStorage.getItem("boattrips"));
+    },
+    drawCallback: function drawCallback(settings) {
+      $('[data-toggle="tooltip"]').tooltip();
+    },
+    ajax: {
+      url: $('#boat-trips-table').data('href'),
+      type: 'POST'
+    },
+    iDisplayLength: 10,
+    showExportButton: false,
+    columns: [{
+      "name": "boats",
+      'orderable': false
+    }, {
+      "name": "total",
+      'orderable': false
+    }, {
+      "name": "name"
+    }, {
+      "name": "start_at"
+    }, {
+      "name": "should_return"
+    }, {
+      "name": "return",
+      'orderable': false
+    }],
+    "order": [[3, "asc"]],
+    fnRowCallback: function fnRowCallback(row, data) {}
+  });
+  $('#boat-trips-table').on('click', '.btn-cancel', function () {
+    var url = $(this).data('href');
+    $.showConfirm({
+      title: "Voulez vous vraiment supprimer cette sortie ?",
+      body: "",
+      textTrue: "Oui",
+      textFalse: "Non",
+      onSubmit: function onSubmit(result) {
+        if (result) {
+          $.ajax({
+            url: url,
+            method: 'POST',
+            success: function success() {
+              tableBoatTrips.ajax.reload(null, false);
+              loadAvailability();
+              (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été supprimée');
+            }
+          });
+        }
+      }
+    });
+  });
+  $('#boat-trips-table').on('click', '.btn-start', function () {
+    var url = $(this).data('href');
+    $.showConfirm({
+      title: "Voulez vous vraiment démarrer cette sortie ?",
+      body: "",
+      textTrue: "Oui",
+      textFalse: "Non",
+      onSubmit: function onSubmit(result) {
+        if (result) {
+          $.ajax({
+            url: url,
+            method: 'POST',
+            success: function success() {
+              tableBoatTrips.ajax.reload(null, false);
+              loadAvailability();
+              (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été démarée');
+            }
+          });
+        }
+      }
+    });
+  });
+  $('#boat-trips-table').on('click', '.btn-end', function () {
+    var url = $(this).data('href');
+    $.showConfirm({
+      title: "Terminer la sortie ?",
+      body: "",
+      textTrue: "Oui",
+      textFalse: "Non",
+      onSubmit: function onSubmit(result) {
+        if (result) {
+          $.ajax({
+            url: url,
+            method: 'POST',
+            success: function success() {
+              tableBoatTrips.ajax.reload(null, false);
+              loadAvailability();
+              (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été terminée');
+            }
+          });
+        }
+      }
+    });
+  });
+}
+
+var countBoatsList = 2;
+$('#btn-add-boats').click(function () {
+  $.ajax({
+    url: $(this).data('href'),
+    method: 'POST',
+    data: {
+      count: countBoatsList
+    },
+    success: function success(data) {
+      $('#list-add-boat-trip').append(data);
+      countBoatsList++;
+    }
+  });
+});
+$('#modal-add-boat-trip').on('click', '.delete-boat', function () {
+  $(this).parents('.row-boat-trip').remove();
+});
+
+function addBoatTrip(url, form) {
+  $.ajax({
+    url: url,
+    method: 'POST',
+    data: form.serialize(),
+    dataType: 'json',
+    success: function success(data) {
+      tableBoatTrips.ajax.reload(null, false);
+      loadAvailability();
+      $('#modal-add-boat-trip').modal('hide');
+      form.trigger('reset');
+      $('.row-boat-trip').html('');
+      (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été créée');
+    },
+    error: function error() {
+      $('#alert-boat-not-available').slideDown();
+    }
+  });
+  return false;
+}
+
+$('#form-add-boat-trip').submit(function () {
+  addBoatTrip($(this).attr('action'), $(this));
+  return false;
+});
+$('#btn-force').click(function () {
+  addBoatTrip($('#form-add-boat-trip').attr('action') + '/force', $('#form-add-boat-trip'));
+  return false;
+});
+
+if ($('#ended-boat-trips-table').length != 0) {
+  var tableBoatTripsEnded = $('#ended-boat-trips-table').DataTable({
+    processing: true,
+    responsive: true,
+    serverSide: true,
+    tabIndex: -1,
+    "language": {
+      "lengthMenu": "Afficher _MENU_ lignes par page",
+      "zeroRecords": "Aucun résultat",
+      "info": "",
+      "infoEmpty": "Aucun résultat",
+      "infoFiltered": "",
+      "sSearch": "Rechercher",
+      "sProcessing": 'Chargement...',
+      "oPaginate": {
+        "sFirst": "Première",
+        "sPrevious": "Précédent",
+        "sNext": "Suivant",
+        "sLast": "Dernière"
+      }
+    },
+    stateSave: true,
+    stateSaveCallback: function stateSaveCallback(settings, data) {
+      localStorage.setItem("boattrips-ended", JSON.stringify(data));
+    },
+    stateLoadCallback: function stateLoadCallback(settings) {
+      return JSON.parse(localStorage.getItem("boattrips-ended"));
+    },
+    drawCallback: function drawCallback(settings) {
+      $('[data-toggle="tooltip"]').tooltip();
+    },
+    ajax: {
+      url: $('#ended-boat-trips-table').data('href'),
+      type: 'POST'
+    },
+    iDisplayLength: 10,
+    showExportButton: false,
+    columns: [{
+      "name": "boats",
+      'orderable': false
+    }, {
+      "name": "name"
+    }, {
+      "name": "end_at"
+    }],
+    "order": [[1, "asc"]],
+    fnRowCallback: function fnRowCallback(row, data) {}
+  });
+}
 
 /***/ }),
 
@@ -2379,20 +2329,61 @@ if ($('#fleets-table').length != 0) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ notify)
 /* harmony export */ });
-var notifySuccess = function notifySuccess(title, message) {
+function notify(message) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
   $.notify({
-    title: '<strong>' + title + '</strong>',
     message: message
   }, {
-    type: 'success',
-    z_index: 20000
+    type: type,
+    z_index: 20000,
+    delay: 3000,
+    element: "#main-content"
   });
-};
+}
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  notifySuccess: notifySuccess
+/***/ }),
+
+/***/ "./resources/js/realtime.js":
+/*!**********************************!*\
+  !*** ./resources/js/realtime.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/**
+ * Echo exposes an expressive API for subscribing to channels and listening
+ * for events that are broadcast by Laravel. Echo and event broadcasting
+ * allows your team to easily build robust real-time web applications.
+ */
+function reloadDashboard() {
+  if ($('#boat-trips-table').length != 0) {
+    loadAvailability();
+    tableBoatTrips.ajax.reload(null, false);
+  }
+}
+
+
+var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
+  broadcaster: 'socket.io',
+  host: window.location.hostname + ':6001'
+});
+echo.channel('notification').listen('NotificationCreated', function (e) {
+  reloadDashboard();
+  $.notify({
+    icon: e.avatar,
+    title: e.title,
+    message: e.message
+  }, {
+    type: 'minimalist',
+    delay: 3000,
+    icon_type: 'image',
+    element: "#main-content",
+    template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' + '<img data-notify="icon" class="img-circle pull-left">' + '<span data-notify="title">{1}</span>' + '<span data-notify="message">{2}</span>' + '</div>'
+  });
 });
 
 /***/ }),
