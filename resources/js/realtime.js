@@ -14,27 +14,31 @@ function reloadDashboard() {
 import Echo from 'laravel-echo'
 
 
-let echo = new Echo({
-    broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001'
-});
-
-echo.channel('notification')
-    .listen('NotificationCreated', (e) => {
-        reloadDashboard();
-        $.notify({
-            icon: e.avatar,
-            title: e.title,
-            message: e.message
-        },{
-            type: 'minimalist',
-            delay: 3000,
-            icon_type: 'image',
-            element: "#main-content",
-            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-                '<img data-notify="icon" class="img-circle pull-left">' +
-                '<span data-notify="title">{1}</span>' +
-                '<span data-notify="message">{2}</span>' +
-                '</div>'
-        });
+try {
+    let echo = new Echo({
+        broadcaster: 'socket.io',
+        host: window.location.hostname + ':6001'
     });
+
+    echo.channel('notification')
+        .listen('NotificationCreated', (e) => {
+            reloadDashboard();
+            $.notify({
+                icon: e.avatar,
+                title: e.title,
+                message: e.message
+            }, {
+                type: 'minimalist',
+                delay: 3000,
+                icon_type: 'image',
+                element: "#main-content",
+                template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+                    '<img data-notify="icon" class="img-circle pull-left">' +
+                    '<span data-notify="title">{1}</span>' +
+                    '<span data-notify="message">{2}</span>' +
+                    '</div>'
+            });
+        });
+}catch (e){
+    console.log('Server socket not running');
+}

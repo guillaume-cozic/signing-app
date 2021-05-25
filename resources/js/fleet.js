@@ -84,7 +84,9 @@ if($('#fleets-table').length != 0) {
         var fleetId = $(this).data('fleet-id')
         var url = $(this).data('href');
         $.showConfirm({
-            title: "Voulez vous vraiment désactiver cette flotte ?", body: "", textTrue: "Oui", textFalse: "Non",
+            title: "Voulez vous vraiment désactiver cette flotte ?",
+            body: "<div class='alert alert-info'>Cette flotte ne sera plus disponible lors de la création d'une sortie en mer.</div>",
+            textTrue: "Oui", textFalse: "Non",
             onSubmit: function (result) {
                 if (result) {
                     $.ajax({
@@ -105,7 +107,10 @@ if($('#fleets-table').length != 0) {
         var url = $(this).data('href');
 
         $.showConfirm({
-            title: "Voulez vous vraiment activer cette flotte ?", body: "", textTrue: "Oui", textFalse: "Non",
+            title: "Voulez vous vraiment activer cette flotte ?",
+            body:"",
+            textTrue: "Oui",
+            textFalse: "Non",
             onSubmit: function (result) {
                 if (result) {
                     $.ajax({
