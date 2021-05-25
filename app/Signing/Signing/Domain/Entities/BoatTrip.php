@@ -5,6 +5,7 @@ namespace App\Signing\Signing\Domain\Entities;
 
 
 use App\Events\BoatTrip\BoatTripEnded;
+use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
@@ -35,10 +36,14 @@ class BoatTrip implements HasState
     /**
      * @throws BoatNotAvailable
      */
-    public function create(bool $force = false)
+    public function create(bool $force = false, bool $startNow = null)
     {
         if(!$force) (new BoatAvailabilityChecker($this->boats))->checkIfEnough();
         $this->boatTripRepository->save($this->getState());
+        if($startNow) {
+            $currentUser = $this->authGateway->user();
+            event(new BoatTripStarted($this->id(), $currentUser->id()));
+        }
     }
 
     /**
@@ -68,6 +73,8 @@ class BoatTrip implements HasState
         if($this->duration->isStarted()) return;
         $this->duration->start();
         $this->boatTripRepository->save($this->getState());
+        $currentUser = $this->authGateway->user();
+        event(new BoatTripStarted($this->id->id(), $currentUser->id()));
     }
 
     /**
