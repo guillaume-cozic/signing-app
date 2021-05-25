@@ -25,7 +25,7 @@ class CreateBoatTripService
             ->withBoats($boats);
 
         $boatTrip = $this->buildBoatTrip($startNow, $boatTripBuilder, $numberHours, $startAtHours);
-        $boatTrip->create($force);
+        $boatTrip->create($force, $startNow);
     }
 
     private function buildBoatTrip(?bool $startNow, BoatTripBuilder $boatTripBuilder, int $numberHours, string $startAtHours = null): BoatTrip

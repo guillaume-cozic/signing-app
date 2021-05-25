@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripEndedNotificationImpl;
+use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripStartedNotificationImpl;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripEndedNotification;
+use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripStartedNotification;
 use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
 use App\Signing\Shared\Providers\AuthGateway;
@@ -87,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
 
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
+        $this->app->singleton(SendBoatTripStartedNotification::class, SendBoatTripStartedNotificationImpl::class);
 
         $this->app->singleton(GetBoatTripsList::class, GetBoatTripsListImpl::class);
         $this->app->singleton(GetFleetsList::class, GetFleetsListImpl::class);

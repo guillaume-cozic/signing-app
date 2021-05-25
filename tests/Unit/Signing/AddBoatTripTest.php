@@ -4,13 +4,16 @@
 namespace Tests\Unit\Signing;
 
 
+use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Shared\Entities\Id;
+use App\Signing\Shared\Entities\User;
 use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class AddBoatTripTest extends TestCase
@@ -21,6 +24,7 @@ class AddBoatTripTest extends TestCase
     {
         parent::setUp();
         $this->addBoatTripUseCase = app(AddBoatTrip::class);
+        $this->authGateway->setUser(new User('abcde'));
     }
 
     /**
@@ -48,6 +52,8 @@ class AddBoatTripTest extends TestCase
             ->withSailor(name:$name)
             ->inProgress($numberHours);
         $this->assertBoatTripAdded($id, $boatTripExpected);
+
+        Event::assertNotDispatched(BoatTripStarted::class);
     }
 
     /**
@@ -75,6 +81,7 @@ class AddBoatTripTest extends TestCase
             ->withSailor(name:$name)
             ->inProgress($numberHours);
         $this->assertBoatTripAdded($id, $boatTripExpected);
+        Event::assertNotDispatched(BoatTripStarted::class);
     }
 
     /**
@@ -96,6 +103,7 @@ class AddBoatTripTest extends TestCase
             ->withSailor(name:$name)
             ->inProgress($numberHours);
         $this->assertBoatTripAdded($id, $boatTripExpected);
+        Event::assertDispatched(BoatTripStarted::class);
     }
 
     /**

@@ -4,10 +4,13 @@
 namespace Tests\Unit\Signing\BoatTrip;
 
 
+use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Shared\Entities\Id;
+use App\Signing\Shared\Entities\User;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class StartBoatTripTest extends TestCase
@@ -18,6 +21,7 @@ class StartBoatTripTest extends TestCase
     {
         parent::setUp();
         $this->startBoatTrip = app(StartBoatTrip::class);
+        $this->authGateway->setUser(new User('abcde'));
     }
 
     /**
@@ -42,6 +46,8 @@ class StartBoatTripTest extends TestCase
             ->fromState(numberHours:  1, startAt: $this->dateProvider->current(), shouldStartAt: $shouldStart);
         $boatTripSaved = $this->boatTripRepository->get('abc');
         self::assertEquals($boatTripExpected, $boatTripSaved);
+
+        Event::assertDispatched(BoatTripStarted::class);
     }
 
     /**
