@@ -12,9 +12,9 @@
             <tbody>
                 @foreach($fleets as $fleet)
                     @php
-                        $fleet['total'] = $fleet['total'] !== 0 ? $fleet['total'] : 1;
+                        $total = $fleet['total'] !== 0 ? $fleet['total'] : 1;
                         $state = 'success';
-                        $percentage = $fleet['available'] / $fleet['total'] * 100;
+                        $percentage = $fleet['available'] / $total * 100;
                         if($percentage < 10){
                             $state = 'danger';
                         }

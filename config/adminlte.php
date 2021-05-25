@@ -226,7 +226,7 @@ return [
     'menu' => [
         [
             'text' => 'search',
-            'search' => true,
+            'search' => false,
             'topnav' => true,
         ],
         [
@@ -241,8 +241,17 @@ return [
         ],
         [
             'text' => 'Utilisateurs',
-            'url'  => 'teams',
-            'icon' => 'nav-icon fas fa-user',
+            'icon' => 'nav-icon fas fa-users',
+            'submenu' => [
+                [
+                    'text' => 'L\'équipe',
+                    'url'  => 'teams',
+                ],
+                [
+                    'text' => 'Inviter un collaborateur',
+                    'url'  => 'teams/redirect',
+                ],
+            ],
         ],
         [
             'text' => 'Reporting',

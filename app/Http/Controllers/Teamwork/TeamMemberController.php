@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Teamwork;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Mpociot\Teamwork\Facades\Teamwork;
 use Mpociot\Teamwork\TeamInvite;
@@ -27,6 +28,11 @@ class TeamMemberController extends Controller
         $team = $teamModel::findOrFail($id);
 
         return view('teamwork.members.list')->withTeam($team);
+    }
+
+    public function redirectToMainTeam()
+    {
+        return redirect()->route('teams.members.show', ['id' => Auth::user()->currentTeam->id]);
     }
 
     /**
