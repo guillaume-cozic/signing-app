@@ -29,12 +29,9 @@ class EventServiceProvider extends ServiceProvider
         BoatTripStarted::class => [
             SendNotificationBoatTripStarted::class
         ],
-        \Mpociot\Teamwork\Events\UserJoinedTeam::class => [
-        ],
-        \Mpociot\Teamwork\Events\UserLeftTeam::class => [
-        ],
-        \Mpociot\Teamwork\Events\UserInvitedToTeam::class => [
-        ],
+        \Mpociot\Teamwork\Events\UserJoinedTeam::class => [],
+        \Mpociot\Teamwork\Events\UserLeftTeam::class => [],
+        \Mpociot\Teamwork\Events\UserInvitedToTeam::class => [],
     ];
 
     public function boot()
