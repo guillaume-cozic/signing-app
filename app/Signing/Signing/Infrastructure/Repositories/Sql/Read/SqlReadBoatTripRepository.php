@@ -47,4 +47,9 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
             });
     }
 
+    public function getNearToFinishOrStart(): array
+    {
+        // TODO: Implement getNearToFinishOrStart() method.
+    }
+
 }
