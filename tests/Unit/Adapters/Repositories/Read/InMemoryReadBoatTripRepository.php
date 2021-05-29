@@ -26,5 +26,4 @@ class InMemoryReadBoatTripRepository implements ReadBoatTripRepository
     {
         return $this->boatTrips;
     }
-
 }

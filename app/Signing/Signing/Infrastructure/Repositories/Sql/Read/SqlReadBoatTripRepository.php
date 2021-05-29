@@ -49,7 +49,24 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
 
     public function getNearToFinishOrStart(): array
     {
-        // TODO: Implement getNearToFinishOrStart() method.
+        return BoatTripModel::query()
+            ->where(function ($query) {
+                return $query->whereRaw('ABS(UNIX_TIMESTAMP(NOW()) - (UNIX_TIMESTAMP(start_at) + 60*60 * number_hours)) <= ?', 5 * 60)
+                    ->whereNull('end_at');
+            })
+            ->orWhere(function ($query) {
+                return $query->where(function ($query){
+                    return $query->whereRaw('ABS(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(should_start_at)) <= ?', 5 * 60)
+                    ->orWhereRaw('UNIX_TIMESTAMP(should_start_at) < UNIX_TIMESTAMP(NOW())');
+                })
+                ->whereNull('start_at');
+            })
+            ->get()
+            ->transform(function (BoatTripModel $item) {
+                return $item->toDto();
+            })
+            ?->toArray()
+        ;
     }
 
 }

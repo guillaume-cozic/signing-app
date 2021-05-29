@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Domain\UseCases\Query\Impl;
 
 
+use App\Signing\Signing\Domain\Entities\Dto\SuggestionDto;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\UseCases\Query\GetBoatTripsSuggestions;
 
@@ -22,7 +23,7 @@ class GetBoatTripsSuggestionsImpl implements GetBoatTripsSuggestions
             if($boatTrip->startAt() == null){
                 $action = 'start';
             }
-            $suggestions[] = ['boat-trip' => $boatTrip, 'action' => $action];
+            $suggestions[] = new SuggestionDto($action, $boatTrip);
         }
         return $suggestions;
     }

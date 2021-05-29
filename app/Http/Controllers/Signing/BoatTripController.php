@@ -13,6 +13,7 @@ use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
+use App\Signing\Signing\Domain\UseCases\Query\GetBoatTripsSuggestions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -200,5 +201,27 @@ class BoatTripController extends Controller
     {
         $endBoatTrip->execute($boatTripId);
         return [];
+    }
+
+    public function getSuggestionsBoatTrip(GetBoatTripsSuggestions $getBoatTripsSuggestions)
+    {
+        $boatTripsData = [];
+        $suggestions = $getBoatTripsSuggestions->execute();
+        foreach ($suggestions as $suggestion) {
+            $boats = '';
+            $boatTrip = $suggestion->boatTrip;
+            foreach($suggestion->boatTrip->boats as $boat => $qty){
+                $boats .= $qty. ' '.$boat.'</br>';
+            }
+            $boats = $boats !== '' ? $boats : 'Matériel perso';
+
+            $boatTripsData[] = [
+                'boats' => $boats,
+                'name' => $boatTrip->name,
+                'action' => $suggestion->action,
+                'boat-trip_id' => $boatTrip->id
+            ];
+        }
+        return view('boattrips.suggestions', ['suggestions' => $boatTripsData]);
     }
 }

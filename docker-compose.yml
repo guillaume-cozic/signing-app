@@ -12,6 +12,7 @@ services:
       - 9000
     volumes:
       - ./:/var/www/html/:rw
+      - ./dockerfiles/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     depends_on:
       - mysql_signing
     networks:
@@ -19,7 +20,9 @@ services:
       - back-tier
 
   mysql_signing:
-    image: mysql:5.7
+    build:
+      context: .
+      dockerfile: ./dockerfiles/mysql/Dockerfile
     container_name: mysql_signing
     environment:
       MYSQL_DATABASE: signing

@@ -4,7 +4,8 @@
 namespace Tests\Unit\Signing\Query;
 
 
-use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
+use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
+use App\Signing\Signing\Domain\Entities\Dto\SuggestionDto;
 use App\Signing\Signing\Domain\UseCases\Query\GetBoatTripsSuggestions;
 use Tests\TestCase;
 
@@ -34,15 +35,10 @@ class SuggestActionOnBoatTripTest extends TestCase
      */
     public function shouldGetSuggestionOnBoatTripNearToFinish()
     {
-        $boatTrip = BoatTripBuilder::build('abc')
-            ->withBoats(['abcd' => 1])
-            ->withSailor(name:'tabarly')
-            ->withDates(startAt: new \DateTime('-56 minutes'))
-            ->inProgress(1)
-        ;
-        $this->readBoatTripRepository->save($boatTrip->getState());
+        $boatTripDto = new BoatTripsDTo(id:'abc',  startAt: new \DateTime('-56 minutes'), boats:['abcd' => 1], name:'tabarly', hours:1);
+        $this->readBoatTripRepository->save($boatTripDto);
 
-        $suggestionExpected = ['action' => 'finish', 'boat-trip' => $boatTrip->getState()];
+        $suggestionExpected = new SuggestionDto('finish',  $boatTripDto);
         $suggestion = $this->getBoatTripsSuggestions->execute();
         self::assertEquals($suggestionExpected, $suggestion[0]);
     }
@@ -52,33 +48,11 @@ class SuggestActionOnBoatTripTest extends TestCase
      */
     public function shouldGetSuggestionOnBoatTripNearToStart()
     {
-        $boatTrip = BoatTripBuilder::build('abc')
-            ->withBoats(['abcd' => 1])
-            ->withSailor(name:'tabarly')
-            ->withDates(shouldStartAt: new \DateTime('+4 minutes'))
-            ->inProgress(1)
-        ;
-        $this->readBoatTripRepository->save($boatTrip->getState());
+        $boatTripDto = new BoatTripsDTo(id:'abc',  shouldStartAt: new \DateTime('+4 minutes'), boats:['abcd' => 1], name:'tabarly', hours:1);
+        $this->readBoatTripRepository->save($boatTripDto);
 
-        $suggestionExpected = ['action' => 'start', 'boat-trip' => $boatTrip->getState()];
+        $suggestionExpected = new SuggestionDto('start',  $boatTripDto);
         $suggestion = $this->getBoatTripsSuggestions->execute();
         self::assertEquals($suggestionExpected, $suggestion[0]);
     }
-
-    /**
-     * @test
-     */
-    /*public function shouldNotGetSuggestionsOnBoatTripAlreadyFinished()
-    {
-        $boatTrip = BoatTripBuilder::build('abc')
-            ->withBoats(['abcd' => 1])
-            ->withSailor(name:'tabarly')
-            ->ended(1);
-        $this->boatTripRepository->save($boatTrip->getState());
-
-        $suggestions = $this->getBoatTripsSuggestions->execute();
-        self::assertEmpty($suggestions);
-    }*/
-
-
 }
