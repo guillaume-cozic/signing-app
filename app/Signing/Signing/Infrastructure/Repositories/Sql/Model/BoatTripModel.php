@@ -59,16 +59,16 @@ class BoatTripModel extends Model
         $this->attributes['should_start_at'] = $value?->format('Y-m-d H:i:s.u');
     }
 
-    public function totalBoats()
+    public function totalBoats():int
     {
         $total = 0;
-        foreach($this->boats as $boatId => $qty){
+        foreach($this->boats as $qty){
             $total += $qty;
         }
         return $total;
     }
 
-    public function toDto()
+    public function toDto():BoatTripsDTo
     {
         $boats = [];
         foreach($this->boats as $boatId => $qty){

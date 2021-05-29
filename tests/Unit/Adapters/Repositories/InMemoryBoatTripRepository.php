@@ -36,6 +36,4 @@ class InMemoryBoatTripRepository implements BoatTripRepository
     {
         unset($this->boatTrips[$boatTripId]);
     }
-
-
 }

@@ -84,6 +84,10 @@ Route::get('dashboard/availability', [\App\Http\Controllers\Signing\FleetControl
     ->middleware(['auth'])
     ->name('dashboard.availability');
 
+Route::get('dashboard/suggestions', [\App\Http\Controllers\Signing\BoatTripController::class, 'getSuggestionsBoatTrip'])
+    ->middleware(['auth'])
+    ->name('dashboard.suggestions');
+
 require __DIR__.'/auth.php';
 
 

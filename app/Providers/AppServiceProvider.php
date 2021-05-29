@@ -11,6 +11,7 @@ use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingReposi
 use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Shared\Providers\Impl\AuthGatewayImpl;
+use App\Signing\Shared\Providers\Impl\DateProviderImpl;
 use App\Signing\Shared\Services\ContextService;
 use App\Signing\Shared\Services\ContextServiceImpl;
 use App\Signing\Shared\Services\Translations\TranslationService;
@@ -47,8 +48,10 @@ use App\Signing\Signing\Domain\UseCases\Impl\EndBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetBoatTripsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\GetFleetsListImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\UpdateFleetImpl;
+use App\Signing\Signing\Domain\UseCases\Query\GetBoatTripsSuggestions;
 use App\Signing\Signing\Domain\UseCases\Query\GetFleet;
 use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
+use App\Signing\Signing\Domain\UseCases\Query\Impl\GetBoatTripsSuggestionsImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetNumberBoatsOfFleetAvailableImpl;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
@@ -65,6 +68,7 @@ use Tests\Unit\Adapters\Provider\FakeIdentityProvider;
 use Tests\Unit\Adapters\Provider\InMemoryAuthGateway;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
+use Tests\Unit\Adapters\Repositories\Read\InMemoryReadBoatTripRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
 use ConsoleTVs\Charts\Registrar as Charts;
 
@@ -95,20 +99,23 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GetFleetsList::class, GetFleetsListImpl::class);
         $this->app->singleton(GetFleet::class, GetFleetImpl::class);
         $this->app->singleton(GetNumberBoatsOfFleetAvailable::class, GetNumberBoatsOfFleetAvailableImpl::class);
+        $this->app->singleton(GetBoatTripsSuggestions::class, GetBoatTripsSuggestionsImpl::class);
 
         $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
-        $this->app->singleton(DateProvider::class, FakeDateProvider::class);
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);
         $this->app->singleton(AuthGateway::class, AuthGatewayImpl::class);
 
         if(config('app.env') == 'testing') {
+            $this->app->singleton(DateProvider::class, FakeDateProvider::class);
             $this->app->singleton(FleetRepository::class, InMemoryFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, InMemoryBoatTripRepository::class);
             $this->app->singleton(TranslationService::class, FakeTranslationService::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
+            $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
         }
         if(config('app.env') == 'testing-db') {
+            $this->app->singleton(DateProvider::class, FakeDateProvider::class);
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);
@@ -119,6 +126,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         if(config('app.env') == 'local') {
+            $this->app->singleton(DateProvider::class, DateProviderImpl::class);
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);

@@ -107,46 +107,7 @@ if($('#boat-trips-table').length != 0) {
                             tableBoatTrips.ajax.reload(null, false);
                             loadAvailability();
                             notify('La sortie a bien été supprimée');
-                        }
-                    });
-                }
-            }
-        });
-    });
-
-    $('#boat-trips-table').on('click', '.btn-start', function () {
-        var url = $(this).data('href');
-        $.showConfirm({
-            title: "Voulez vous vraiment démarrer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
-            onSubmit: function (result) {
-                if (result) {
-                    $.ajax({
-                        url: url,
-                        method: 'POST',
-                        success: function (){
-                            tableBoatTrips.ajax.reload(null, false);
-                            loadAvailability();
-                            notify('La sortie a bien été démarée');
-                        }
-                    });
-                }
-            }
-        });
-    });
-
-    $('#boat-trips-table').on('click', '.btn-end', function () {
-        var url = $(this).data('href');
-        $.showConfirm({
-            title: "Terminer la sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
-            onSubmit: function (result) {
-                if (result) {
-                    $.ajax({
-                        url: url,
-                        method: 'POST',
-                        success: function (){
-                            tableBoatTrips.ajax.reload(null, false);
-                            loadAvailability();
-                            notify('La sortie a bien été terminée');
+                            loadSuggestions();
                         }
                     });
                 }
@@ -154,6 +115,70 @@ if($('#boat-trips-table').length != 0) {
         });
     });
 }
+
+$('#boat-trips-table').on('click', '.btn-start', function () {
+    var url = $(this).data('href');
+    startBoatTrip(url);
+});
+
+function startBoatTrip(url)
+{
+    $.showConfirm({
+        title: "Voulez vous vraiment démarrer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
+        onSubmit: function (result) {
+            if (result) {
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    success: function (){
+                        tableBoatTrips.ajax.reload(null, false);
+                        loadAvailability();
+                        notify('La sortie a bien été démarée');
+                        loadSuggestions();
+                    }
+                });
+            }
+        }
+    });
+}
+
+function endBoatTrip(url)
+{
+    $.showConfirm({
+        title: "Terminer la sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
+        onSubmit: function (result) {
+            if (result) {
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    success: function (){
+                        tableBoatTrips.ajax.reload(null, false);
+                        loadAvailability();
+                        notify('La sortie a bien été terminée');
+                        loadSuggestions();
+                    }
+                });
+            }
+        }
+    });
+}
+
+$('#boat-trips-table').on('click', '.btn-end', function () {
+    var url = $(this).data('href');
+    endBoatTrip(url);
+});
+
+
+$('#div-suggestion').on('click', '.btn-end', function () {
+    var url = $(this).data('href');
+    endBoatTrip(url);
+});
+
+$('#div-suggestion').on('click', '.btn-start', function () {
+    var url = $(this).data('href');
+    startBoatTrip(url);
+});
+
 
 var countBoatsList = 2;
 $('#btn-add-boats').click(function (){
@@ -185,6 +210,7 @@ function addBoatTrip(url, form) {
             form.trigger('reset');
             $('.row-boat-trip').html('');
             notify('La sortie a bien été créée');
+            loadSuggestions();
         },
         error:function (){
             $('#alert-boat-not-available').slideDown();
@@ -251,3 +277,25 @@ if($('#ended-boat-trips-table').length != 0) {
     });
 }
 
+function loadSuggestions() {
+    var route = $('#div-suggestion').data('href');
+    $.ajax({
+        url : route,
+        success: function (data){
+            $('#div-suggestion').html(data);
+            var countSuggestions = $('#count-suggestions').val();
+            $('.control-sidebar-id').html('<span class="badge badge-warning navbar-badge">'+countSuggestions+'</span>');
+        }
+    });
+}
+loadSuggestions();
+
+setInterval(function (){ loadSuggestions() },60*1000);
+
+
+$('.control-sidebar-id').click(function(){
+    if($('#boat-trips-table').length != 0) {
+        $('#boat-trips-table').css('width', '100%');
+        tableBoatTrips.draw();
+    }
+});
