@@ -210,6 +210,7 @@ function addBoatTrip(url, form) {
             form.trigger('reset');
             $('.row-boat-trip').html('');
             notify('La sortie a bien été créée');
+            loadSuggestions();
         },
         error:function (){
             $('#alert-boat-not-available').slideDown();

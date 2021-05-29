@@ -2134,6 +2134,7 @@ function addBoatTrip(url, form) {
       form.trigger('reset');
       $('.row-boat-trip').html('');
       (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été créée');
+      loadSuggestions();
     },
     error: function error() {
       $('#alert-boat-not-available').slideDown();
@@ -2218,8 +2219,10 @@ setInterval(function () {
   loadSuggestions();
 }, 60 * 1000);
 $('.control-sidebar-id').click(function () {
-  $('#boat-trips-table').css('width', '100%');
-  tableBoatTrips.draw();
+  if ($('#boat-trips-table').length != 0) {
+    $('#boat-trips-table').css('width', '100%');
+    tableBoatTrips.draw();
+  }
 });
 
 /***/ }),

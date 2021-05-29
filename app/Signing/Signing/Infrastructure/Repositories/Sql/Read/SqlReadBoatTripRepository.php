@@ -51,7 +51,10 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
     {
         return BoatTripModel::query()
             ->where(function ($query) {
-                return $query->whereRaw('ABS(UNIX_TIMESTAMP(NOW()) - (UNIX_TIMESTAMP(start_at) + 60*60 * number_hours)) <= ?', 5 * 60)
+                return $query->where(function ($query) {
+                    return $query->whereRaw('ABS(UNIX_TIMESTAMP(NOW()) - (UNIX_TIMESTAMP(start_at) + 60*60 * number_hours)) <= ?', 5 * 60)
+                        ->orWhereRaw('UNIX_TIMESTAMP(start_at) + 60*60 * number_hours <  UNIX_TIMESTAMP(NOW())');
+                    })
                     ->whereNull('end_at');
             })
             ->orWhere(function ($query) {
