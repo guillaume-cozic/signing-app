@@ -17,6 +17,7 @@ use App\Signing\Shared\Services\ContextServiceImpl;
 use App\Signing\Shared\Services\Translations\TranslationService;
 use App\Signing\Shared\Services\Translations\TranslationServiceImpl;
 use App\Signing\Signing\Domain\Provider\IdentityProvider;
+use App\Signing\Signing\Domain\Provider\IdentityProviderImpl;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
@@ -101,11 +102,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GetNumberBoatsOfFleetAvailable::class, GetNumberBoatsOfFleetAvailableImpl::class);
         $this->app->singleton(GetBoatTripsSuggestions::class, GetBoatTripsSuggestionsImpl::class);
 
-        $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);
         $this->app->singleton(AuthGateway::class, AuthGatewayImpl::class);
 
         if(config('app.env') == 'testing') {
+            $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
             $this->app->singleton(DateProvider::class, FakeDateProvider::class);
             $this->app->singleton(FleetRepository::class, InMemoryFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, InMemoryBoatTripRepository::class);
@@ -115,6 +116,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
         }
         if(config('app.env') == 'testing-db') {
+            $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
             $this->app->singleton(DateProvider::class, FakeDateProvider::class);
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
@@ -126,6 +128,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         if(config('app.env') == 'local') {
+            $this->app->singleton(IdentityProvider::class, IdentityProviderImpl::class);
             $this->app->singleton(DateProvider::class, DateProviderImpl::class);
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
