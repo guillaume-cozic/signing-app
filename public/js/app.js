@@ -2135,9 +2135,23 @@ function addBoatTrip(url, form) {
       $('.row-boat-trip').html('');
       (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été créée');
       loadSuggestions();
+      $('#alert-error-add-boat-trip').hide();
+      $('#alert-boat-not-available').hide();
     },
-    error: function error() {
-      $('#alert-boat-not-available').slideDown();
+    statusCode: {
+      422: function _(data) {
+        var response = JSON.parse(data.responseText);
+        var errorString = '<ul>';
+        $.each(response.errors, function (key, value) {
+          errorString += '<li>' + value + '</li>';
+        });
+        errorString += '</ul>';
+        $('#alert-error-add-boat-trip').html(errorString);
+        $('#alert-error-add-boat-trip').slideDown();
+      },
+      430: function _(response) {
+        $('#alert-boat-not-available').slideDown();
+      }
     }
   });
   return false;

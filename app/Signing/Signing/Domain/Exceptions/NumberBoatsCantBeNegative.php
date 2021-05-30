@@ -4,7 +4,9 @@
 namespace App\Signing\Signing\Domain\Exceptions;
 
 
-class NumberBoatsCantBeNegative extends \Exception
+use App\Signing\Shared\Exception\DomainException;
+
+class NumberBoatsCantBeNegative extends DomainException
 {
 
 }

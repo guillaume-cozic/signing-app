@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Signing\Shared\Exception\DomainException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -36,5 +37,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, \Throwable $exception)
+    {
+        if ($exception instanceof DomainException) {
+            return response()->json([
+                'data' => [
+                    'message' => $exception->getMessage(),
+                ]
+            ], 430);
+        }
+        return Parent::render($request, $exception);
     }
 }

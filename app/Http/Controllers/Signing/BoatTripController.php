@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Signing;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Domain\BoatTrip\AddBoatTripRequest;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
@@ -153,7 +154,7 @@ class BoatTripController extends Controller
         ]);
     }
 
-    public function add(Request $request, AddBoatTrip $addBoatTrip)
+    public function add(AddBoatTripRequest $request, AddBoatTrip $addBoatTrip)
     {
         $boats = $request->input('boats');
         $name = $request->input('name');
@@ -169,7 +170,7 @@ class BoatTripController extends Controller
         return [];
     }
 
-    public function forceAdd(Request $request, ForceAddBoatTrip $forceAddBoatTrip)
+    public function forceAdd(AddBoatTripRequest $request, ForceAddBoatTrip $forceAddBoatTrip)
     {
         $boats = $request->input('boats');
         $name = $request->input('name');

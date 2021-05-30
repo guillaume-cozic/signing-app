@@ -4,7 +4,9 @@
 namespace App\Signing\Signing\Domain\Exceptions;
 
 
-class BoatNotAvailable extends \Exception
+use App\Signing\Shared\Exception\DomainException;
+
+class BoatNotAvailable extends DomainException
 {
 
 }

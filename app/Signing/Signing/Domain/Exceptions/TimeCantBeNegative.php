@@ -4,7 +4,9 @@
 namespace App\Signing\Signing\Domain\Exceptions;
 
 
-class TimeCantBeNegative extends \Exception
+use App\Signing\Shared\Exception\DomainException;
+
+class TimeCantBeNegative extends DomainException
 {
 
 }
