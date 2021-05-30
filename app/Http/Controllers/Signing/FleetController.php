@@ -14,9 +14,9 @@ use App\Signing\Signing\Domain\UseCases\Query\GetFleet;
 use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use Illuminate\Http\Request;
-use Tests\TestCase;
+use App\Http\Controllers\Controller;
 
-class FleetController extends TestCase
+class FleetController extends Controller
 {
     public function listShips()
     {
