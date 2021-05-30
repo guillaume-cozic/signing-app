@@ -17,6 +17,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
         $fleets = [];
         if(!empty($search)){
             $fleets = FleetModel::query()
+                ->sailingClub()
                 ->where('fleet.name->'.App::getLocale(), 'LIKE', '%'.$search.'%')
                 ->get()
                 ->pluck('uuid')->toArray();
@@ -64,6 +65,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                 })
                 ->whereNull('start_at');
             })
+            ->sailingClub()
             ->get()
             ->transform(function (BoatTripModel $item) {
                 return $item->toDto();
