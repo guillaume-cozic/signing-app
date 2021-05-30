@@ -4,7 +4,9 @@
 namespace App\Signing\Signing\Domain\Exceptions;
 
 
-class BoatTripAlreadyEnded extends \Exception
+use App\Signing\Shared\Exception\DomainException;
+
+class BoatTripAlreadyEnded extends DomainException
 {
 
 }

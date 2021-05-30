@@ -94,6 +94,8 @@
                         Voulez vous tout de même continuer et créer la sortie en mer.
                         <button id="btn-force" type="button" class="btn btn-default">Forcer la création de la sortie</button>
                     </div>
+                    <div id="alert-error-add-boat-trip" class="alert alert-danger" style="display: none;">
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>

@@ -211,10 +211,25 @@ function addBoatTrip(url, form) {
             $('.row-boat-trip').html('');
             notify('La sortie a bien été créée');
             loadSuggestions();
+            $('#alert-error-add-boat-trip').hide();
+            $('#alert-boat-not-available').hide();
         },
-        error:function (){
-            $('#alert-boat-not-available').slideDown();
-        }
+        statusCode: {
+            422: function (data) {
+                var response = JSON.parse(data.responseText);
+                var errorString = '<ul>';
+                $.each(response.errors, function(key, value) {
+                    errorString += '<li>' + value + '</li>';
+                });
+                errorString += '</ul>';
+                $('#alert-error-add-boat-trip').html(errorString);
+                $('#alert-error-add-boat-trip').slideDown();
+            },
+            430: function (response){
+                $('#alert-boat-not-available').slideDown();
+            }
+        },
+
     });
     return false;
 }

@@ -4,7 +4,9 @@
 namespace App\Signing\Signing\Domain\Exceptions;
 
 
-class FleetNotFound extends \Exception
+use App\Signing\Shared\Exception\DomainException;
+
+class FleetNotFound extends DomainException
 {
 
 }
