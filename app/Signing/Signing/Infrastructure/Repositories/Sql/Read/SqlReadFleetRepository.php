@@ -18,7 +18,7 @@ class SqlReadFleetRepository implements ReadFleetRepository
         return FleetModel::query()
             ->when(!empty($search['search']), function (Builder $query) use($search){
                 $query->where('total_available', 'LIKE', '%'.$search['search'].'%')
-                    ->orWhere('name->' . App::getLocale(), 'LIKE', '%'.$search['search'].'%')
+                    ->orWhereRaw('lower(name->\'$.' . App::getLocale().'\') LIKE ?', '%'.strtolower($search['search']).'%')
                     ->orWhere('state', 'LIKE', '%'.$search['search'].'%');
             })
             ->when(!empty($search['filters']['state']), function (Builder $query) use($search) {
