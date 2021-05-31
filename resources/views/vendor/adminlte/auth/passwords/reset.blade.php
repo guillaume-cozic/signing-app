@@ -11,11 +11,11 @@
 @section('auth_header', __('adminlte::adminlte.password_reset_message'))
 
 @section('auth_body')
-    <form action="{{ $password_reset_url }}" method="post">
+    <form action="{{ route('password.update') }}" method="post">
         {{ csrf_field() }}
 
         {{-- Token field --}}
-        <input type="hidden" name="token" value="{{ $token }}">
+        <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
         {{-- Email field --}}
         <div class="input-group mb-3">
