@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',  [\App\Http\Controllers\Controller::class, 'home']);
+Route::get('/home',  function (){
+    return redirect()->intended('/dashboard');
+});
 
 Route::get('/dashboard',  [\App\Http\Controllers\Signing\BoatTripController::class, 'index'])
     ->middleware(['auth'])

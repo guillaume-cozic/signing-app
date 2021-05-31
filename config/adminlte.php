@@ -191,8 +191,8 @@ return [
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
-    'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
+    'password_reset_url' => 'forgot-password',
+    'password_email_url' => 'forgot-password',
     'profile_url' => 'profile',
 
     /*
@@ -242,6 +242,7 @@ return [
         [
             'text' => 'Utilisateurs',
             'icon' => 'nav-icon fas fa-users',
+            'active' => ['teams*'],
             'submenu' => [
                 [
                     'text' => 'L\'équipe',
@@ -250,14 +251,15 @@ return [
                 [
                     'text' => 'Inviter un collaborateur',
                     'url'  => 'teams/redirect',
+                    'active' => ['teams/members/*']
                 ],
             ],
         ],
-        [
+        /*[
             'text' => 'Reporting',
             'url'  => 'reporting',
             'icon' => 'nav-icon fas fa-chart-bar',
-        ],
+        ],*/
         /*[
             'text' => 'Facturation',
             'url'  => 'billing',
