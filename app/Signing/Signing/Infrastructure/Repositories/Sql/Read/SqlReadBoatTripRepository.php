@@ -18,18 +18,21 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
         if(!empty($search)){
             $fleets = FleetModel::query()
                 ->sailingClub()
-                ->where('fleet.name->'.App::getLocale(), 'LIKE', '%'.$search.'%')
+                ->whereRaw('lower(fleet.name->\'$.'.App::getLocale().'\') LIKE ?', '%'.strtolower($search).'%')
                 ->get()
                 ->pluck('uuid')->toArray();
         }
         return BoatTripModel::query()
             ->selectRaw('*, UNIX_TIMESTAMP(start_at) + 3600 * number_hours as should_return')
             ->when(isset($search) && $search !== '', function (Builder $query) use($search, $fleets) {
-                $query->where('boat_trip.name', 'LIKE', '%'.$search.'%');
-                foreach($fleets as $fleet) {
-                    $query->orWhereNotNull('boats->'.$fleet);
-                }
-                return $query;
+                return $query->where(function ($query) use($search, $fleets){
+                    $query->whereRaw('lower(boat_trip.name) LIKE ?', '%' . strtolower($search) . '%');
+                    $query->orWhere(function ($query) use ($fleets) {
+                        foreach ($fleets as $fleet) {
+                            $query->orWhereNotNull('boats->' . $fleet);
+                        }
+                    });
+                });
             })
             ->when(!isset($filters['ended']), function (Builder $query) {
                 return $query->whereNull('end_at');
