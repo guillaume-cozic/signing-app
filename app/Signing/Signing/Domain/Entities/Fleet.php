@@ -23,6 +23,7 @@ class Fleet implements HasState
         private Id $id,
         private int $totalAvailable,
         private string $state = self::STATE_ACTIVE,
+        private ?array $rents = [],
     )
     {
         if($this->totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
@@ -57,6 +58,12 @@ class Fleet implements HasState
         $this->translationService->add($trans, $this->id(), 'support');
     }
 
+    public function updateRentalRent(array $rents)
+    {
+        $this->rents = $rents;
+        $this->fleetRepository->save($this->getState());
+    }
+
     public function disable()
     {
         $this->state = self::STATE_INACTIVE;
@@ -76,6 +83,6 @@ class Fleet implements HasState
 
     public function getState(): FleetState
     {
-        return new FleetState($this->id->id(), $this->totalAvailable, $this->state);
+        return new FleetState($this->id->id(), $this->totalAvailable, $this->state, $this->rents);
     }
 }

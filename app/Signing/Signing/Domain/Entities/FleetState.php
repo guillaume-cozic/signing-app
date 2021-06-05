@@ -11,7 +11,8 @@ class FleetState implements State
     public function __construct(
         private string $id,
         private int $totalAvailable,
-        private string $state
+        private string $state,
+        private array $rents = [],
     ){}
 
     public function id(): string
@@ -29,8 +30,13 @@ class FleetState implements State
         return $this->state;
     }
 
+    public function rentalRate(): array
+    {
+        return $this->rents;
+    }
+
     public function toDomain()
     {
-        return new Fleet(new Id($this->id), $this->totalAvailable, $this->state);
+        return new Fleet(new Id($this->id), $this->totalAvailable, $this->state, $this->rents);
     }
 }

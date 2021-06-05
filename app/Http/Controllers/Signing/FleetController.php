@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Signing;
 
 
 use App\Http\Requests\Domain\Fleet\AddFleetRequest;
+use App\Http\Requests\Domain\Fleet\EditRentalRentFleetRequest;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
+use App\Signing\Signing\Domain\UseCases\Fleet\UpdateFleetRentalRate;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Query\GetFleet;
 use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
@@ -101,5 +103,12 @@ class FleetController extends Controller
         return view('dashboard.availability-fleet', [
             'fleets' => $fleets
         ]);
+    }
+
+    public function editRent(string $fleetId, EditRentalRentFleetRequest $request, UpdateFleetRentalRate $updateFleetRentalRate)
+    {
+        $rents = $request->input('rents');
+        $updateFleetRentalRate->execute($fleetId, $rents);
+        return redirect()->back();
     }
 }

@@ -20,9 +20,13 @@ class FleetModel extends Model
 
     public $translatable = ['name'];
 
+    protected $casts = [
+        'rental_rate' => 'array'
+    ];
+
     public function toDomain():Fleet
     {
-        return new Fleet(new Id($this->uuid), $this->total_available, $this->state);
+        return new Fleet(new Id($this->uuid), $this->total_available, $this->state, $this->rental_rate);
     }
 
     public function toDto():FleetDto

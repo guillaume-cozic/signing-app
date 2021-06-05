@@ -95,6 +95,6 @@ class SqlReadBoatTripRepositoryTest extends TestCase
         $this->boatTripRepository->save($boatTrip->getState());
 
         $boatTripsDto = $this->readBoatTripRepository->getNearToFinishOrStart();
-        self::assertEquals($id, $boatTripsDto[0]->id);
+        self::assertEmpty($boatTripsDto);
     }
 }

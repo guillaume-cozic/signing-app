@@ -36,6 +36,8 @@ use App\Signing\Signing\Domain\UseCases\DelayBoatTripStart;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
+use App\Signing\Signing\Domain\UseCases\Fleet\Impl\UpdateFleetRentalRateImpl;
+use App\Signing\Signing\Domain\UseCases\Fleet\UpdateFleetRentalRate;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Impl\AddBoatTripImpl;
@@ -91,6 +93,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
         $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
+        $this->app->singleton(UpdateFleetRentalRate::class, UpdateFleetRentalRateImpl::class);
 
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);

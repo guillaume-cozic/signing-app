@@ -39,6 +39,10 @@ Route::post('{fleetId}/fleet', [\App\Http\Controllers\Signing\FleetController::c
     ->middleware(['auth'])
     ->name('fleet.edit');
 
+Route::post('{fleetId}/fleet/rent', [\App\Http\Controllers\Signing\FleetController::class, 'editRent'])
+    ->middleware(['auth'])
+    ->name('fleet.edit.rent');
+
 Route::post('fleets/disable', [\App\Http\Controllers\Signing\FleetController::class, 'disable'])
     ->middleware(['auth'])
     ->name('fleet.disable');
