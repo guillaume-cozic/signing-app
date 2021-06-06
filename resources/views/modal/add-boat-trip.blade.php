@@ -87,6 +87,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="start_auto" type="checkbox" name="start_auto"> Faire partir automatiquement à l'heure indiquée
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="alert-boat-not-available" class="alert alert-danger" style="display: none;">
                         <h5><i class="icon fas fa-ban"></i> Attention!</h5>

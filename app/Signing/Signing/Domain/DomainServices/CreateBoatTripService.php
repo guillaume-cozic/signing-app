@@ -15,25 +15,29 @@ class CreateBoatTripService
     public function __construct(
         private DateProvider $dateProvider
     ){}
+
     /**
      * @throws BoatNotAvailable
      */
-    public function execute(bool $force, array $boats, string $name, int $numberHours, string $startAtHours = null, bool $startNow = null)
+    public function execute(bool $force, array $boats, string $name, int $numberHours, string $startAtHours = null, bool $startNow = null, ?bool $startAuto = false)
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
             ->withSailor(name:$name)
             ->withBoats($boats);
 
-        $boatTrip = $this->buildBoatTrip($startNow, $boatTripBuilder, $numberHours, $startAtHours);
+        $boatTrip = $this->buildBoatTrip($startNow, $boatTripBuilder, $numberHours, $startAtHours, $startAuto);
         $boatTrip->create($force, $startNow);
     }
 
-    private function buildBoatTrip(?bool $startNow, BoatTripBuilder $boatTripBuilder, int $numberHours, string $startAtHours = null): BoatTrip
+    private function buildBoatTrip(?bool $startNow, BoatTripBuilder $boatTripBuilder, int $numberHours, string $startAtHours = null, ?bool $startAuto = false): BoatTrip
     {
         if ($startNow) {
             return $boatTripBuilder->inProgress($numberHours);
         }
         $shouldStartAt = $this->calculateShouldStartAt($startAtHours);
+        if($startAuto){
+            return $boatTripBuilder->withDates(startAt: $shouldStartAt, numberHours: $numberHours)->get();
+        }
         return $boatTripBuilder->notStarted(shouldStartAt: $shouldStartAt, numberHours: $numberHours);
     }
 

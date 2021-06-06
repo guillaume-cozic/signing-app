@@ -87,6 +87,34 @@ class AddBoatTripTest extends TestCase
     /**
      * @test
      */
+    public function shouldAddABoatTripWithStartInTheFuture()
+    {
+        $s1 = new Fleet(new Id('abc'), 20);
+        $this->fleetRepository->save($s1->getState());
+        $s2 = new Fleet(new Id('abcd'), 15);
+        $this->fleetRepository->save($s2->getState());
+
+        $this->identityProvider->add($id = 'abc');
+        $boats = [
+            $s1->id() => $qty1 = 2,
+            $s2->id() => $qty2 = 5,
+        ];
+
+        $shouldStartAt = $this->dateProvider->current()->setTime(13, 10);
+        $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3, '13:10', null, $startAuto = true);
+
+        $boatTripExpected = BoatTripBuilder::build($id)
+            ->withDates(startAt: $shouldStartAt,  numberHours: 3)
+            ->withBoats($boats)
+            ->withSailor(name:$name)
+            ->inProgress($numberHours);
+        $this->assertBoatTripAdded($id, $boatTripExpected);
+        Event::assertNotDispatched(BoatTripStarted::class);
+    }
+
+    /**
+     * @test
+     */
     public function shouldAddBoatTripStartedNow()
     {
         $s1 = new Fleet(new Id('abc'), 20);
