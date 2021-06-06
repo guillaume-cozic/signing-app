@@ -55,6 +55,11 @@ class BoatTripController extends Controller
                 $state = 'info';
                 $message = 'En navigation';
                 $actions[] = 'end';
+                $actions[] = 'cancel';
+                if($boatTrip->startAt > new Carbon(new \DateTime())){
+                    $message = 'A terre';
+                    $state = 'warning';
+                }
             }else{
                 $state = 'warning';
                 $message = 'A terre';
@@ -161,12 +166,13 @@ class BoatTripController extends Controller
         $hours = $request->input('hours', 1);
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
+        $startAuto = $request->input('start_auto');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow);
+        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto);
         return [];
     }
 
@@ -177,12 +183,13 @@ class BoatTripController extends Controller
         $hours = $request->input('hours', 1);
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
+        $startAuto = $request->input('start_auto');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow);
+        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto);
         return [];
     }
 
