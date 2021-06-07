@@ -39,7 +39,7 @@ class User extends Authenticatable
         if(isset($this->avatar)){
             return asset($this->avatar);
         }
-        return 'http://dev.signing.com:8002/vendor/adminlte/dist/img/AdminLTELogo.png';
+        return url('').'/vendor/adminlte/dist/img/AdminLTELogo.png';
     }
 
     public function adminlte_desc()
