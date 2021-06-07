@@ -79,12 +79,12 @@ class BoatTripController extends Controller
             $buttons = '';
             if(in_array('start', $actions)) {
                 $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Démarrer"
+                     data-toggle="tooltip" data-placement="top" title="Démarrer la sortie"
                     class="btn-start fa fa-play text-green p-1"></i>';
             }
             if(in_array('end', $actions)) {
                 $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Emarger"
+                     data-toggle="tooltip" data-placement="top" title="Terminer la sortie"
                     class="btn-end fa fa-pause text-blue p-1"></i>';
             }
             if(in_array('cancel', $actions)) {

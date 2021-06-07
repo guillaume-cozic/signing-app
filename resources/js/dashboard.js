@@ -89,7 +89,7 @@ if($('#boat-trips-table').length != 0) {
             {"name": "should_return"},
             {"name": "return", 'orderable': false},
         ],
-        "order": [[3, "asc"]],
+        "order": [[4, "asc"]],
         fnRowCallback: function (row, data) {}
     });
 
