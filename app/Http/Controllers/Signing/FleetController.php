@@ -15,6 +15,7 @@ use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Query\GetFleet;
 use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -110,5 +111,17 @@ class FleetController extends Controller
         $rents = $request->input('rents');
         $updateFleetRentalRate->execute($fleetId, $rents);
         return redirect()->back();
+    }
+
+    public function upload(string $fleetId, Request $request)
+    {
+        $fleet = FleetModel::where('uuid', $fleetId)->first();
+        $fleet->clearMediaCollection();
+
+        $fleet
+            ->addMedia($request->file('picture-fleet'))
+            ->toMediaCollection();
+        $mediaItems = $fleet->getMedia();
+        return $mediaItems[0]->getFullUrl();
     }
 }

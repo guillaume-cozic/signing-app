@@ -41,10 +41,11 @@ class GetFleetTest extends TestCase
     public function shouldGetFleet()
     {
         $fleetsId = 'abc';
-        $fleet = new Fleet(new Id($fleetsId), 20, Fleet::STATE_INACTIVE);
+        $rents = [1 => 15];
+        $fleet = new Fleet(new Id($fleetsId), 20, Fleet::STATE_INACTIVE, $rents);
         $fleet->create('hobie cat', '');
 
-        $fleetDtoExpected = new FleetDto($fleetsId, 'hobie cat', 20, Fleet::STATE_INACTIVE);
+        $fleetDtoExpected = new FleetDto($fleetsId, 'hobie cat', 20, Fleet::STATE_INACTIVE, $rents);
 
         $fleetDto = $this->getFleet->execute($fleetsId);
         self::assertEquals($fleetDtoExpected, $fleetDto);

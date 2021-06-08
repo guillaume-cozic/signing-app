@@ -8,11 +8,13 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Dto\FleetDto;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
-class FleetModel extends Model
+class FleetModel extends Model implements HasMedia
 {
-    use HasTranslations, ScopeSailingClub;
+    use HasTranslations, ScopeSailingClub, InteractsWithMedia;
 
     protected $table = 'fleet';
 
@@ -31,6 +33,6 @@ class FleetModel extends Model
 
     public function toDto():FleetDto
     {
-        return new FleetDto($this->uuid, $this->name, $this->total_available, $this->state);
+        return new FleetDto($this->uuid, $this->name, $this->total_available, $this->state, $this->rental_rate ?? []);
     }
 }

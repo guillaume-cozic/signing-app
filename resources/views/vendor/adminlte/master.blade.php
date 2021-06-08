@@ -93,6 +93,8 @@
         @routes
         <script type="text/javascript" src="//{{ \Illuminate\Support\Facades\Request::getHost() }}:6001/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
+        @include('adminlte::plugins', ['type' => 'js'])
+
     @endif
 
     {{-- Custom Scripts --}}

@@ -13,7 +13,7 @@
                     <div class="col-10">
                         <input name="rents[hours][{{$i}}]"
                                class="form-control {{ $errors->has('rents.hours.'.$i) ? 'is-invalid' : '' }}"
-                               id="i_{{$i}}" type="number" value="{{ old('rents.hours.'.$i) }}" />
+                               id="i_{{$i}}" type="number" value="{{ old('rents.hours.'.$i, $fleet->rents['hours'][$i] ?? null) }}" />
                             @if ($errors->has('rents.hours.'.$i))
                                 <span class="error invalid-feedback">
                                     <strong>{{ $errors->first('rents.hours.'.$i) }}</strong>

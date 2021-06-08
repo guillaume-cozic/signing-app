@@ -1,12 +1,19 @@
-window.$ = window.jQuery = require('jquery');
-
 var baseUrl = 'http://dev.signing.com:8002';
 
-$(function () {
-    $.ajax({
-        url:baseUrl + '/api/v1/fleet/rent',
-        success(data){
-            $('#div-rent').html(data);
-        }
-    });
-});
+let xhr = new XMLHttpRequest();
+xhr.open("GET", baseUrl + '/api/v1/fleet/rents');
+xhr.send();
+
+xhr.onload = function(){
+    if (xhr.status != 200){
+        alert("Erreur " + xhr.status + " : " + xhr.statusText);
+        return;
+    }
+    document.getElementById('div-rent').innerHTML = xhr.response;
+};
+
+xhr.onerror = function(){
+    alert("La requête a échoué");
+};
+
+

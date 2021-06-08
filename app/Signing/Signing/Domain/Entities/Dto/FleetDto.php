@@ -11,5 +11,6 @@ class FleetDto
         public string $name,
         public int $totalAvailable,
         public string $state,
+        public array $rents = [],
     ){}
 }

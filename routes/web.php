@@ -51,6 +51,10 @@ Route::post('fleets/enable', [\App\Http\Controllers\Signing\FleetController::cla
     ->middleware(['auth'])
     ->name('fleet.enable');
 
+Route::post('fleet/{fleetId}/picture', [\App\Http\Controllers\Signing\FleetController::class, 'upload'])
+    ->middleware(['auth'])
+    ->name('fleet.picture');
+
 Route::post('/boat-trips/list', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
     ->middleware(['auth'])
     ->name('boat-trips.list.data');

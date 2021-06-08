@@ -2376,6 +2376,28 @@ if ($('#fleets-table').length != 0) {
   });
 }
 
+$("#fileinput").change(function () {
+  console.log('hey');
+  var fd = new FormData();
+  var files = $('#fileinput')[0].files;
+
+  if (files.length > 0) {
+    fd.append('picture-fleet', files[0]);
+    $.ajax({
+      url: routeUpload,
+      type: 'post',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function success(response) {
+        if (response != 0) {
+          $("#picture-fleet").attr("src", response);
+        }
+      }
+    });
+  }
+});
+
 /***/ }),
 
 /***/ "./resources/js/notify.js":
