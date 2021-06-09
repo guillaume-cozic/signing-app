@@ -1,0 +1,3 @@
+- ## Pour bien commencer
+    - [Les flottes](/{{route}}/{{version}}/fleet)
+    - [Sortie en mer](/{{route}}/{{version}}/boat-trip)
