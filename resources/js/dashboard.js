@@ -25,12 +25,14 @@ $('#hour-start').change(function (){
 $('#start_now').change(function (){
     if($(this).prop('checked') === true){
         $('.time-setter').fadeOut();
+        $('#start_auto').prop('checked', false);
     }else{
         $('.time-setter').fadeIn();
     }
 });
 
 $('.btn-add-boat-trip').click(function(){
+    $('.time-setter').show();
     $('#modal-add-boat-trip').modal('show');
 });
 
@@ -114,6 +116,11 @@ if($('#boat-trips-table').length != 0) {
             }
         });
     });
+
+    setInterval(function (){
+        tableBoatTrips.ajax.reload(null, false);
+        loadAvailability();
+    },60*1000);
 }
 
 $('#boat-trips-table').on('click', '.btn-start', function () {

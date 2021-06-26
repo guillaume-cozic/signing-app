@@ -1942,11 +1942,13 @@ $('#hour-start').change(function () {
 $('#start_now').change(function () {
   if ($(this).prop('checked') === true) {
     $('.time-setter').fadeOut();
+    $('#start_auto').prop('checked', false);
   } else {
     $('.time-setter').fadeIn();
   }
 });
 $('.btn-add-boat-trip').click(function () {
+  $('.time-setter').show();
   $('#modal-add-boat-trip').modal('show');
 });
 $('#availability').on('click', '.btn-add-boat-trip', function () {
@@ -2012,7 +2014,7 @@ if ($('#boat-trips-table').length != 0) {
       "name": "return",
       'orderable': false
     }],
-    "order": [[3, "asc"]],
+    "order": [[4, "asc"]],
     fnRowCallback: function fnRowCallback(row, data) {}
   });
   $('#boat-trips-table').on('click', '.btn-cancel', function () {
@@ -2214,6 +2216,10 @@ if ($('#ended-boat-trips-table').length != 0) {
     "order": [[1, "asc"]],
     fnRowCallback: function fnRowCallback(row, data) {}
   });
+  setInterval(function () {
+    tableBoatTrips.ajax.reload(null, false);
+    loadAvailability();
+  }, 60 * 1000);
 }
 
 function loadSuggestions() {

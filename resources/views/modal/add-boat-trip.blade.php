@@ -74,15 +74,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-12">
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input id="start_now" type="checkbox" name="start_now"> Faire partir maintenant
-                                        </label>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="start_auto" type="checkbox" name="start_auto"> Faire partir automatiquement à l'heure indiquée
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +90,7 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <div class="checkbox">
                                         <label>
-                                            <input id="start_auto" type="checkbox" name="start_auto"> Faire partir automatiquement à l'heure indiquée
+                                            <input id="start_now" type="checkbox" name="start_now"> Faire partir maintenant
                                         </label>
                                     </div>
                                 </div>
