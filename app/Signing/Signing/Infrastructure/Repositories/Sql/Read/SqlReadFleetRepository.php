@@ -57,8 +57,11 @@ class SqlReadFleetRepository implements ReadFleetRepository
         $fleets->transform(function ($item){
            $boatTrips = BoatTripModel::query()
                ->whereNull('end_at')
+               ->whereNull('should_start_at')
+               ->whereRaw('UNIX_TIMESTAMP(start_at) <= ?', time())
                ->sailingClub()
-               ->whereNotNull('boats->'.$item->uuid)->get();
+               ->whereNotNull('boats->'.$item->uuid)
+               ->get();
            $qtyUsed = 0;
            foreach ($boatTrips as $boatTrip){
                $qtyUsed += $boatTrip->boats[$item->uuid];

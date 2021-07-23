@@ -60,4 +60,31 @@ class SqlBoatTripRepository implements BoatTripRepository
             ->where('uuid', $boatTripId)
             ->delete();
     }
+
+    public function getUsedBoat(string $boatId, \DateTime $startAt, \DateTime $provisionalEndDate): array
+    {
+        $startAt = $startAt->getTimestamp();
+        $provisionalEndDate = $provisionalEndDate->getTimestamp();
+        return BoatTripModel::query()
+            ->selectRaw('
+                *,
+                UNIX_TIMESTAMP(DATE_ADD(IF(should_start_at is not null, should_start_at, start_at), INTERVAL number_hours HOUR)) as boatTripEndDate,
+                UNIX_TIMESTAMP(IF(should_start_at is not null, should_start_at, start_at)) as boatTripStartDate
+            ')
+            ->whereNotNull('boats->'.$boatId)
+            ->sailingClub()
+            ->havingRaw('
+                (? >= boatTripStartDate && ? <= boatTripEndDate) ||
+                (? >= boatTripStartDate && ? <= boatTripEndDate) ||
+                (? <= boatTripStartDate && ? >= boatTripEndDate)'
+                , [$startAt, $startAt, $provisionalEndDate, $provisionalEndDate, $startAt, $provisionalEndDate])
+            ->whereNull('end_at')
+            ->get()
+            ?->transform(function (BoatTripModel $model){
+                return $model->toDomain();
+            })
+            ->toArray();
+    }
+
+
 }
