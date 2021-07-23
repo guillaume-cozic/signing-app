@@ -13,7 +13,7 @@ class GetFleetsListImpl implements GetFleetsList
 
     public function execute(?array $search = [], int $start = 0, int $perPage = 10, string $sort = null, string $dirSort = "asc")
     {
-        $page = $start/$perPage +1;
+        $page = $perPage !== 0 ? $start/$perPage +1 : 0;
         return $this->readFleetRepository->search($search, $page, $perPage, $sort, $dirSort);
     }
 }

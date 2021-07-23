@@ -22,7 +22,7 @@ class BoatTripController extends Controller
 {
     public function index(GetFleetsList $getFleetsList)
     {
-        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]]);
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0);
         return view('dashboard', [
             'fleets' => $fleets
         ]);

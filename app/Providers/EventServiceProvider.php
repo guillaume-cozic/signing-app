@@ -6,7 +6,6 @@ use App\Events\BoatTrip\BoatTripEnded;
 use App\Events\BoatTrip\BoatTripStarted;
 use App\Listeners\BoatTrip\SendNotificationBoatTripEnded;
 use App\Listeners\BoatTrip\SendNotificationBoatTripStarted;
-use App\Listeners\CreateFleets;
 use App\Listeners\CreateTeam;
 use App\Listeners\Teamwork\JoinTeamListener;
 use Illuminate\Auth\Events\Registered;
@@ -20,8 +19,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
             CreateTeam::class,
-            JoinTeamListener::class,
-            CreateFleets::class
+            JoinTeamListener::class
         ],
         BoatTripEnded::class => [
             SendNotificationBoatTripEnded::class

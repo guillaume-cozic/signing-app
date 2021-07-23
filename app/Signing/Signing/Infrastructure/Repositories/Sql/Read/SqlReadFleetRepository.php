@@ -15,7 +15,7 @@ class SqlReadFleetRepository implements ReadFleetRepository
 {
     public function search(?array $search = [], int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc")
     {
-        return FleetModel::query()
+        $queryFleets = FleetModel::query()
             ->when(!empty($search['search']), function (Builder $query) use($search){
                 $query->where('total_available', 'LIKE', '%'.$search['search'].'%')
                     ->orWhereRaw('lower(name->\'$.' . App::getLocale().'\') LIKE ?', '%'.strtolower($search['search']).'%')
@@ -28,8 +28,16 @@ class SqlReadFleetRepository implements ReadFleetRepository
                 $sort = $sort === 'name' ? 'name->'.App::getLocale() : $sort;
                 $query->orderBy($sort, $dirSort);
             })
-            ->sailingClub()
-            ->paginate($perPage, ['*'], 'page', $page)
+            ->sailingClub();
+
+            if($perPage === 0) {
+                return $queryFleets->get()
+                    ->transform(function (FleetModel $item) {
+                        return $item->toDto();
+                    });
+            }
+
+            return $queryFleets->paginate($perPage, ['*'], 'page', $page)
             ->through(function (FleetModel $item) {
                 return $item->toDto();
             });
