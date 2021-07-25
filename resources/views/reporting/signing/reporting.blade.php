@@ -1,6 +1,19 @@
-<div class="card card-default">
-    <div class="card-body">
-        <div id="chart" style="height: 400px;width: 100%;"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card card-default">
+            <div class="card-body">
+                <div id="chart" style="height: 400px;width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card card-default">
+            <div class="card-body">
+                <div id="chart-by-boats" style="height: 400px;"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -15,6 +28,17 @@
                 .legend()
                 .tooltip()
                 .title('Nombre de sortie par jour'),
+        });
+
+        const chartByFloat = new Chartisan({
+            el: '#chart-by-boats',
+            url: "@chart('boat_trips_by_fleet')",
+            hooks: new ChartisanHooks()
+                .legend()
+                .tooltip()
+                .title('Nombre de sortie par flotte')
+                .datasets('pie')
+                .axis(false)
         });
     </script>
 @endsection

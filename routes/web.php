@@ -55,6 +55,10 @@ Route::post('/boat-trips/list/ended', [\App\Http\Controllers\Signing\BoatTripCon
     ->middleware(['auth'])
     ->name('ended-boat-trips.list.data');
 
+Route::post('/boat-trips/list/reservations', [\App\Http\Controllers\Signing\BoatTripController::class, 'reservations'])
+    ->middleware(['auth'])
+    ->name('reservations-boat-trips.list.data');
+
 Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'add'])
     ->middleware(['auth'])
     ->name('boat-trips.add');

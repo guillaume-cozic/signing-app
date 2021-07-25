@@ -9,6 +9,7 @@ use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
 class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
@@ -22,7 +23,19 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                 ->get()
                 ->pluck('uuid')->toArray();
         }
+
         return BoatTripModel::query()
+            ->when(isset($filters['reservations']) && $filters['reservations'] === true, function ($query){
+                $query->whereRaw('day(should_start_at) != day(now())')
+                ->whereNull('start_at')
+                ->whereRaw('UNIX_TIMESTAMP(should_start_at) > UNIX_TIMESTAMP(now())');
+            })
+            ->when(!isset($filters['reservations']) || $filters['reservations'] == false, function ($query){
+                return $query->where(function($query){
+                    return $query->whereRaw('day(should_start_at) = day(now())')
+                        ->orWhereRaw('day(start_at) = day(now())');
+                });
+            })
             ->selectRaw('*, UNIX_TIMESTAMP(start_at) + 3600 * number_hours as should_return')
             ->when(isset($search) && $search !== '', function (Builder $query) use($search, $fleets) {
                 return $query->where(function ($query) use($search, $fleets){
@@ -38,8 +51,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                 return $query->whereNull('end_at');
             })
             ->when(isset($filters['ended']), function (Builder $query) {
-                return $query->whereNotNull('end_at')
-                    ->whereRaw('date(end_at) = ?', (new \DateTime())->format('Y-m-d'));
+                return $query->whereNotNull('end_at');
             })
             ->sailingClub()
             ->when(isset($sort), function (Builder $query) use($sort, $dirSort){

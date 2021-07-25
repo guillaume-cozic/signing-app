@@ -10,7 +10,29 @@ use Illuminate\Database\Eloquent\Builder;
 
 class SqlBoatTripReportingRepository implements BoatTripReportingRepository
 {
-    public function getNumberBoatTripsForDays(int $days = 30)
+    public function getNumberBoatTripsByBoatsForDays(int $days = 90):array
+    {
+        $boatTrips = BoatTripModel::query()
+            ->sailingClub()
+            ->where(function (Builder $query) use ($days) {
+                $query->where('start_at', '>=', new \DateTime('-' . $days . ' days'));
+            })
+            ->get()
+        ;
+
+        $boats = [];
+        foreach($boatTrips as $boatTrip){
+            foreach($boatTrip->boats as $boatId => $qty){
+                if(!isset($boats[$boatId])){
+                    $boats[$boatId] = $qty;
+                }
+                $boats[$boatId] += $qty;
+            }
+        }
+        return $boats;
+    }
+
+    public function getNumberBoatTripsForDays(int $days = 90):array
     {
         $reporting = [];
 
@@ -35,7 +57,7 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
             ->get()
         ;
 
-        foreach ($boatTrips as $key => $boatTrip){
+        foreach ($boatTrips as $boatTrip){
             $reporting[$boatTrip->start_at->format('Y')][$boatTrip->start_at->format($formatKey)] += $boatTrip->totalBoats();
         }
         return $reporting;

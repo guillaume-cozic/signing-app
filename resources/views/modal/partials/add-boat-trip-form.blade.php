@@ -15,7 +15,7 @@
     </div>
     <div class="col-1">
         <div class="form-group">
-            <i class="fa fa-trash text-red delete-boat" style="vertical-align: bottom;"></i>
+            <i class="fa fa-trash text-red delete-boat" style="margin-top:10px;"></i>
         </div>
     </div>
 </div>

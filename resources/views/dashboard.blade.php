@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg==" crossorigin="anonymous" />
+
 @section('content')
     <div class="row d-block d-sm-none">
         <div class="col-12">
@@ -21,15 +23,22 @@
                             <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#ended" role="tab"
                                aria-controls="custom-tabs-three-profile" aria-selected="false" style="">Terminées</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-three-reservations-tab" data-toggle="pill" href="#reservations" role="tab"
+                               aria-controls="custom-tabs-three-reservations" aria-selected="false" style="">Réservations</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body p-0">
                     <div class="tab-content">
-                        <div class="tab-pane active" style="padding:10px;" id="in-progress">
+                        <div class="tab-pane active" id="in-progress">
                             @include('boattrips.datatable')
                         </div>
                         <div class="tab-pane" id="ended">
                             @include('boattrips.datatable-ended')
+                        </div>
+                        <div class="tab-pane" id="reservations">
+                            @include('boattrips.datatable-reservations')
                         </div>
                     </div>
                 </div>
@@ -39,9 +48,13 @@
             <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">
                 <i class="fa fa-plus-circle"></i> Ajouter une sortie
             </button>
+            <button class="btn btn-info btn-block mb-3 btn-add-boat-trip-reservation">
+                <i class="fa fa-plus-square"></i> Réserver du matériel
+            </button>
             @include('dashboard.availability-loader')
         </div>
     </div>
     @include('modal.add-boat-trip')
+    @include('modal.add-boat-trip-reservation')
 @endsection
 
