@@ -41,12 +41,15 @@ class CreateBoatTripService
         return $boatTripBuilder->notStarted(shouldStartAt: $shouldStartAt, numberHours: $numberHours);
     }
 
-    private function calculateShouldStartAt(?string $startAtHours): bool|\DateTime
+    private function calculateShouldStartAt(?string $startAtHours): \DateTime
     {
         if ($startAtHours === null) {
             return $this->dateProvider->current()->add(new \DateInterval('PT5M'));
         }
-        list($hours, $minutes) = explode(':', $startAtHours);
-        return $this->dateProvider->current()->setTime($hours, $minutes);
+        if(!str_contains($startAtHours, '-')) {
+            list($hours, $minutes) = explode(':', $startAtHours);
+            return $this->dateProvider->current()->setTime($hours, $minutes);
+        }
+        return (new \DateTime())->setTimestamp(strtotime($startAtHours));
     }
 }

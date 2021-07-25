@@ -12,7 +12,7 @@ use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
-class AddMemberBoatTripTest extends TestCase
+class AddMemberBoatTrip extends TestCase
 {
     /**
      * @test

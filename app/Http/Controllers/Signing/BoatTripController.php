@@ -36,7 +36,10 @@ class BoatTripController extends Controller
         $sortDir = $request->input('order.0.dir', null);
         $sortIndex = $request->input('order.0.column', null);
         $sort = $request->input('columns.'.$sortIndex.'.name', null);
-        $boatTrips = $getBoatTripsList->execute($search, $start, $perPage, $sort, $sortDir);
+        $filters = [
+            'reservations' => (bool)$request->input('reservations', false)
+        ];
+        $boatTrips = $getBoatTripsList->execute($search, $start, $perPage, $sort, $sortDir, $filters);
 
         foreach ($boatTrips as $boatTrip) {
             $boats = '';
@@ -101,6 +104,59 @@ class BoatTripController extends Controller
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                         <i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'). '
+                    </span>',
+                $buttons
+            ];
+        }
+
+        return [
+            'draw' => $request->get('draw'),
+            'recordsTotal' => count($boatTrips),
+            'recordsFiltered' => $boatTrips->total(),
+            'data' => $boatTripsData ?? [],
+        ];
+    }
+
+
+    public function reservations(Request $request, GetBoatTripsList $getBoatTripsList)
+    {
+        $start = $request->input('start', 0);
+        $search = $request->input('search.value', '');
+        $perPage = $request->input('length', 10);
+        $sortDir = $request->input('order.0.dir', null);
+        $sortIndex = $request->input('order.0.column', null);
+        $sort = $request->input('columns.'.$sortIndex.'.name', null);
+        $filters = [
+            'reservations' => (bool)$request->input('reservations', false)
+        ];
+        $boatTrips = $getBoatTripsList->execute($search, $start, $perPage, $sort, $sortDir, $filters);
+
+        foreach ($boatTrips as $boatTrip) {
+            $boats = '';
+            $total = 0;
+            foreach($boatTrip->boats as $boat => $qty){
+                $boats .= $qty. ' '.$boat.'</br>';
+                $total += $qty;
+            }
+            $boats = $boats !== '' ? $boats : 'Matériel perso';
+
+            $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
+
+            $state = 'success';
+            $message = 'Réservation';
+
+            $buttons = '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+                 data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
+                class="btn-cancel fa fa-trash text-red p-1"></i>';
+
+            setlocale(LC_TIME, "fr_FR");
+            $boatTripsData[] = [
+                $boats,
+                '<span class="badge bg-info">'.$total.'</span>',
+                $boatTrip->name,
+                '<i class="fas fa-clock time-icon"></i> '.strftime('%e %a %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>',
+                '   <span style="display: inline-block;">
+                        <span class="badge bg-'.$state.'">'.$message.'</span>
                     </span>',
                 $buttons
             ];

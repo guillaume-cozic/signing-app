@@ -32,6 +32,26 @@ class InMemoryBoatTripRepository implements BoatTripRepository
         return $boatTrips ?? [];
     }
 
+    public function getUsedBoat(string $boatId, \DateTime $startAt, \DateTime $provisionalEndDate): array
+    {
+        foreach($this->boatTrips as $boatTrip){
+            $provisionalBoatTripStartAt = clone $boatTrip->provisionalStartAt();
+            $boatTripProvisionalEndAt = $provisionalBoatTripStartAt->add(new \DateInterval('PT'.$boatTrip->numberHours().'H'));
+
+            if(
+                $boatTrip->hasBoat($boatId) && (
+                    ($startAt >= $boatTrip->provisionalStartAt() && $startAt <= $boatTripProvisionalEndAt)
+                    || ($provisionalEndDate >= $boatTrip->provisionalStartAt() && $provisionalEndDate <= $boatTripProvisionalEndAt)
+                    || ($startAt <= $boatTrip->provisionalStartAt() && $provisionalEndDate >= $boatTripProvisionalEndAt)
+                )
+            ) {
+                $boatTrips[] = $boatTrip->toBoatTrip();
+            }
+        }
+        return $boatTrips ?? [];
+    }
+
+
     public function delete(string $boatTripId)
     {
         unset($this->boatTrips[$boatTripId]);

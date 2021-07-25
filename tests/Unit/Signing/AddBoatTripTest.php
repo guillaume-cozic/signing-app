@@ -167,6 +167,46 @@ class AddBoatTripTest extends TestCase
         $this->addBoatTripUseCase->execute([$s1->id() => -1], $name = 'Tabarly', $numberHours = 3);
     }
 
+    /**
+     * @test
+     */
+    public function boatTripReservationShouldNotImpactTheNumberOfAvailableBoatsAtTimeT()
+    {
+        $s1 = new Fleet(new Id('abc'), 25);
+        $this->fleetRepository->save($s1->getState());
+
+        $boatTrip = BoatTripBuilder::build('abc')
+            ->withBoats([$s1->id() => $qty = 25])
+            ->withSailor(name: $name = 'tabarly')
+            ->notStarted((new \DateTime('+5 hours')), 2);
+        $this->boatTripRepository->save($boatTrip->getState());
+
+
+        $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
+
+        Event::assertNotDispatched(BoatTripStarted::class);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotCreateBoatTripWhenFleetReserved()
+    {
+        $s1 = new Fleet(new Id('abc'), 25);
+        $this->fleetRepository->save($s1->getState());
+
+        $boatTrip = BoatTripBuilder::build('abc')
+            ->withBoats([$s1->id() => $qty = 25])
+            ->withSailor(name: $name = 'tabarly')
+            ->notStarted((new \DateTime('+1 hours')), 1);
+        $this->boatTripRepository->save($boatTrip->getState());
+
+        $this->expectBoatNotAvailable();
+
+        $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
+
+    }
+
     private function assertBoatTripAdded(string $id, BoatTrip $boatTripExpected): void
     {
         $boatTripSaved = $this->boatTripRepository->get($id);

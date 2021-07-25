@@ -50,6 +50,11 @@ class BoatTripState implements State
         return $this->duration->shouldStartAt();
     }
 
+    public function provisionalStartAt():\DateTime
+    {
+        return $this->duration->shouldStartAt() !== null ?  $this->duration->shouldStartAt() : $this->duration->startAt();
+    }
+
     public function endAt(): ?\DateTime
     {
         return $this->duration->endAt();

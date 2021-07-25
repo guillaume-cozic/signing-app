@@ -1924,6 +1924,16 @@ $('[data-toggle="tooltip"]').tooltip();
 $('#timepicker').datetimepicker({
   format: 'H:m'
 });
+$('#datetimepicker').datetimepicker({
+  locale: 'fr',
+  format: 'YYYY-MM-DD H:m',
+  icons: {
+    time: "fa fa-clock",
+    date: "fa fa-calendar",
+    up: "fa fa-arrow-up",
+    down: "fa fa-arrow-down"
+  }
+});
 
 function initTimePicker(minutes) {
   var timestamp = Date.now() + minutes * 60 * 1000;
@@ -1949,9 +1959,12 @@ $('#start_now').change(function () {
 $('.btn-add-boat-trip').click(function () {
   $('#modal-add-boat-trip').modal('show');
 });
+$('.btn-add-boat-trip-reservation').click(function () {
+  $('#modal-add-boat-trip-reservation').modal('show');
+});
 $('#availability').on('click', '.btn-add-boat-trip', function () {
   var fleetId = $(this).data('fleet-id');
-  $('#main-boat option[value=' + fleetId + ']').prop('selected', true);
+  $('#modal-add-boat-trip .main-boat option[value=' + fleetId + ']').prop('selected', true);
   $('#modal-add-boat-trip').modal('show');
 });
 
@@ -2012,7 +2025,7 @@ if ($('#boat-trips-table').length != 0) {
       "name": "return",
       'orderable': false
     }],
-    "order": [[3, "asc"]],
+    "order": [[4, "asc"]],
     fnRowCallback: function fnRowCallback(row, data) {}
   });
   $('#boat-trips-table').on('click', '.btn-cancel', function () {
@@ -2104,7 +2117,8 @@ $('#div-suggestion').on('click', '.btn-start', function () {
   startBoatTrip(url);
 });
 var countBoatsList = 2;
-$('#btn-add-boats').click(function () {
+$('.btn-add-boats').click(function () {
+  var btn = $(this);
   $.ajax({
     url: $(this).data('href'),
     method: 'POST',
@@ -2112,12 +2126,12 @@ $('#btn-add-boats').click(function () {
       count: countBoatsList
     },
     success: function success(data) {
-      $('#list-add-boat-trip').append(data);
+      btn.parents('.list-add-boat-trip').append(data);
       countBoatsList++;
     }
   });
 });
-$('#modal-add-boat-trip').on('click', '.delete-boat', function () {
+$('.list-add-boat-trip').on('click', '.delete-boat', function () {
   $(this).parents('.row-boat-trip').remove();
 });
 
@@ -2131,12 +2145,13 @@ function addBoatTrip(url, form) {
       tableBoatTrips.ajax.reload(null, false);
       loadAvailability();
       $('#modal-add-boat-trip').modal('hide');
+      $('#modal-add-boat-trip-reservation').modal('hide');
       form.trigger('reset');
       $('.row-boat-trip').html('');
       (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été créée');
       loadSuggestions();
-      $('#alert-error-add-boat-trip').hide();
-      $('#alert-boat-not-available').hide();
+      form.find('.alert-error-add-boat-trip').hide();
+      form.find('.alert-boat-not-available').hide();
     },
     statusCode: {
       422: function _(data) {
@@ -2146,11 +2161,11 @@ function addBoatTrip(url, form) {
           errorString += '<li>' + value + '</li>';
         });
         errorString += '</ul>';
-        $('#alert-error-add-boat-trip').html(errorString);
-        $('#alert-error-add-boat-trip').slideDown();
+        form.find('.alert-error-add-boat-trip').html(errorString);
+        form.find('.alert-error-add-boat-trip').slideDown();
       },
       430: function _(response) {
-        $('#alert-boat-not-available').slideDown();
+        form.find('.alert-boat-not-available').slideDown();
       }
     }
   });
@@ -2212,6 +2227,71 @@ if ($('#ended-boat-trips-table').length != 0) {
       "name": "end_at"
     }],
     "order": [[1, "asc"]],
+    fnRowCallback: function fnRowCallback(row, data) {}
+  });
+}
+
+if ($('#boat-trips-table-reservations').length != 0) {
+  var tableBoatTripsReservations = $('#boat-trips-table-reservations').DataTable({
+    processing: true,
+    responsive: {
+      details: {
+        type: 'inline'
+      }
+    },
+    serverSide: true,
+    tabIndex: -1,
+    "language": {
+      "lengthMenu": "Afficher _MENU_ lignes par page",
+      "zeroRecords": "Aucun résultat",
+      "info": "",
+      "infoEmpty": "Aucun résultat",
+      "infoFiltered": "",
+      "sSearch": "Rechercher",
+      "sProcessing": 'Chargement...',
+      "oPaginate": {
+        "sFirst": "Première",
+        "sPrevious": "Précédent",
+        "sNext": "Suivant",
+        "sLast": "Dernière"
+      }
+    },
+    stateSave: true,
+    stateSaveCallback: function stateSaveCallback(settings, data) {
+      localStorage.setItem("boattrips-reservations", JSON.stringify(data));
+    },
+    stateLoadCallback: function stateLoadCallback(settings) {
+      return JSON.parse(localStorage.getItem("boattrips-reservations"));
+    },
+    drawCallback: function drawCallback(settings) {
+      $('[data-toggle="tooltip"]').tooltip();
+    },
+    ajax: {
+      url: $('#boat-trips-table-reservations').data('href'),
+      type: 'POST',
+      data: {
+        reservations: true
+      }
+    },
+    iDisplayLength: 10,
+    showExportButton: false,
+    columns: [{
+      "name": "boats",
+      'orderable': false
+    }, {
+      "name": "total",
+      'orderable': false
+    }, {
+      "name": "name"
+    }, {
+      "name": "start_at"
+    }, {
+      "name": "return",
+      'orderable': false
+    }, {
+      "name": "actions",
+      'orderable': false
+    }],
     fnRowCallback: function fnRowCallback(row, data) {}
   });
 }

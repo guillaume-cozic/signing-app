@@ -1,5 +1,9 @@
 <div class="p-2">
-    <table class="table table-striped no-wrap display" id="boat-trips-table" data-href="{{route('boat-trips.list.data')}}">
+    <div class="alert alert-info">
+        Les réservations pour les jours suivant sont présentées sur cette page.
+        Elles sont automatiquement affichées sur la page "En cours" le jour même de la réservation
+    </div>
+    <table style="width: 100%;" class="table table-striped" id="boat-trips-table-reservations" data-href="{{route('reservations-boat-trips.list.data')}}">
         <thead>
              <tr role="row">
                 <th data-priority="35">
@@ -20,8 +24,8 @@
                     </div>
                 </th>
                 <th data-priority="50">Départ</th>
-                <th data-priority="40">Retour</th>
-                <th data-priority="20">
+                 <th data-priority="40">Retour</th>
+                 <th data-priority="20">
                     <div class="d-none d-sm-block">
                         <i class="fa fa-cogs"></i> Actions
                     </div>
