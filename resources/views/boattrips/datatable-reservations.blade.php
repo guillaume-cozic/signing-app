@@ -24,7 +24,7 @@
                     </div>
                 </th>
                 <th data-priority="50">Départ</th>
-                 <th data-priority="40">Retour</th>
+                 <th data-priority="40">Etat</th>
                  <th data-priority="20">
                     <div class="d-none d-sm-block">
                         <i class="fa fa-cogs"></i> Actions
