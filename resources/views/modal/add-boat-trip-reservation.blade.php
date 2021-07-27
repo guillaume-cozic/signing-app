@@ -7,7 +7,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form id="form-add-boat-trip-reservation" action="{{ route('boat-trips.add') }}" method="POST">
+            <form id="form-add-boat-trip-reservation" action="{{ route('boat-trips.add') }}" method="POST" class="form-add-boat-trip">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">

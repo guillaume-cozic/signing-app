@@ -24,7 +24,7 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
         foreach($boatTrips as $boatTrip){
             foreach($boatTrip->boats as $boatId => $qty){
                 if(!isset($boats[$boatId])){
-                    $boats[$boatId] = $qty;
+                    $boats[$boatId] = 0;
                 }
                 $boats[$boatId] += $qty;
             }

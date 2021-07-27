@@ -7,7 +7,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form id="form-add-boat-trip" action="{{ route('boat-trips.add') }}" method="POST">
+            <form id="form-add-boat-trip" action="{{ route('boat-trips.add') }}" method="POST" class="form-add-boat-trip">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -100,13 +100,13 @@
                             </div>
                         </div>
                     </div>
-                    <div id="alert-boat-not-available" class="alert alert-danger" style="display: none;">
+                    <div class="alert-boat-not-available alert alert-danger" style="display: none;">
                         <h5><i class="icon fas fa-ban"></i> Attention!</h5>
                         Au moins un support demandé n'est pas disponible.<br/>
                         Voulez vous tout de même continuer et créer la sortie en mer.
                         <button id="btn-force" type="button" class="btn btn-default">Forcer la création de la sortie</button>
                     </div>
-                    <div id="alert-error-add-boat-trip" class="alert alert-danger" style="display: none;">
+                    <div class="alert-error-add-boat-trip alert alert-danger" style="display: none;">
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

@@ -1922,11 +1922,11 @@ __webpack_require__.r(__webpack_exports__);
 window.tableBoatTrips = null;
 $('[data-toggle="tooltip"]').tooltip();
 $('#timepicker').datetimepicker({
-  format: 'H:m'
+  format: 'H:mm'
 });
 $('#datetimepicker').datetimepicker({
   locale: 'fr',
-  format: 'YYYY-MM-DD H:m',
+  format: 'YYYY-MM-DD H:mm',
   icons: {
     time: "fa fa-clock",
     date: "fa fa-calendar",
@@ -2143,6 +2143,7 @@ function addBoatTrip(url, form) {
     dataType: 'json',
     success: function success(data) {
       tableBoatTrips.ajax.reload(null, false);
+      tableBoatTripsReservations.ajax.reload(null, false);
       loadAvailability();
       $('#modal-add-boat-trip').modal('hide');
       $('#modal-add-boat-trip-reservation').modal('hide');
@@ -2156,6 +2157,7 @@ function addBoatTrip(url, form) {
     statusCode: {
       422: function _(data) {
         var response = JSON.parse(data.responseText);
+        console.log(response);
         var errorString = '<ul>';
         $.each(response.errors, function (key, value) {
           errorString += '<li>' + value + '</li>';
@@ -2165,6 +2167,7 @@ function addBoatTrip(url, form) {
         form.find('.alert-error-add-boat-trip').slideDown();
       },
       430: function _(response) {
+        console.log(form, response);
         form.find('.alert-boat-not-available').slideDown();
       }
     }
@@ -2172,11 +2175,11 @@ function addBoatTrip(url, form) {
   return false;
 }
 
-$('#form-add-boat-trip').submit(function () {
+$('.form-add-boat-trip').submit(function () {
   addBoatTrip($(this).attr('action'), $(this));
   return false;
 });
-$('#btn-force').click(function () {
+$('.btn-force').click(function () {
   addBoatTrip($('#form-add-boat-trip').attr('action') + '/force', $('#form-add-boat-trip'));
   return false;
 });

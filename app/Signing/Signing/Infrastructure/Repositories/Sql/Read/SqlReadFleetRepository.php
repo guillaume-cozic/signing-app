@@ -56,9 +56,15 @@ class SqlReadFleetRepository implements ReadFleetRepository
             ->get();
         $fleets->transform(function ($item){
            $boatTrips = BoatTripModel::query()
+               ->where(function ($query) {
+                   $query->whereRaw('day(start_at) = day(now())')
+                        ->orWhereRaw('day(should_start_at) = day(now())');
+               })
                ->whereNull('end_at')
-               ->whereNull('should_start_at')
-               ->whereRaw('UNIX_TIMESTAMP(start_at) <= ?', time())
+               ->where(function ($query){
+                    return $query->whereRaw('UNIX_TIMESTAMP(should_start_at) - UNIX_TIMESTAMP(now()) <= ?', 60*60)
+                        ->orWhereRaw('UNIX_TIMESTAMP(start_at) - UNIX_TIMESTAMP(now()) <= ?', 60*60);
+               })
                ->sailingClub()
                ->whereNotNull('boats->'.$item->uuid)
                ->get();
@@ -76,6 +82,4 @@ class SqlReadFleetRepository implements ReadFleetRepository
         });
         return $fleets->toArray();
     }
-
-
 }
