@@ -51,7 +51,9 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                 return $query->whereNull('end_at');
             })
             ->when(isset($filters['ended']), function (Builder $query) {
-                return $query->whereNotNull('end_at');
+                return $query->whereNotNull('end_at')
+                    ->whereRaw('day(end_at) = day(now())')
+                ;
             })
             ->sailingClub()
             ->when(isset($sort), function (Builder $query) use($sort, $dirSort){
