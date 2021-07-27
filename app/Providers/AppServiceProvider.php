@@ -23,6 +23,7 @@ use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
+use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -56,6 +57,8 @@ use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetBoatTripsSuggestionsImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetNumberBoatsOfFleetAvailableImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateRentalPackageImpl;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
@@ -70,6 +73,7 @@ use Tests\Unit\Adapters\Provider\FakeIdentityProvider;
 use Tests\Unit\Adapters\Provider\InMemoryAuthGateway;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
+use Tests\Unit\Adapters\Repositories\InMemoryRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\Read\InMemoryReadBoatTripRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
 use ConsoleTVs\Charts\Registrar as Charts;
@@ -92,6 +96,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
         $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
+        $this->app->singleton(CreateRentalPackage::class, CreateRentalPackageImpl::class);
 
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
@@ -115,6 +120,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
             $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
+            $this->app->singleton(RentalPackageRepository::class, InMemoryRentalPackageRepository::class);
         }
         if(config('app.env') == 'testing-db') {
             $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
