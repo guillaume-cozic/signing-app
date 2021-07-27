@@ -26,14 +26,14 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
 
         return BoatTripModel::query()
             ->when(isset($filters['reservations']) && $filters['reservations'] === true, function ($query){
-                $query->whereRaw('day(should_start_at) != day(now())')
+                $query->whereRaw('date(should_start_at) != date(now())')
                 ->whereNull('start_at')
                 ->whereRaw('UNIX_TIMESTAMP(should_start_at) > UNIX_TIMESTAMP(now())');
             })
             ->when(!isset($filters['reservations']) || $filters['reservations'] === false, function ($query){
                 return $query->where(function($query){
-                    return $query->whereRaw('day(should_start_at) = day(now())')
-                        ->orWhereRaw('day(start_at) = day(now())');
+                    return $query->whereRaw('date(should_start_at) = date(now())')
+                        ->orWhereRaw('date(start_at) = date(now())');
                 });
             })
             ->selectRaw('*, UNIX_TIMESTAMP(start_at) + 3600 * number_hours as should_return')
@@ -52,7 +52,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
             })
             ->when(isset($filters['ended']), function (Builder $query) {
                 return $query->whereNotNull('end_at')
-                    ->whereRaw('day(end_at) = day(now())')
+                    ->whereRaw('date(end_at) = date(now())')
                 ;
             })
             ->sailingClub()

@@ -57,8 +57,8 @@ class SqlReadFleetRepository implements ReadFleetRepository
         $fleets->transform(function ($item){
            $boatTrips = BoatTripModel::query()
                ->where(function ($query) {
-                   $query->whereRaw('day(start_at) = day(now())')
-                        ->orWhereRaw('day(should_start_at) = day(now())');
+                   $query->whereRaw('date(start_at) = date(now())')
+                        ->orWhereRaw('date(should_start_at) = date(now())');
                })
                ->whereNull('end_at')
                ->where(function ($query){
