@@ -44,10 +44,10 @@ class AddBoatTripTest extends TestCase
         ];
 
         $shouldStartAt =  $this->dateProvider->current()->add(new \DateInterval('PT5M'));
-        $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3);
+        $this->addBoatTripUseCase->execute($boats, $name = "tabarly", $numberHours = 3.5);
 
         $boatTripExpected = BoatTripBuilder::build($id)
-            ->withDates(shouldStartAt: $shouldStartAt,  numberHours: 3)
+            ->withDates(shouldStartAt: $shouldStartAt,  numberHours: 3.5)
             ->withBoats($boats)
             ->withSailor(name:$name)
             ->inProgress($numberHours);

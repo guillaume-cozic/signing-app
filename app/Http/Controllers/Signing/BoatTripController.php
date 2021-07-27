@@ -45,13 +45,13 @@ class BoatTripController extends Controller
             $boats = '';
             $total = 0;
             foreach($boatTrip->boats as $boat => $qty){
-                $boats .= $qty. ' '.$boat.'</br>';
+                $boats .= $qty.' '.$boat.'</br>';
                 $total += $qty;
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
             $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
-            $shouldEndAt = (new Carbon($startAt))->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
+            $shouldEndAt = (new Carbon($startAt))->add(\DateInterval::createFromDateString('+'.$boatTrip->hours * 60 .' minutes'));
 
             $actions = [];
             if($boatTrip->startAt !== null){
@@ -154,7 +154,7 @@ class BoatTripController extends Controller
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
                 $boatTrip->name,
-                '<i class="fas fa-clock time-icon"></i> '.strftime('%e %a %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>',
+                '<i class="fas fa-clock time-icon"></i> '.strftime('%a %e %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                     </span>',
@@ -188,7 +188,7 @@ class BoatTripController extends Controller
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
-            $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours.' hours'));
+            $shouldEndAt = $boatTrip->startAt->add(\DateInterval::createFromDateString('+'.$boatTrip->hours * 60 .' minutes'));
 
             $boatTripsData[] = [
                 $boats,

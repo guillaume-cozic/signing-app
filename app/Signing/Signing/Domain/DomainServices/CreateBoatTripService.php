@@ -19,7 +19,7 @@ class CreateBoatTripService
     /**
      * @throws BoatNotAvailable
      */
-    public function execute(bool $force, array $boats, string $name, int $numberHours, string $startAtHours = null, bool $startNow = null, ?bool $startAuto = false)
+    public function execute(bool $force, array $boats, string $name, float $numberHours, string $startAtHours = null, bool $startNow = null, ?bool $startAuto = false)
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
             ->withSailor(name:$name)
@@ -29,7 +29,7 @@ class CreateBoatTripService
         $boatTrip->create($force, $startNow);
     }
 
-    private function buildBoatTrip(?bool $startNow, BoatTripBuilder $boatTripBuilder, int $numberHours, string $startAtHours = null, ?bool $startAuto = false): BoatTrip
+    private function buildBoatTrip(?bool $startNow, BoatTripBuilder $boatTripBuilder, float $numberHours, string $startAtHours = null, ?bool $startAuto = false): BoatTrip
     {
         if ($startNow) {
             return $boatTripBuilder->inProgress($numberHours);

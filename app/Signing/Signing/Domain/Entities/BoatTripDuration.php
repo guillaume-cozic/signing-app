@@ -52,7 +52,7 @@ class BoatTripDuration implements HasState
         return $this->end !== null;
     }
 
-    public function hours():?int
+    public function hours():?float
     {
         return $this->numberHours;
     }

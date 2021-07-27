@@ -30,7 +30,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                 ->whereNull('start_at')
                 ->whereRaw('UNIX_TIMESTAMP(should_start_at) > UNIX_TIMESTAMP(now())');
             })
-            ->when(!isset($filters['reservations']) || $filters['reservations'] == false, function ($query){
+            ->when(!isset($filters['reservations']) || $filters['reservations'] === false, function ($query){
                 return $query->where(function($query){
                     return $query->whereRaw('day(should_start_at) = day(now())')
                         ->orWhereRaw('day(start_at) = day(now())');

@@ -16,7 +16,7 @@ class AddBoatTripImpl implements AddBoatTrip
     /**
      * @throws BoatNotAvailable
      */
-    public function execute(array $boats, string $name, int $numberHours, string $startAtHours = null, bool $startNow = null, ?bool $autoStart = false)
+    public function execute(array $boats, string $name, float $numberHours, string $startAtHours = null, bool $startNow = null, ?bool $autoStart = false)
     {
         $this->createBoatTripService->execute(false, $boats,  $name, $numberHours, $startAtHours, $startNow, $autoStart);
     }
