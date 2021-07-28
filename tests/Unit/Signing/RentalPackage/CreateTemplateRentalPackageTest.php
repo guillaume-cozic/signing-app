@@ -7,6 +7,7 @@ namespace Tests\Unit\Signing\RentalPackage;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
+use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackageState;
 use App\Signing\Signing\Domain\Exceptions\FleetNotFound;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageValidityNegative;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageWithoutFleet;
@@ -20,8 +21,9 @@ class CreateTemplateRentalPackageTest extends TestCase
      */
     public function shouldNotCreateRentalPackageWithAnyFleet()
     {
+        $name = 'Forfait Kayak/Paddle';
         self::expectException(RentalPackageWithoutFleet::class);
-        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', []);
+        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', [], $name);
     }
 
     /**
@@ -29,8 +31,9 @@ class CreateTemplateRentalPackageTest extends TestCase
      */
     public function shouldNotCreateRentalPackageWithUnknownFleet()
     {
+        $name = 'Forfait Kayak/Paddle';
         self::expectException(FleetNotFound::class);
-        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', ['1']);
+        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', ['1'], $name);
     }
 
     /**
@@ -41,8 +44,9 @@ class CreateTemplateRentalPackageTest extends TestCase
         $fleet = new Fleet(new Id(), 10, Fleet::STATE_ACTIVE);
         $this->fleetRepository->save($fleet->getState());
 
+        $name = 'Forfait Kayak/Paddle';
         self::expectException(RentalPackageValidityNegative::class);
-        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', [$fleet->id()], -1);
+        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', [$fleet->id()], $name, -1);
     }
 
     /**
@@ -53,10 +57,11 @@ class CreateTemplateRentalPackageTest extends TestCase
         $fleet = new Fleet(new Id(), 10, Fleet::STATE_ACTIVE);
         $this->fleetRepository->save($fleet->getState());
 
-        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', [$fleet->id()]);
+        $name = 'Forfait Kayak/Paddle';
+        app(CreateRentalPackage::class)->execute($rentalPackageId = 'abc', [$fleet->id()], $name, 730 );
 
         $rentalPackage = $this->rentalPackageRepository->get($rentalPackageId);
-        $rentalPackageExpected = new RentalPackage($rentalPackageId, [$fleet->id()]);
-        self::assertEquals($rentalPackageExpected, $rentalPackage);
+        $rentalPackageExpected = new RentalPackageState($rentalPackageId, [$fleet->id()], $name, 730);
+        self::assertEquals($rentalPackageExpected, $rentalPackage->getState());
     }
 }

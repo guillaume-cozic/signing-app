@@ -4,7 +4,7 @@
 namespace App\Signing\Signing\Domain\UseCases\RentalPackage;
 
 
-interface CreateRentalPackage
+interface EditRentalPackage
 {
     public function execute(string $rentalPackageId, array $fleets, string $name, int $validityInDays = null);
 }

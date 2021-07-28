@@ -58,7 +58,9 @@ use App\Signing\Signing\Domain\UseCases\Query\Impl\GetBoatTripsSuggestionsImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetNumberBoatsOfFleetAvailableImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\EditRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\EditRentalPackageImpl;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
@@ -97,6 +99,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
         $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
         $this->app->singleton(CreateRentalPackage::class, CreateRentalPackageImpl::class);
+        $this->app->singleton(EditRentalPackage::class, EditRentalPackageImpl::class);
 
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
