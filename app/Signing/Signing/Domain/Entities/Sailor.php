@@ -15,7 +15,7 @@ class Sailor implements HasState
         private ?string $name = ''
     ){}
 
-    public function decreaseHoursRentalPackage(RentalPackage $rentalPackage, $hours)
+    public function decreaseHoursRentalPackage(RentalPackage $rentalPackage, float $hours)
     {
         $sailorRentalPackage = app(SailorRentalPackageRepository::class)->getByNameAndRentalPackage($this->name, $rentalPackage->id());
         if(isset($sailorRentalPackage)) {

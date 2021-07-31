@@ -113,7 +113,6 @@ class BoatTrip implements HasState
     {
         foreach($this->hoursUsed() as $boatId => $hours){
             $rentalPackage = app(RentalPackageRepository::class)->getByFleet($boatId);
-
             if(isset($rentalPackage)){
                 $this->sailor->decreaseHoursRentalPackage($rentalPackage, $hours);
             }

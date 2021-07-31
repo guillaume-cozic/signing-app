@@ -41,6 +41,12 @@ class SailorRentalPackage implements HasState
         app(SailorRentalPackageRepository::class)->save($this->getState());
     }
 
+    public function addOrSubHours(float $hours)
+    {
+        $this->hours += $hours;
+        app(SailorRentalPackageRepository::class)->save($this->getState());
+    }
+
     public function getState(): SailorRentalPackageState
     {
         return new SailorRentalPackageState($this->id, $this->name, $this->rentalPackageId, $this->endValidity, $this->hours);
