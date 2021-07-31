@@ -1,16 +1,5 @@
-member repository 
+Start laravel echo server 
 
+laravel-echo-server start
 
-context for sailing club id 
-
-
-page register
-
-
-refacto query test (fleet)
-
-
-use another database for testing
-
-
-postgres
+php artisan queue:work

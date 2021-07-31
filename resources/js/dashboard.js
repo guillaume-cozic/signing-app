@@ -235,7 +235,6 @@ function addBoatTrip(url, form) {
         statusCode: {
             422: function (data) {
                 var response = JSON.parse(data.responseText);
-                console.log(response);
                 var errorString = '<ul>';
                 $.each(response.errors, function(key, value) {
                     errorString += '<li>' + value + '</li>';
@@ -245,7 +244,6 @@ function addBoatTrip(url, form) {
                 form.find('.alert-error-add-boat-trip').slideDown();
             },
             430: function (response){
-                console.log(form, response);
                 form.find('.alert-boat-not-available').slideDown();
             }
         },
@@ -379,7 +377,16 @@ function loadSuggestions() {
 }
 loadSuggestions();
 
+
+function reloadMainDashboard() {
+    if($('#boat-trips-table').length != 0) {
+        loadAvailability();
+        tableBoatTrips.ajax.reload(null, false);
+    }
+}
+
 setInterval(function (){ loadSuggestions() },60*1000);
+setInterval(function (){ reloadMainDashboard() },60*1000);
 
 $('.control-sidebar-id').click(function(){
     if($('#boat-trips-table').length != 0) {
