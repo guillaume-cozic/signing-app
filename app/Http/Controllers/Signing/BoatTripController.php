@@ -153,8 +153,8 @@ class BoatTripController extends Controller
             $boatTripsData[] = [
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
-                $boatTrip->name,
-                '<i class="fas fa-clock time-icon"></i> '.strftime('%a %e %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>',
+                mb_convert_encoding($boatTrip->name, 'UTF-8', 'UTF-8'),
+                mb_convert_encoding('<i class="fas fa-clock time-icon"></i> '.strftime('%a %e %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>', 'UTF-8', 'UTF-8'),
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                     </span>',
