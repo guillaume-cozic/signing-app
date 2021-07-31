@@ -16,7 +16,7 @@ class InMemoryRentalPackageRepository implements RentalPackageRepository
 
     public function get(string $id): ?RentalPackage
     {
-        return $this->rentalPackages[$id]?->toDomain();
+        return isset($this->rentalPackages[$id]) ? $this->rentalPackages[$id]?->toDomain() : null;
     }
 
     public function save(RentalPackageState $r)

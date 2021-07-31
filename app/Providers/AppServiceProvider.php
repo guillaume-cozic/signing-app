@@ -24,6 +24,7 @@ use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -58,8 +59,12 @@ use App\Signing\Signing\Domain\UseCases\Query\Impl\GetBoatTripsSuggestionsImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetNumberBoatsOfFleetAvailableImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\DecreaseSailorRentalPackageHoursWhenBoatTripFinished;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\EditRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateSailorRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\DecreaseSailorRentalPackageHoursWhenBoatTripFinishedImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\EditRentalPackageImpl;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
@@ -76,6 +81,7 @@ use Tests\Unit\Adapters\Provider\InMemoryAuthGateway;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryRentalPackageRepository;
+use Tests\Unit\Adapters\Repositories\InMemorySailorRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\Read\InMemoryReadBoatTripRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
 use ConsoleTVs\Charts\Registrar as Charts;
@@ -100,6 +106,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
         $this->app->singleton(CreateRentalPackage::class, CreateRentalPackageImpl::class);
         $this->app->singleton(EditRentalPackage::class, EditRentalPackageImpl::class);
+        $this->app->singleton(CreateSailorRentalPackage::class, CreateSailorRentalPackageImpl::class);
+        $this->app->singleton(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class, DecreaseSailorRentalPackageHoursWhenBoatTripFinishedImpl::class);
 
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
@@ -124,7 +132,9 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
             $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
             $this->app->singleton(RentalPackageRepository::class, InMemoryRentalPackageRepository::class);
+            $this->app->singleton(SailorRentalPackageRepository::class, InMemorySailorRentalPackageRepository::class);
         }
+
         if(config('app.env') == 'testing-db') {
             $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
             $this->app->singleton(DateProvider::class, FakeDateProvider::class);

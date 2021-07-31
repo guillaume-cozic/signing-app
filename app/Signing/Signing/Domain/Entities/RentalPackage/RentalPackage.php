@@ -4,13 +4,18 @@
 namespace App\Signing\Signing\Domain\Entities\RentalPackage;
 
 
+use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\HasState;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageValidityNegative;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
+use Carbon\Carbon;
 
 class RentalPackage implements HasState
 {
+    /**
+     * @throws RentalPackageValidityNegative
+     */
     public function __construct(
         private string $id,
         private FleetCollection $fleets,
@@ -30,6 +35,9 @@ class RentalPackage implements HasState
         app(RentalPackageRepository::class)->save($this->getState());
     }
 
+    /**
+     * @throws RentalPackageValidityNegative
+     */
     public function update(string $name, FleetCollection $fleets, ?int $validityInDays)
     {
         $this->fleets = $fleets;
@@ -53,5 +61,24 @@ class RentalPackage implements HasState
     public function getState(): RentalPackageState
     {
         return new RentalPackageState($this->id, $this->fleets->toArray(), $this->name, $this->validityInDays);
+    }
+
+    public function createSailorRentalPackage(string $sailorRentalPackageId, string $sailorName, float $hours)
+    {
+        $now = Carbon::instance(app(DateProvider::class)->current());
+        (new SailorRentalPackage(
+            $sailorRentalPackageId,
+            $sailorName,
+            $this->id,
+            $now->addDays($this->validityInDays),
+            $hours
+        ))->create();
+    }
+
+    public function reloadRentalPackage(SailorRentalPackage $sailorRentalPackage, float $hours)
+    {
+        $now = Carbon::instance(app(DateProvider::class)->current());
+        $endValidity = $now->addDays($this->validityInDays);
+        $sailorRentalPackage->reload($hours, $endValidity);
     }
 }
