@@ -12,6 +12,8 @@ use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
+use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 
 class BoatTrip implements HasState
 {
@@ -96,6 +98,26 @@ class BoatTrip implements HasState
     public function quantity(string $boatId):int
     {
         return $this->boats->quantity($boatId) ?? 0;
+    }
+
+    private function hoursUsed():array
+    {
+        $hours = [];
+        foreach($this->boats->boats() as $boat => $qty){
+            $hours[$boat] = $this->duration->hours() * $qty;
+        }
+        return $hours;
+    }
+
+    public function updateSailorRentalPackage()
+    {
+        foreach($this->hoursUsed() as $boatId => $hours){
+            $rentalPackage = app(RentalPackageRepository::class)->getByFleet($boatId);
+
+            if(isset($rentalPackage)){
+                $this->sailor->decreaseHoursRentalPackage($rentalPackage, $hours);
+            }
+        }
     }
 
     public function getState(): BoatTripState

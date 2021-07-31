@@ -26,4 +26,9 @@ class RentalPackageState implements State
     {
         return new RentalPackage($this->id, new FleetCollection($this->fleets), $this->name, $this->validityInDays);
     }
+
+    public function hasFleet(string $fleet):bool
+    {
+        return in_array($fleet, $this->fleets);
+    }
 }

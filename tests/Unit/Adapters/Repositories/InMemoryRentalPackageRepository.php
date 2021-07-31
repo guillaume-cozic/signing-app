@@ -23,4 +23,14 @@ class InMemoryRentalPackageRepository implements RentalPackageRepository
     {
         $this->rentalPackages[$r->id()] = $r;
     }
+
+    public function getByFleet(string $fleetId): ?RentalPackage
+    {
+        foreach($this->rentalPackages as $rentalPackage){
+            if($rentalPackage->hasFleet($fleetId)){
+                return $rentalPackage->toDomain();
+            }
+        }
+        return null;
+    }
 }

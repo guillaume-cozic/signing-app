@@ -32,16 +32,55 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
             ->ended(1);
         $this->boatTripRepository->save($boatTrip->getState());
 
-        $rentalPackage = new RentalPackage('rental_package', new FleetCollection(['fleet']), 'forfait kayak', 210);
+        $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection(['fleet']), 'forfait kayak', 210);
         $this->rentalPackageRepository->save($rentalPackage->getState());
 
-        $sailorRentalPackage = new SailorRentalPackage('rental_package_id', 'frank', 'rental_package_id', $endValidityDate, 10);
+        $sailorRentalPackage = new SailorRentalPackage('sailor_rental_package_id', 'frank', 'rental_package_id', $endValidityDate, 10);
         $this->sailorRentalPackageRepository->save($sailorRentalPackage->getState());
 
         app(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class)->execute($boatTrip->id());
 
-        $sailorRentalPackageSaved = $this->sailorRentalPackageRepository->get('rental_package_id');
-        $sailorRentalPackageExpected = new SailorRentalPackage('rental_package_id', 'frank', 'rental_package_id', $endValidityDate, 9);
+        $sailorRentalPackageSaved = $this->sailorRentalPackageRepository->get('sailor_rental_package_id');
+        $sailorRentalPackageExpected = new SailorRentalPackage('sailor_rental_package_id', 'frank', 'rental_package_id', $endValidityDate, 9);
         self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackageSaved);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoNothingWhenSailorDoesNotHaveRentalPackage()
+    {
+        $fleet = new Fleet(new Id('fleet'), 10);
+        $this->fleetRepository->save($fleet->getState());
+
+        $boatTrip = BoatTripBuilder::build('boat_trip_ended')
+            ->withSailor(name:'frank')
+            ->withBoats(['fleet' => 1])
+            ->ended(1);
+        $this->boatTripRepository->save($boatTrip->getState());
+
+        $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection(['fleet']), 'forfait kayak', 210);
+        $this->rentalPackageRepository->save($rentalPackage->getState());
+
+        app(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class)->execute($boatTrip->id());
+        self::assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoNothingWhenNoRentalPackageForTheFleet()
+    {
+        $fleet = new Fleet(new Id('fleet'), 10);
+        $this->fleetRepository->save($fleet->getState());
+
+        $boatTrip = BoatTripBuilder::build('boat_trip_ended')
+            ->withSailor(name:'frank')
+            ->withBoats(['fleet' => 1])
+            ->ended(1);
+        $this->boatTripRepository->save($boatTrip->getState());
+
+        app(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class)->execute($boatTrip->id());
+        self::assertTrue(true);
     }
 }

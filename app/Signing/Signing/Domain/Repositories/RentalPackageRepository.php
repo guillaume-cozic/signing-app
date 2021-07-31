@@ -11,4 +11,5 @@ interface RentalPackageRepository
 {
     public function get(string $id):?RentalPackage;
     public function save(RentalPackageState $r);
+    public function getByFleet(string $fleetId):?RentalPackage;
 }
