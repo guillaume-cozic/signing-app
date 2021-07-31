@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Charts\BoatTripsByFleet;
+use App\Charts\FrequencyByDay;
 use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripEndedNotificationImpl;
 use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripStartedNotificationImpl;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripEndedNotification;
@@ -146,7 +147,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $charts->register([
             \App\Charts\BoatTripsByDay::class,
-            BoatTripsByFleet::class
+            BoatTripsByFleet::class,
+            FrequencyByDay::class,
         ]);
     }
 }

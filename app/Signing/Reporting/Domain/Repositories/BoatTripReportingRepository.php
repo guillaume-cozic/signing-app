@@ -8,4 +8,5 @@ interface BoatTripReportingRepository
 {
     public function getNumberBoatTripsForDays(int $days = 60):array;
     public function getNumberBoatTripsByBoatsForDays(int $days = 60):array;
+    public function getBoatTripGroupByHours(int $days = 90):array;
 }
