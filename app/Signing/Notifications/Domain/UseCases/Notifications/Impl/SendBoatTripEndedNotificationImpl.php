@@ -24,7 +24,6 @@ class SendBoatTripEndedNotificationImpl implements SendBoatTripEndedNotification
         $message = __('notification.user_end_boat_trip', [
             'user' => ucfirst($performer->firstname),
             'sailor' => $boatTrip->name,
-
         ]);
         event(new NotificationCreated($message, 'Sortie terminée', $performer->adminlte_image(), 'info'));
     }

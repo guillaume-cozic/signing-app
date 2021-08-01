@@ -31,7 +31,6 @@ try {
                 type: 'minimalist',
                 delay: 3000,
                 icon_type: 'image',
-                element: "#main-content",
                 template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
                     '<img data-notify="icon" class="img-circle pull-left">' +
                     '<span data-notify="title">{1}</span>' +

@@ -10,7 +10,7 @@ use Chartisan\PHP\Chartisan;
 use ConsoleTVs\Charts\BaseChart;
 use Illuminate\Http\Request;
 
-class BoatTripsByFleet extends BaseChart
+class FrequencyByDay extends BaseChart
 {
     public function __construct(
         private BoatTripReportingRepository $boatTripReportingRepository
@@ -23,19 +23,13 @@ class BoatTripsByFleet extends BaseChart
      */
     public function handler(Request $request): Chartisan
     {
-        $reporting = $this->boatTripReportingRepository->getNumberBoatTripsByBoatsForDays();
+        $reporting = $this->boatTripReportingRepository->getBoatTripGroupByHours();
 
         $chartisan = Chartisan::build();
+        $chartisan->labels(array_keys($reporting))
+            ->dataset('Fréquentation en nombre de bateux sur l\'eau', array_values($reporting));
 
-        foreach($reporting as $boat => $number){
-            $fleet = FleetModel::where('uuid', $boat)->first();
-            $labels[] = $fleet->name;
-            $values[] = $number;
-        }
 
-        $chartisan->dataset('Flottes',  $values);
-
-        $chartisan->labels($labels);
         return $chartisan;
     }
 }

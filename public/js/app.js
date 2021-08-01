@@ -2157,7 +2157,6 @@ function addBoatTrip(url, form) {
     statusCode: {
       422: function _(data) {
         var response = JSON.parse(data.responseText);
-        console.log(response);
         var errorString = '<ul>';
         $.each(response.errors, function (key, value) {
           errorString += '<li>' + value + '</li>';
@@ -2167,7 +2166,6 @@ function addBoatTrip(url, form) {
         form.find('.alert-error-add-boat-trip').slideDown();
       },
       430: function _(response) {
-        console.log(form, response);
         form.find('.alert-boat-not-available').slideDown();
       }
     }
@@ -2312,8 +2310,19 @@ function loadSuggestions() {
 }
 
 loadSuggestions();
+
+function reloadMainDashboard() {
+  if ($('#boat-trips-table').length != 0) {
+    loadAvailability();
+    tableBoatTrips.ajax.reload(null, false);
+  }
+}
+
 setInterval(function () {
   loadSuggestions();
+}, 60 * 1000);
+setInterval(function () {
+  reloadMainDashboard();
 }, 60 * 1000);
 $('.control-sidebar-id').click(function () {
   if ($('#boat-trips-table').length != 0) {
@@ -2479,8 +2488,7 @@ function notify(message) {
   }, {
     type: type,
     z_index: 20000,
-    delay: 3000,
-    element: "#main-content"
+    delay: 3000
   });
 }
 
@@ -2524,7 +2532,6 @@ try {
       type: 'minimalist',
       delay: 3000,
       icon_type: 'image',
-      element: "#main-content",
       template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' + '<img data-notify="icon" class="img-circle pull-left">' + '<span data-notify="title">{1}</span>' + '<span data-notify="message">{2}</span>' + '</div>'
     });
   });

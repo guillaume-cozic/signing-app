@@ -62,4 +62,30 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
         }
         return $reporting;
     }
+
+    public function getBoatTripGroupByHours(int $days = 90):array
+    {
+
+
+        $boatTrips = BoatTripModel::query()
+            ->selectRaw('*, HOUR(start_at) as hour')
+            ->sailingClub()
+            ->where(function (Builder $query) use ($days) {
+                $query->where('start_at', '>=', new \DateTime('-' . $days . ' days'));
+            })
+            ->whereNotNull('start_at')
+            ->get();
+
+        for($i=8; $i<20; $i++){
+            $totalPerHour[$i] = 0;
+        }
+
+        foreach($boatTrips as $boatTrip){
+            $totalPerHour[$boatTrip->hour] += $boatTrip->totalBoats();
+        }
+        ksort($totalPerHour);
+        return $totalPerHour ?? [];
+    }
 }
+
+
