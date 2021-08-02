@@ -82,7 +82,9 @@ class BoatTripModel extends Model
             $this->member !== null ? $this->member->firstname.' '.$this->member->surname : $this->name,
             $boats,
             $this->number_hours,
-            $this->should_start_at ? new Carbon($this->should_start_at) : null
+            $this->should_start_at ? new Carbon($this->should_start_at) : null,
+            $this->is_member,
+            $this->is_instructor,
         );
     }
 }

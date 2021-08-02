@@ -21,7 +21,7 @@ class BoatTripState implements State
     {
         return BoatTripBuilder::build($this->id)
             ->withBoats($this->boats)
-            ->withSailor($this->memberId(), $this->name())
+            ->withSailor($this->memberId(), $this->name(), $this->isInstructor(), $this->isMember())
             ->fromState($this->numberHours(), $this->startAt(), $this->endAt(), $this->shouldStartAt());
     }
 
@@ -78,5 +78,15 @@ class BoatTripState implements State
     public function memberId(): ?string
     {
         return $this->sailor->memberId();
+    }
+
+    public function isInstructor(): ?bool
+    {
+        return $this->sailor->isInstructor();
+    }
+
+    public function isMember(): ?bool
+    {
+        return $this->sailor->isMember();
     }
 }

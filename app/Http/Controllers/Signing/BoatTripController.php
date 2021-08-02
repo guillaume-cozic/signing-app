@@ -53,6 +53,14 @@ class BoatTripController extends Controller
             $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
             $shouldEndAt = (new Carbon($startAt))->add(\DateInterval::createFromDateString('+'.$boatTrip->hours * 60 .' minutes'));
 
+            $badgeName = "";
+            if($boatTrip->isMember){
+                $badgeName = '<span class="badge bg-primary">Adhérent</span>';
+            }
+            if($boatTrip->isInstructor){
+                $badgeName = '<span class="badge bg-info">Moniteur</span>';
+            }
+
             $actions = [];
             if($boatTrip->startAt !== null){
                 $state = 'info';
@@ -99,7 +107,7 @@ class BoatTripController extends Controller
             $boatTripsData[] = [
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
-                $boatTrip->name,
+                $badgeName.' '.$boatTrip->name,
                 '<i class="fas fa-clock time-icon"></i> '.$startAt->format('H:i').' <small>'.$boatTrip->hours.' h</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
@@ -149,11 +157,19 @@ class BoatTripController extends Controller
                  data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
                 class="btn-cancel fa fa-trash text-red p-1"></i>';
 
+            $badgeName = "";
+            if($boatTrip->isMember){
+                $badgeName = '<span class="badge bg-primary">Adhérent</span>';
+            }
+            if($boatTrip->isInstructor){
+                $badgeName = '<span class="badge bg-info">Moniteur</span>';
+            }
+
             setlocale(LC_TIME, "fr_FR");
             $boatTripsData[] = [
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
-                mb_convert_encoding($boatTrip->name, 'UTF-8', 'UTF-8'),
+                mb_convert_encoding($badgeName.' '.$boatTrip->name, 'UTF-8', 'UTF-8'),
                 mb_convert_encoding('<i class="fas fa-clock time-icon"></i> '.strftime('%a %e %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>', 'UTF-8', 'UTF-8'),
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
@@ -223,12 +239,14 @@ class BoatTripController extends Controller
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
         $startAuto = $request->input('start_auto');
+        $isMember = $request->input('is_member', false) == 'on';
+        $isInstructor = $request->input('is_instructor', false) == 'on';
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto);
+        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember);
         return [];
     }
 
