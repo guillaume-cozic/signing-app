@@ -241,6 +241,27 @@ return [
             'icon' => 'nav-icon fas fa-ship',
         ],
         [
+            'text' => 'Forfaits',
+            'icon' => 'nav-icon fas fa-shopping-cart',
+            'active' => ['rental*'],
+            'submenu' => [
+                [
+                    'text' => 'Créer un forfait',
+                    'url'  => 'rental-package',
+                ],
+                [
+                    'text' => 'Créer un forfait utilisateur',
+                    'url'  => 'sailor-rental-package',
+                    'active' => ['sailor-rental-package']
+                ],
+                [
+                    'text' => 'Liste des forfaits utilisateurs',
+                    'url'  => 'sailor-rental-packages',
+                    'active' => ['sailor-rental-packages']
+                ],
+            ],
+        ],
+        [
             'text' => 'Utilisateurs',
             'icon' => 'nav-icon fas fa-users',
             'active' => ['teams*'],

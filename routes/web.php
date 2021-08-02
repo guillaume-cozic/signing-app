@@ -95,6 +95,14 @@ Route::get('dashboard/suggestions', [\App\Http\Controllers\Signing\BoatTripContr
     ->middleware(['auth'])
     ->name('dashboard.suggestions');
 
+Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showAddRentalPackage'])
+    ->middleware(['auth'])
+    ->name('rental-package.add');
+
+Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processAddRentalPackage'])
+    ->middleware(['auth'])
+    ->name('rental-package.add.process');
+
 require __DIR__.'/auth.php';
 
 
