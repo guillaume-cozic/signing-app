@@ -14,6 +14,16 @@
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" name="name" id="name" placeholder="Nom de la personne">
                     </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input name="is_member" id="r_is_member" class="form-check-input" type="checkbox">
+                            <label for="r_is_member" class="form-check-label">Adhérent</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="is_instructor" id="r_is_instructor" class="form-check-input" type="checkbox">
+                            <label for="r_is_instructor" class="form-check-label">Moniteur</label>
+                        </div>
+                    </div>
                     <div class="list-add-boat-trip">
                         <div class="row">
                             <div class="col-12">

@@ -13,7 +13,9 @@ class BoatTripsDTo
         public string $name = '',
         public ?array $boats = [],
         public float $hours = 0,
-        public ?\DateTime $shouldStartAt = null
+        public ?\DateTime $shouldStartAt = null,
+        public ?bool $isMember = false,
+        public ?bool $isInstructor = false,
     ){}
 
     public function startAt():?\DateTime

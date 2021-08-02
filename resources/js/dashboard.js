@@ -18,6 +18,20 @@ $('#datetimepicker').datetimepicker({
     }
 });
 
+$('input[name=is_member]').change(function(){
+    if($('input[name=is_member]').prop('checked') == true){
+        $('input[name=is_instructor]').prop('checked', false);
+    }
+});
+
+$('input[name=is_instructor]').change(function(){
+    if($('input[name=is_instructor]').prop('checked') == true){
+        $('input[name=is_member]').prop('checked', false);
+    }
+});
+
+
+
 function initTimePicker(minutes) {
     var timestamp = Date.now() + minutes * 60 * 1000;
     var date = new Date(timestamp);
