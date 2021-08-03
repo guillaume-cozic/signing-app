@@ -1,5 +1,5 @@
 <div class="p-2">
-    <table class="table table-striped no-wrap display" id="boat-trips-table" data-href="{{route('boat-trips.list.data')}}">
+    <table class="table table-striped no-wrap display dashboard-datatable" id="boat-trips-table" data-href="{{route('boat-trips.list.data')}}">
         <thead>
              <tr role="row">
                 <th data-priority="35">

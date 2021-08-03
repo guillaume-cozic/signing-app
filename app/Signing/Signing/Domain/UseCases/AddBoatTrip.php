@@ -14,6 +14,8 @@ interface AddBoatTrip
         bool $startNow = null,
         ?bool $autoStart = false,
         bool $isInstructor = false,
-        bool $isMember = false
+        bool $isMember = false,
+        bool $isReservation = false,
+        string $note = '',
     );
 }

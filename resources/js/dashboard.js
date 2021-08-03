@@ -150,6 +150,15 @@ $('#boat-trips-table').on('click', '.btn-start', function () {
     startBoatTrip(url);
 });
 
+$('.dashboard-datatable').on('click', '.btn-more', function () {
+    var note = $(this).data('note');
+    $.showConfirm({
+        title: "Note diverse", body: note, textTrue: "Ok", textFalse: "fermer",
+        onSubmit: function (result) {
+        }
+    });
+});
+
 function startBoatTrip(url)
 {
     $.showConfirm({

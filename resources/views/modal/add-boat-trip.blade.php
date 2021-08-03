@@ -109,6 +109,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Notes diverses</label>
+                                <textarea class="form-control" rows="3" name="note"></textarea>
+                            </div>
+                        </div>
                     </div>
                     <div class="alert-boat-not-available alert alert-danger" style="display: none;">
                         <h5><i class="icon fas fa-ban"></i> Attention!</h5>
