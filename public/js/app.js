@@ -2038,7 +2038,7 @@ if ($('#boat-trips-table').length != 0) {
     "order": [[4, "asc"]],
     fnRowCallback: function fnRowCallback(row, data) {}
   });
-  $('#boat-trips-table').on('click', '.btn-cancel', function () {
+  $('.dashboard-datatable').on('click', '.btn-cancel', function () {
     var url = $(this).data('href');
     $.showConfirm({
       title: "Voulez vous vraiment supprimer cette sortie ?",

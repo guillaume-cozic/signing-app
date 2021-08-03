@@ -178,7 +178,7 @@ class BoatTripController extends Controller
 
             if(isset($boatTrip->note) && $boatTrip->note !== "") {
                 $buttons .= '<i style="cursor: pointer;"
-                     data-toggle="tooltip" data-placement="top" title="Notes"
+                     data-toggle="tooltip" data-placement="top" title="Notes" data-note="'.$boatTrip->note.'"
                     class="btn-more fa fa-clipboard-list text-gray p-1"></i>';
             }
 
