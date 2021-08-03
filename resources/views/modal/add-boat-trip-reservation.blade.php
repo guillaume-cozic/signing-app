@@ -8,6 +8,7 @@
                 </button>
             </div>
             <form id="form-add-boat-trip-reservation" action="{{ route('boat-trips.add') }}" method="POST" class="form-add-boat-trip">
+                <input type="hidden" name="is_reservation" value="true"/>
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -72,6 +73,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Notes diverses</label>
+                                <textarea class="form-control" rows="3" name="note"></textarea>
                             </div>
                         </div>
                     </div>

@@ -2067,6 +2067,16 @@ $('#boat-trips-table').on('click', '.btn-start', function () {
   var url = $(this).data('href');
   startBoatTrip(url);
 });
+$('.dashboard-datatable').on('click', '.btn-more', function () {
+  var note = $(this).data('note');
+  $.showConfirm({
+    title: "Note diverse",
+    body: note,
+    textTrue: "Ok",
+    textFalse: "fermer",
+    onSubmit: function onSubmit(result) {}
+  });
+});
 
 function startBoatTrip(url) {
   $.showConfirm({

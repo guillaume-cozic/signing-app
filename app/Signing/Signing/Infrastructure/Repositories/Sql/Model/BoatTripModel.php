@@ -39,8 +39,10 @@ class BoatTripModel extends Model
         return new BoatTrip(
             new Id($this->uuid),
             $boatTripDuration,
-            new Sailor($this->member?->uuid, $this->name),
-            new BoatsCollection($this->boats)
+            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member),
+            new BoatsCollection($this->boats),
+            $this->is_reservation,
+            $this->note
         );
     }
 
@@ -85,6 +87,8 @@ class BoatTripModel extends Model
             $this->should_start_at ? new Carbon($this->should_start_at) : null,
             $this->is_member,
             $this->is_instructor,
+            $this->is_reservation,
+            $this->note
         );
     }
 }

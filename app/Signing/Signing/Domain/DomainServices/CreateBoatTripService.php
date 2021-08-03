@@ -28,11 +28,15 @@ class CreateBoatTripService
         bool $startNow = null,
         ?bool $startAuto = false,
         bool $isInstructor = false,
-        bool $isMember = false
+        bool $isMember = false,
+        bool $isReservation = false,
+        string $note = '',
     )
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
             ->withSailor(name:$name, isInstructor: $isInstructor, isMember: $isMember)
+            ->reservation($isReservation)
+            ->withNote($note)
             ->withBoats($boats);
 
         $boatTrip = $this->buildBoatTrip($startNow, $boatTripBuilder, $numberHours, $startAtHours, $startAuto);

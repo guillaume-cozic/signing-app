@@ -17,6 +17,8 @@ class BoatTripBuilder
     private BoatsCollection $boats;
     private Sailor $sailor;
     private BoatTripDuration $boatTripDuration;
+    private bool $isReservation = false;
+    private string $note = '';
 
     private function __construct(private string $id)
     {
@@ -50,29 +52,41 @@ class BoatTripBuilder
     public function inProgress(?float $numberHours):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->isReservation, $this->note);
     }
 
     public function notStarted(?\DateTime $shouldStartAt, ?float $numberHours):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(shouldStartAt: $shouldStartAt, numberHours: $numberHours);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->isReservation, $this->note);
     }
 
     public function ended(?float $numberHours):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours, end: $this->dateProvider->current());
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->isReservation, $this->note);
     }
 
     public function fromState(?float $numberHours, ?\DateTime $startAt, ?\DateTime $endAt = null, ?\DateTime $shouldStartAt = null):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration($shouldStartAt, $startAt, $numberHours, $endAt);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->isReservation, $this->note);
+    }
+
+    public function reservation(bool $reservation):self
+    {
+        $this->isReservation = $reservation;
+        return $this;
+    }
+
+    public function withNote(string $note = ''):self
+    {
+        $this->note = $note;
+        return $this;
     }
 
     public function get():BoatTrip
     {
-        return new BoatTrip(new Id($this->id), $this->boatTripDuration, $this->sailor, $this->boats);
+        return new BoatTrip(new Id($this->id), $this->boatTripDuration, $this->sailor, $this->boats, $this->isReservation, $this->note);
     }
 }
