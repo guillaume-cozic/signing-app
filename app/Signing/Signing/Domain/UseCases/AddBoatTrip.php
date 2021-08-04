@@ -16,6 +16,6 @@ interface AddBoatTrip
         bool $isInstructor = false,
         bool $isMember = false,
         bool $isReservation = false,
-        string $note = '',
+        ?string $note = null,
     );
 }

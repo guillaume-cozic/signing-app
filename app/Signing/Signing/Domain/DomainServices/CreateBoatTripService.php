@@ -30,7 +30,7 @@ class CreateBoatTripService
         bool $isInstructor = false,
         bool $isMember = false,
         bool $isReservation = false,
-        string $note = '',
+        ?string $note = null,
     )
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
