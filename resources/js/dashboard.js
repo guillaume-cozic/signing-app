@@ -18,6 +18,20 @@ $('#datetimepicker').datetimepicker({
     }
 });
 
+$('input[name=is_member]').change(function(){
+    if($('input[name=is_member]').prop('checked') == true){
+        $('input[name=is_instructor]').prop('checked', false);
+    }
+});
+
+$('input[name=is_instructor]').change(function(){
+    if($('input[name=is_instructor]').prop('checked') == true){
+        $('input[name=is_member]').prop('checked', false);
+    }
+});
+
+
+
 function initTimePicker(minutes) {
     var timestamp = Date.now() + minutes * 60 * 1000;
     var date = new Date(timestamp);
@@ -109,7 +123,7 @@ if($('#boat-trips-table').length != 0) {
     });
 
 
-    $('#boat-trips-table').on('click', '.btn-cancel', function () {
+    $('.dashboard-datatable').on('click', '.btn-cancel', function () {
         var url = $(this).data('href');
         $.showConfirm({
             title: "Voulez vous vraiment supprimer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
@@ -134,6 +148,15 @@ if($('#boat-trips-table').length != 0) {
 $('#boat-trips-table').on('click', '.btn-start', function () {
     var url = $(this).data('href');
     startBoatTrip(url);
+});
+
+$('.dashboard-datatable').on('click', '.btn-more', function () {
+    var note = $(this).data('note');
+    $.showConfirm({
+        title: "Note diverse", body: note, textTrue: "Ok", textFalse: "fermer",
+        onSubmit: function (result) {
+        }
+    });
 });
 
 function startBoatTrip(url)

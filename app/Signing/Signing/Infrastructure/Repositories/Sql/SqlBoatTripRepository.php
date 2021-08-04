@@ -38,6 +38,10 @@ class SqlBoatTripRepository implements BoatTripRepository
         $boatTripModel->start_at = $boatTripState->startAt();
         $boatTripModel->sailing_club_id = $this->contextService->get()->sailingClubId();
         $boatTripModel->should_start_at = $boatTripState->shouldStartAt();
+        $boatTripModel->is_member = $boatTripState->isMember();
+        $boatTripModel->is_instructor = $boatTripState->isInstructor();
+        $boatTripModel->is_reservation = $boatTripState->isReservation();
+        $boatTripModel->note = $boatTripState->note();
         $boatTripModel->save();
     }
 

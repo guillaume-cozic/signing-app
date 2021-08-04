@@ -53,7 +53,27 @@ class BoatTripController extends Controller
             $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
             $shouldEndAt = (new Carbon($startAt))->add(\DateInterval::createFromDateString('+'.$boatTrip->hours * 60 .' minutes'));
 
+            $badgeName = "";
+            if($boatTrip->isMember){
+                $badgeName = '<span class="badge bg-primary">Adhérent</span>';
+            }
+            if($boatTrip->isInstructor){
+                $badgeName = '<span class="badge bg-info">Moniteur</span>';
+            }
+
             $actions = [];
+
+            if(isset($boatTrip->note) && $boatTrip->note !== ''){
+                $actions[] = 'more';
+            }
+
+            if($boatTrip->isReservation && $boatTrip->startAt === null) {
+                $state = 'indigo';
+                $message = 'Réservation';
+                $actions[] = 'start';
+                $actions[] = 'cancel';
+            }
+
             if($boatTrip->startAt !== null){
                 $state = 'info';
                 $message = 'En navigation';
@@ -64,10 +84,12 @@ class BoatTripController extends Controller
                     $state = 'warning';
                 }
             }else{
-                $state = 'warning';
-                $message = 'A terre';
-                $actions[] = 'start';
-                $actions[] = 'cancel';
+                if(!$boatTrip->isReservation) {
+                    $state = 'warning';
+                    $message = 'A terre';
+                    $actions[] = 'start';
+                    $actions[] = 'cancel';
+                }
             }
 
             if($boatTrip->startAt !== null && $shouldEndAt < new Carbon(new \DateTime())) {
@@ -95,11 +117,16 @@ class BoatTripController extends Controller
                      data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
                     class="btn-cancel fa fa-trash text-red p-1"></i>';
             }
+            if(in_array('more', $actions)) {
+                $buttons .= '<i style="cursor: pointer;"
+                     data-toggle="tooltip" data-placement="top" title="Notes" data-note="'.$boatTrip->note.'"
+                    class="btn-more fa fa-clipboard-list text-gray p-1"></i>';
+            }
 
             $boatTripsData[] = [
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
-                $boatTrip->name,
+                $badgeName.' '.$boatTrip->name,
                 '<i class="fas fa-clock time-icon"></i> '.$startAt->format('H:i').' <small>'.$boatTrip->hours.' h</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
@@ -146,15 +173,29 @@ class BoatTripController extends Controller
             $message = 'Réservation';
 
             $buttons = '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
-                 data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
+                 data-toggle="tooltip" data-placement="top" title="Supprimer la réservation"
                 class="btn-cancel fa fa-trash text-red p-1"></i>';
+
+            if(isset($boatTrip->note) && $boatTrip->note !== "") {
+                $buttons .= '<i style="cursor: pointer;"
+                     data-toggle="tooltip" data-placement="top" title="Notes" data-note="'.$boatTrip->note.'"
+                    class="btn-more fa fa-clipboard-list text-gray p-1"></i>';
+            }
+
+            $badgeName = "";
+            if($boatTrip->isMember){
+                $badgeName = '<span class="badge bg-primary">Adhérent</span>';
+            }
+            if($boatTrip->isInstructor){
+                $badgeName = '<span class="badge bg-info">Moniteur</span>';
+            }
 
             setlocale(LC_TIME, "fr_FR");
             $boatTripsData[] = [
                 $boats,
                 '<span class="badge bg-info">'.$total.'</span>',
-                mb_convert_encoding($boatTrip->name, 'UTF-8', 'UTF-8'),
-                mb_convert_encoding('<i class="fas fa-clock time-icon"></i> '.strftime('%a %e %b à %H:%M', $startAt->getTimestamp()).' <small>'.$boatTrip->hours.' h</small>', 'UTF-8', 'UTF-8'),
+                mb_convert_encoding($badgeName.' '.$boatTrip->name, 'UTF-8', 'UTF-8'),
+                '<i class="fas fa-clock time-icon"></i> '.utf8_encode(strftime('%a %e %b à %H:%M', $startAt->getTimestamp())).' <small>'.$boatTrip->hours.' h</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                     </span>',
@@ -192,7 +233,7 @@ class BoatTripController extends Controller
 
             $boatTripsData[] = [
                 $boats,
-                $boatTrip->name,
+                $boatTrip->name.' '.$boatTrip->note,
                 '<i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'),
           ];
         }
@@ -223,12 +264,16 @@ class BoatTripController extends Controller
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
         $startAuto = $request->input('start_auto');
+        $isMember = $request->input('is_member', false) == 'on';
+        $isInstructor = $request->input('is_instructor', false) == 'on';
+        $isReservation = $request->input('is_reservation', false);
+        $note = $request->input('note');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto);
+        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $isReservation, $note);
         return [];
     }
 

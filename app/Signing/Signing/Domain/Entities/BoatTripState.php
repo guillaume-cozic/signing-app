@@ -14,14 +14,18 @@ class BoatTripState implements State
         private string $id,
         private BoatTripDurationState $duration,
         private array $boats,
-        private SailorState $sailor
+        private SailorState $sailor,
+        private bool $isReservation,
+        private ?string $note = null
     ){}
 
     public function toBoatTrip():BoatTrip
     {
         return BoatTripBuilder::build($this->id)
             ->withBoats($this->boats)
-            ->withSailor($this->memberId(), $this->name())
+            ->reservation($this->isReservation)
+            ->withNote($this->note)
+            ->withSailor($this->memberId(), $this->name(), $this->isInstructor(), $this->isMember())
             ->fromState($this->numberHours(), $this->startAt(), $this->endAt(), $this->shouldStartAt());
     }
 
@@ -78,5 +82,25 @@ class BoatTripState implements State
     public function memberId(): ?string
     {
         return $this->sailor->memberId();
+    }
+
+    public function isInstructor(): ?bool
+    {
+        return $this->sailor->isInstructor();
+    }
+
+    public function isMember(): ?bool
+    {
+        return $this->sailor->isMember();
+    }
+
+    public function isReservation(): ?bool
+    {
+        return $this->isReservation;
+    }
+
+    public function note(): ?string
+    {
+        return $this->note;
     }
 }

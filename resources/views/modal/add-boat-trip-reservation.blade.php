@@ -8,11 +8,22 @@
                 </button>
             </div>
             <form id="form-add-boat-trip-reservation" action="{{ route('boat-trips.add') }}" method="POST" class="form-add-boat-trip">
+                <input type="hidden" name="is_reservation" value="true"/>
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" name="name" id="name" placeholder="Nom de la personne">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input name="is_member" id="r_is_member" class="form-check-input" type="checkbox">
+                            <label for="r_is_member" class="form-check-label">Adhérent</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="is_instructor" id="r_is_instructor" class="form-check-input" type="checkbox">
+                            <label for="r_is_instructor" class="form-check-label">Moniteur</label>
+                        </div>
                     </div>
                     <div class="list-add-boat-trip">
                         <div class="row">
@@ -62,6 +73,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Notes diverses</label>
+                                <textarea class="form-control" rows="3" name="note"></textarea>
                             </div>
                         </div>
                     </div>

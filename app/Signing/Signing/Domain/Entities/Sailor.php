@@ -12,7 +12,9 @@ class Sailor implements HasState
 {
     public function __construct(
         private ?string $memberId = '',
-        private ?string $name = ''
+        private ?string $name = '',
+        private ?bool $isInstructor = null,
+        private ?bool $isMember = null,
     ){}
 
     public function decreaseHoursRentalPackage(RentalPackage $rentalPackage, float $hours)
@@ -25,6 +27,6 @@ class Sailor implements HasState
 
     public function getState(): SailorState
     {
-        return new SailorState($this->name, $this->memberId);
+        return new SailorState($this->name, $this->memberId, $this->isInstructor, $this->isMember);
     }
 }

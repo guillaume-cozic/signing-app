@@ -16,7 +16,7 @@ class BoatAvailabilityChecker
     public function __construct(
         private BoatsCollection $boatsAsked,
         private \DateTime $startAt,
-        private int $hours
+        private float $hours
     ){
         $this->fleetRepository = app(FleetRepository::class);
         $this->boatTripRepository = app(BoatTripRepository::class);
@@ -43,7 +43,7 @@ class BoatAvailabilityChecker
     {
         $totalActive = 0;
         $startAt = clone $this->startAt;
-        $endAt = $startAt->add(new \DateInterval('PT'.$this->hours.'H'));
+        $endAt = $startAt->add(new \DateInterval('PT'.($this->hours*60).'M'));
         $boatTrips = $this->boatTripRepository->getUsedBoat($boatId, $this->startAt, $endAt);
         foreach ($boatTrips as $activeBoatTrip) {
             $totalActive += $activeBoatTrip->quantity($boatId);

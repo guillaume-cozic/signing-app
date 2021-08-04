@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Signing\Signing\Domain\Entities;
 
@@ -25,6 +25,8 @@ class BoatTrip implements HasState
         private BoatTripDuration $duration,
         private Sailor $sailor,
         private ?BoatsCollection $boats = null,
+        private bool $isReservation = false,
+        private ?string $note = null
     ){
         $this->boatTripRepository = app(BoatTripRepository::class);
         $this->authGateway = app(AuthGateway::class);
@@ -125,7 +127,9 @@ class BoatTrip implements HasState
             $this->id->id(),
             $this->duration->getState(),
             $this->boats->boats(),
-            $this->sailor->getState()
+            $this->sailor->getState(),
+            $this->isReservation,
+            $this->note
         );
     }
 }

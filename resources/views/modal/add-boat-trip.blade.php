@@ -14,6 +14,16 @@
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" name="name" id="name" placeholder="Nom de la personne">
                     </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input name="is_member" id="is_member" class="form-check-input" type="checkbox">
+                            <label for="is_member" class="form-check-label">Adhérent</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="is_instructor" id="is_instructor" class="form-check-input" type="checkbox">
+                            <label for="is_instructor" class="form-check-label">Moniteur</label>
+                        </div>
+                    </div>
                     <div class="list-add-boat-trip">
                         <div class="row">
                             <div class="col-12">
@@ -97,6 +107,12 @@
                                         </label>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-12">
+                            <div class="form-group">
+                                <label>Notes diverses</label>
+                                <textarea class="form-control" rows="3" name="note"></textarea>
                             </div>
                         </div>
                     </div>
