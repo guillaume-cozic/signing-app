@@ -18,7 +18,7 @@ class BoatTripBuilder
     private Sailor $sailor;
     private BoatTripDuration $boatTripDuration;
     private bool $isReservation = false;
-    private string $note = '';
+    private ?string $note = null;
 
     private function __construct(private string $id)
     {
@@ -79,7 +79,7 @@ class BoatTripBuilder
         return $this;
     }
 
-    public function withNote(string $note = ''):self
+    public function withNote(string $note = null):self
     {
         $this->note = $note;
         return $this;
