@@ -1,0 +1,1 @@
+$('.fleets-select').select2({});

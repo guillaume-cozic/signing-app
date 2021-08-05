@@ -31,4 +31,19 @@ class RentalPackageState implements State
     {
         return in_array($fleet, $this->fleets);
     }
+
+    public function fleets():array
+    {
+        return $this->fleets;
+    }
+
+    public function validity():int
+    {
+        return $this->validityInDays;
+    }
+
+    public function name():string
+    {
+        return $this->name;
+    }
 }

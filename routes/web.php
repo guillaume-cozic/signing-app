@@ -99,9 +99,13 @@ Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageControl
     ->middleware(['auth'])
     ->name('rental-package.add');
 
-Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processAddRentalPackage'])
+Route::post('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processAddRentalPackage'])
     ->middleware(['auth'])
     ->name('rental-package.add.process');
+
+Route::get('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.index');
 
 require __DIR__.'/auth.php';
 

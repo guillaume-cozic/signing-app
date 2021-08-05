@@ -75,26 +75,4 @@ class SqlReadBoatTripRepositoryTest extends TestCase
         $boatTripsDto = $this->readBoatTripRepository->getNearToFinishOrStart();
         self::assertEquals($id, $boatTripsDto[0]->id);
     }
-
-
-    /**
-     * @test
-     */
-    public function shouldNotGetBoatTripAlreadyStartedAndNotNearToFinish()
-    {
-        $fleet = new Fleet(new Id($fleetId = 'abcde'), 10);
-        $this->fleetRepository->save($fleet->getState());
-
-        $boatTrip = BoatTripBuilder::build($id = 'abcd')
-            ->withSailor(name:$name = 'Tabarly')
-            ->withBoats([$fleetId => 1])
-            ->withDates(startAt: new \DateTime('-4 minutes'), numberHours: 1)
-            ->get()
-        ;
-
-        $this->boatTripRepository->save($boatTrip->getState());
-
-        $boatTripsDto = $this->readBoatTripRepository->getNearToFinishOrStart();
-        self::assertEquals($id, $boatTripsDto[0]->id);
-    }
 }

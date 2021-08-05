@@ -246,16 +246,11 @@ return [
             'active' => ['rental*'],
             'submenu' => [
                 [
-                    'text' => 'Créer un forfait',
+                    'text' => 'Modèle de forfait',
                     'url'  => 'rental-package',
                 ],
                 [
-                    'text' => 'Créer un forfait utilisateur',
-                    'url'  => 'sailor-rental-package',
-                    'active' => ['sailor-rental-package']
-                ],
-                [
-                    'text' => 'Liste des forfaits utilisateurs',
+                    'text' => 'Forfaits utilisateurs',
                     'url'  => 'sailor-rental-packages',
                     'active' => ['sailor-rental-packages']
                 ],
