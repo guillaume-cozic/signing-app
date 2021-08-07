@@ -107,6 +107,10 @@ Route::get('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRental
     ->middleware(['auth'])
     ->name('sailor-rental-package.index');
 
+Route::post('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'processAdd'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.add');
+
 require __DIR__.'/auth.php';
 
 

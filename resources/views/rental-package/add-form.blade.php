@@ -1,9 +1,9 @@
- <div class="card">
-    <form action="{{ route('rental-package.add.process') }}" method="POST">
-        @csrf
-        <div class="card-header">
-            Ajouter un forfait
-        </div>
+ <div class="card card-primary">
+    <div class="card-header">
+        Ajouter un forfait
+    </div>
+     <form action="{{ route('rental-package.add.process') }}" method="POST">
+         @csrf
         <div class="card-body">
             <div class="form-group">
                 <label for="name">Nom du forfait</label>

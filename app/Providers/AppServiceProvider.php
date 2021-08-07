@@ -81,6 +81,7 @@ use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadRentalPackag
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlRentalPackageRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlSailorRentalPackageRepository;
 use Illuminate\Support\ServiceProvider;
 use Tests\Adapters\ContextServiceTestImpl;
 use Tests\Unit\Adapters\Provider\FakeDateProvider;
@@ -156,7 +157,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
-            $this->app->singleton(SailorRentalPackageRepository::class, InMemorySailorRentalPackageRepository::class);
+            $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
         }
 
         if(config('app.env') == 'local') {
@@ -169,6 +170,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(RentalPackageRepository::class, SqlRentalPackageRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
+            $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
         }
 
         $this->app->singleton(BoatTripReportingRepository::class, SqlBoatTripReportingRepository::class);

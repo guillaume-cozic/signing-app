@@ -32,6 +32,16 @@ class SailorRentalPackageState implements State
         return $this->rentalPackageId;
     }
 
+    public function hours():float
+    {
+        return $this->hours;
+    }
+
+    public function endValidity():Carbon
+    {
+        return $this->endValidity;
+    }
+
     public function toDomain():SailorRentalPackage
     {
         return new SailorRentalPackage($this->id, $this->name, $this->rentalPackageId, $this->endValidity, $this->hours);
