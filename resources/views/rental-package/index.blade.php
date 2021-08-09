@@ -24,15 +24,15 @@
                                     <td>{{ implode(' ', $rentalPackage->fleetsName) }}</td>
                                     <td>{{ $rentalPackage->validity }}</td>
                                     <td>
-                                        <a href="#">
+                                        <!--a href="#">
                                             <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a href="#">
+                                        </a-->
+                                        <a href="{{ route('sailor-rental-package.index', ['rental_package_id' => $rentalPackage->id]) }}">
                                             <i class="text-info fa fa-list"></i>
                                         </a>
-                                        <a href="#">
+                                        <!--a href="#">
                                             <i class="text-success fa fa-user-plus"></i>
-                                        </a>
+                                        </a-->
                                     </td>
                                 </tr>
                             @endforeach

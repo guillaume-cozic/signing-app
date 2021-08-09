@@ -111,6 +111,18 @@ Route::post('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRenta
     ->middleware(['auth'])
     ->name('sailor-rental-package.add');
 
+Route::post('sailor-rental-packages/list', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'listSailorRentalPackage'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.list');
+
+Route::post('sailor-rental-packages/{id}/add-hours', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'addHours'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.add-hours');
+
+Route::post('sailor-rental-packages/{id}/decrease-hours', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'decreaseHours'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.decrease-hours');
+
 require __DIR__.'/auth.php';
 
 

@@ -45,6 +45,5 @@ class GetRentalPackagesTest extends TestCase
         $rentalPackages = app(GetRentalPackages::class)->execute();
         $rentalPackagesExpected = [new RentalPackageViewModel('abc', 'name', [$hobieCatName], 10)];
         self::assertEquals($rentalPackagesExpected, $rentalPackages);
-
     }
 }

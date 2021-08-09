@@ -25,6 +25,7 @@ use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadRentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\Read\ReadSailorRentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
@@ -72,12 +73,15 @@ use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\DecreaseSailorRentalP
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\EditRentalPackageImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\SearchSailorRentalPackagesImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadRentalPackageRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadSailorRentalPackageRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlRentalPackageRepository;
@@ -128,6 +132,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GetNumberBoatsOfFleetAvailable::class, GetNumberBoatsOfFleetAvailableImpl::class);
         $this->app->singleton(GetBoatTripsSuggestions::class, GetBoatTripsSuggestionsImpl::class);
         $this->app->singleton(GetRentalPackages::class, GetRentalPackageImpl::class);
+        $this->app->singleton(SearchSailorRentalPackages::class, SearchSailorRentalPackagesImpl::class);
 
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);
         $this->app->singleton(AuthGateway::class, AuthGatewayImpl::class);
@@ -157,6 +162,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
+            $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
         }
 
@@ -170,6 +176,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(RentalPackageRepository::class, SqlRentalPackageRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
+            $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
         }
 
