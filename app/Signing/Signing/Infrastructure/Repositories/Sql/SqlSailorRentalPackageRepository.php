@@ -64,7 +64,7 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
     public function save(SailorRentalPackageState $sailorRentalPackageState)
     {
         $rentalPackage = RentalPackageModel::query()->where('uuid', $sailorRentalPackageState->rentalPackageId())->first();
-        $sailor = SailorModel::query()->where('name')->first();
+        $sailor = SailorModel::query()->where('name', $sailorRentalPackageState->name())->first();
         if(!isset($sailor)){
             $sailor = new SailorModel();
             $sailor->name = $sailorRentalPackageState->name();

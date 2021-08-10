@@ -242,7 +242,7 @@ return [
         ],
         [
             'text' => 'Forfaits',
-            'icon' => 'nav-icon fas fa-shopping-cart',
+            'icon' => 'nav-icon fas fa-list',
             'active' => ['rental*'],
             'submenu' => [
                 [
