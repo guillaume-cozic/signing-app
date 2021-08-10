@@ -7,7 +7,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="name">Nom de l'utilisateur</label>
-                <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Nom de l'utilisateur">
+                <input value="{{ old('name') }}" type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Nom de l'utilisateur">
                 @if ($errors->has('name'))
                     <span class="error invalid-feedback">
                         <strong>{{ $errors->first('name') }}</strong>

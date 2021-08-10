@@ -38,10 +38,10 @@ if($('#sailor-rental-package-table').length != 0) {
         iDisplayLength: 10,
         showExportButton: false,
         columns: [
-            {"name": "name", 'orderable': false},
-            {"name": "rental_package"},
+            {"name": "sailor_name"},
+            {"name": "rental_name"},
             {"name": "hours"},
-            {"name": "actions"},
+            {"name": "actions", 'orderable': false},
         ],
         "order": [[1, "asc"]],
         fnRowCallback: function (row, data) {}

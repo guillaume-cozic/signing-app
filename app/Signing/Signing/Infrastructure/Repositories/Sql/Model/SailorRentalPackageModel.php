@@ -25,6 +25,6 @@ class SailorRentalPackageModel extends Model
 
     public function toState()
     {
-        return new SailorRentalPackageState($this->uuid, $this->sailor->name, $this->rentalPackage->uuid, $this->end_validity, $this->hours);
+        return new SailorRentalPackageState($this->sailor_rental_id ?? $this->uuid, $this->sailor->name, $this->rentalPackage->uuid, $this->end_validity, $this->hours);
     }
 }

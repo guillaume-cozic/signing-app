@@ -231,7 +231,7 @@ return [
             'topnav' => true,
         ],
         [
-            'text' => 'dashboard',
+            'text' => 'Tableau de bord',
             'url'  => 'dashboard',
             'icon' => 'nav-icon fas fa-tachometer-alt',
         ],

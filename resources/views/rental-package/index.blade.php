@@ -11,9 +11,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Nom</th>
+                                <th>Nom du forfait</th>
                                 <th>Flottes</th>
-                                <th>Durée de validité</th>
+                                <th>Durée de validité <small>(en jours)</small></th>
+                                <th>Nombre de forfaits valides</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -24,10 +25,19 @@
                                     <td>{{ implode(' ', $rentalPackage->fleetsName) }}</td>
                                     <td>{{ $rentalPackage->validity }}</td>
                                     <td>
+                                        @if($rentalPackage->number > 0)
+                                            <span class="badge badge-success">{{ $rentalPackage->number }}</span>
+                                        @else
+                                            <span class="badge badge-danger">{{ $rentalPackage->number }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <!--a href="#">
                                             <i class="fa fa-edit"></i>
                                         </a-->
-                                        <a href="{{ route('sailor-rental-package.index', ['rental_package_id' => $rentalPackage->id]) }}">
+                                        <a class="p-1" href="{{ route('sailor-rental-package.index', ['rental_package_id' => $rentalPackage->id]) }}"
+                                           data-toggle="tooltip" data-placement="top" title="Consulter les forfaits utilisateurs"
+                                        >
                                             <i class="text-info fa fa-list"></i>
                                         </a>
                                         <!--a href="#">

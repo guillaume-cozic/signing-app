@@ -1,5 +1,5 @@
-<div class="modal" tabindex="-1" role="dialog" id="modal-add-boat-trip">
-    <div class="modal-dialog">
+<div class="modal bd-example-modal-lg" tabindex="-1" role="dialog" id="modal-add-boat-trip">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Ajouter une sortie</h4>
@@ -10,18 +10,31 @@
             <form id="form-add-boat-trip" action="{{ route('boat-trips.add') }}" method="POST" class="form-add-boat-trip">
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Nom</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Nom de la personne">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
+                            <div class="form-group">
+                                <label for="name">Nom</label>
+                                <input type="search" class="form-control autocomplete-sailor-name" name="name" id="name"
+                                       placeholder="Nom de la personne"
+                                       autocomplete="off"/>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <div class="form-check">
-                            <input name="is_member" id="is_member" class="form-check-input" type="checkbox">
-                            <label for="is_member" class="form-check-label">Adhérent</label>
-                        </div>
-                        <div class="form-check">
-                            <input name="is_instructor" id="is_instructor" class="form-check-input" type="checkbox">
-                            <label for="is_instructor" class="form-check-label">Moniteur</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <input name="is_member" id="is_member" class="form-check-input" type="checkbox">
+                                    <label for="is_member" class="form-check-label">Adhérent</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check">
+                                    <input name="is_instructor" id="is_instructor" class="form-check-input" type="checkbox">
+                                    <label for="is_instructor" class="form-check-label">Moniteur</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="list-add-boat-trip">

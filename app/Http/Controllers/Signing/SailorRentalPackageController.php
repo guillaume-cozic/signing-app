@@ -10,6 +10,7 @@ use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRenta
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 
@@ -58,10 +59,15 @@ class SailorRentalPackageController extends Controller
                  data-toggle="tooltip" data-placement="top" title="Enlever des heures sur le forfait"
                 class="decrease-hours-to-sailor-rental fa fa-minus-circle text-red p-1"></i>';
 
+            $hours = '<span class="badge badge-danger">'.$searchSailorRentalPackage->hours.'</span>';
+            if($searchSailorRentalPackage->hours > 0){
+                $hours = '<span class="badge badge-success">'.$searchSailorRentalPackage->hours.'</span>';
+            }
+
             $searchSailorRentalPackagesData[] = [
                 $searchSailorRentalPackage->sailorName,
                 $searchSailorRentalPackage->rentalName,
-                $searchSailorRentalPackage->hours,
+                $hours,
                 $buttons,
             ];
         }
@@ -86,5 +92,29 @@ class SailorRentalPackageController extends Controller
         $hours = $request->input('hours');
         $addOrSubHoursToSailorRentalPackage->execute($sailorRentalPackageId, -$hours);
         return [];
+    }
+
+    public function sailorAutocomplete(Request $request)
+    {
+        $value = $request->input('q');
+        $sailors = SailorModel::query()
+            ->where('sailor.name', 'LIKE', '%'.$value.'%')
+            ->groupBy('sailor.uuid')
+            ->get();
+        foreach($sailors as $sailor){
+            $sailorRentalPackages = $sailor->rentalPackages()->get();
+            $badges = [];
+            foreach($sailorRentalPackages as $sailorRentalPackage){
+                if($sailorRentalPackage->hours > 0) {
+                    $badges[] = '<span class="badge badge-success">' . $sailorRentalPackage->hours . ' heure(s) ' . $sailorRentalPackage->rentalPackage->name . '</span>';
+                }
+            }
+            $auto[] = [
+                'value' => $sailor->uuid,
+                'text' => $sailor->name,
+                'html' => $sailor->name.' '.implode(' ', $badges)
+            ];
+        }
+        return $auto ?? [];
     }
 }

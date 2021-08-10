@@ -11,7 +11,6 @@ use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\RentalPackageModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorRentalPackageModel;
-use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 
 class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository

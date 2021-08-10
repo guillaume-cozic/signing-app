@@ -123,6 +123,10 @@ Route::post('sailor-rental-packages/{id}/decrease-hours', [\App\Http\Controllers
     ->middleware(['auth'])
     ->name('sailor-rental-package.decrease-hours');
 
+Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'sailorAutocomplete'])
+    ->middleware(['auth'])
+    ->name('sailor.autocomplete');
+
 require __DIR__.'/auth.php';
 
 

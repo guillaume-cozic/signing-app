@@ -10,6 +10,7 @@ class RentalPackageViewModel
         public string $id,
         public string $name,
         public array $fleetsName,
-        public string $validity
+        public string $validity,
+        public int $number,
     ){}
 }
