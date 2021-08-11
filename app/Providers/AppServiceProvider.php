@@ -71,8 +71,10 @@ use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateRentalPackageIm
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateSailorRentalPackageImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\DecreaseSailorRentalPackageHoursWhenBoatTripFinishedImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\EditRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackagesImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\SearchSailorRentalPackagesImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
@@ -131,7 +133,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GetFleet::class, GetFleetImpl::class);
         $this->app->singleton(GetNumberBoatsOfFleetAvailable::class, GetNumberBoatsOfFleetAvailableImpl::class);
         $this->app->singleton(GetBoatTripsSuggestions::class, GetBoatTripsSuggestionsImpl::class);
-        $this->app->singleton(GetRentalPackages::class, GetRentalPackageImpl::class);
+        $this->app->singleton(GetRentalPackages::class, GetRentalPackagesImpl::class);
+        $this->app->singleton(GetRentalPackage::class, GetRentalPackageImpl::class);
         $this->app->singleton(SearchSailorRentalPackages::class, SearchSailorRentalPackagesImpl::class);
 
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);

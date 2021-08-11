@@ -103,6 +103,14 @@ Route::post('rental-package', [\App\Http\Controllers\Signing\RentalPackageContro
     ->middleware(['auth'])
     ->name('rental-package.add.process');
 
+Route::post('rental-package/{id}/edit', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processEditRentalPackage'])
+    ->middleware(['auth'])
+    ->name('rental-package.edit.process');
+
+Route::get('rental-package/{id}/edit', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showEdit'])
+    ->middleware(['auth'])
+    ->name('rental-package.edit');
+
 Route::get('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'index'])
     ->middleware(['auth'])
     ->name('sailor-rental-package.index');

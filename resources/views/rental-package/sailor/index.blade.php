@@ -5,7 +5,7 @@
         <div class="col-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Liste des forfaits utilisateurs</h3>
+                    <h3 class="card-title">Liste des forfaits clients</h3>
                     @if(isset($rentalPackageId))
                         <div class="card-tools">
                             <a href="{{ route('sailor-rental-package.index') }}" class="btn btn-sm btn-primary">

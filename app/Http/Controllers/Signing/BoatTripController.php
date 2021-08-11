@@ -249,7 +249,7 @@ class BoatTripController extends Controller
     public function serveHtmlModal(Request $request, GetFleetsList $getFleetsList)
     {
         $count = $request->input('count');
-        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]]);
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0);
         return view('modal.partials.add-boat-trip-form', [
             'fleets' => $fleets,
             'count' => $count

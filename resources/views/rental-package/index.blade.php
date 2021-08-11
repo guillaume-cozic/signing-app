@@ -32,11 +32,13 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <!--a href="#">
+                                        <a
+                                            data-toggle="tooltip" data-placement="top" title="Editer le forfait"
+                                            href="{{ route('rental-package.edit', ['id' => $rentalPackage->id]) }}">
                                             <i class="fa fa-edit"></i>
-                                        </a-->
+                                        </a>
                                         <a class="p-1" href="{{ route('sailor-rental-package.index', ['rental_package_id' => $rentalPackage->id]) }}"
-                                           data-toggle="tooltip" data-placement="top" title="Consulter les forfaits utilisateurs"
+                                           data-toggle="tooltip" data-placement="top" title="Consulter les forfaits client"
                                         >
                                             <i class="text-info fa fa-list"></i>
                                         </a>

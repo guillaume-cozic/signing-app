@@ -1,13 +1,19 @@
 <div class="card card-primary">
     <div class="card-header">
-        Ajouter un forfait utilisateur
+        Ajouter un forfait client
     </div>
     <form action="{{ route('sailor-rental-package.add') }}" method="POST">
         @csrf
         <div class="card-body">
             <div class="form-group">
-                <label for="name">Nom de l'utilisateur</label>
-                <input value="{{ old('name') }}" type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" placeholder="Nom de l'utilisateur">
+                <label for="name">Nom du client <small>Il est préférable de préciser le nom et prénom du client pour éviter des confusions</small></label>
+                <input value="{{ old('name') }}"
+                       type="search"
+                       class=" autocomplete-sailor-name form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                       name="name" placeholder="Nom du client"
+                        autocomplete="off"
+                >
+                <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
                 @if ($errors->has('name'))
                     <span class="error invalid-feedback">
                         <strong>{{ $errors->first('name') }}</strong>
@@ -42,7 +48,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <input type="submit" class="pull-right btn btn-primary" value="Créer le forfait utilisateur"/>
+            <input type="submit" class="pull-right btn btn-primary" value="Créer le forfait client"/>
         </div>
     </form>
 </div>

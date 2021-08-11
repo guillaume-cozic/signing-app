@@ -250,7 +250,7 @@ return [
                     'url'  => 'rental-package',
                 ],
                 [
-                    'text' => 'Forfaits utilisateurs',
+                    'text' => 'Forfaits clients',
                     'url'  => 'sailor-rental-packages',
                     'active' => ['sailor-rental-packages']
                 ],
