@@ -65,8 +65,6 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
 
     public function getBoatTripGroupByHours(int $days = 90):array
     {
-
-
         $boatTrips = BoatTripModel::query()
             ->selectRaw('*, HOUR(start_at) as hour')
             ->sailingClub()
@@ -81,6 +79,9 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
         }
 
         foreach($boatTrips as $boatTrip){
+            if(!isset($totalPerHour)){
+                continue;
+            }
             $totalPerHour[$boatTrip->hour] += $boatTrip->totalBoats();
         }
         ksort($totalPerHour);
