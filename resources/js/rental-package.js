@@ -1,4 +1,6 @@
-$('.fleets-select').select2({});
+$('.fleets-select').select2({
+    theme: 'classic',
+});
 
 if($('#sailor-rental-package-table').length != 0) {
     var sailorRentalDatatable = $('#sailor-rental-package-table').DataTable({

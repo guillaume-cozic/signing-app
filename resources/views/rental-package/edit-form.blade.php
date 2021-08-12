@@ -19,9 +19,9 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="form-group">
+                        <div class="">
                             <label for="select-fleet">Flottes associées</label>
-                            <select id="select-fleet" class="fleets-select form-control {{ $errors->has('fleets') ? 'is-invalid' : '' }}" name="fleets[]" multiple="multiple">
+                            <select id="select-fleet" class="fleets-select select2-purple form-control {{ $errors->has('fleets') ? 'is-invalid' : '' }}" name="fleets[]" multiple="multiple">
                                 @foreach($fleets as $fleet)
                                     <option {{ in_array( $fleet->id, old("fleets", $rentalPackage->fleets)) ? "selected":"" }} value="{{ $fleet->id }}">{{ $fleet->name }}</option>
                                 @endforeach

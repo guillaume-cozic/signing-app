@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
+@import "../../node_modules/select2/dist/css/select2.min.css";
 @import '../../node_modules/overlayscrollbars/css/OverlayScrollbars.css';
 @import '../../node_modules/icheck-bootstrap/icheck-bootstrap.css';
 @import '../../vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
 @import "../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css";
-@import "../../node_modules/select2/dist/css/select2.min.css";
 
 
 @import "./notify.css";

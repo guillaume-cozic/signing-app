@@ -1,4 +1,4 @@
- <div class="card card-primary">
+<div class="card card-primary">
     <div class="card-header">
         Ajouter un forfait
     </div>
@@ -16,7 +16,10 @@
             </div>
             <div class="form-group">
                 <label for="select-fleet">Flottes associées</label>
-                <select id="select-fleet" class="fleets-select form-control {{ $errors->has('fleets') ? 'is-invalid' : '' }}" name="fleets[]" multiple="multiple">
+                <select id="select-fleet"
+                        data-placeholder="Selectionner une ou plusieurs flottes"
+                        class="fleets-select select2-purple form-control {{ $errors->has('fleets') ? 'is-invalid' : '' }}"
+                        name="fleets[]" multiple="multiple">
                     @foreach($fleets as $fleet)
                         <option {{ in_array( $fleet->id, old("fleets", [])) ? "selected":"" }} value="{{ $fleet->id }}">{{ $fleet->name }}</option>
                     @endforeach
