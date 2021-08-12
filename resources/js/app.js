@@ -15,6 +15,10 @@ global.moment = require('moment');
 import 'moment-timezone';
 require('tempusdominus-bootstrap-4');
 require('bootstrap-show-modal');
+require('select2');
+require('bootstrap-autocomplete');
+
+
 
 $.ajaxSetup({
     headers: {
@@ -26,5 +30,6 @@ require('./realtime');
 require('./notify');
 require('./dashboard');
 require('./fleet');
+require('./rental-package');
 
 

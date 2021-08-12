@@ -417,3 +417,27 @@ $('.control-sidebar-id').click(function(){
         tableBoatTrips.draw();
     }
 });
+
+$('.autocomplete-sailor-name').autoComplete({
+    resolverSettings: {
+        url: 'sailors'
+    },
+    minLength:1,
+    formatResult: function (item) {
+        return {
+            value: item.value,
+            text:  item.text,
+            html: [
+                item.html
+            ]
+        };
+    },
+});
+
+$('.autocomplete-sailor-name').on('autocomplete.select', function (e, i) {
+    $('.input_sailor_id').val(i.value);
+});
+
+$('.autocomplete-sailor-name').on('change', function (e, i) {
+    $('.input_sailor_id').val('');
+});

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\BoatTrip\BoatTripEnded;
 use App\Events\BoatTrip\BoatTripStarted;
+use App\Listeners\BoatTrip\DecreaseSailorRentalPackageHoursListener;
 use App\Listeners\BoatTrip\SendNotificationBoatTripEnded;
 use App\Listeners\BoatTrip\SendNotificationBoatTripStarted;
 use App\Listeners\CreateTeam;
@@ -22,7 +23,8 @@ class EventServiceProvider extends ServiceProvider
             JoinTeamListener::class
         ],
         BoatTripEnded::class => [
-            SendNotificationBoatTripEnded::class
+            SendNotificationBoatTripEnded::class,
+            DecreaseSailorRentalPackageHoursListener::class
         ],
         BoatTripStarted::class => [
             SendNotificationBoatTripStarted::class

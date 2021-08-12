@@ -24,6 +24,10 @@ use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
+use App\Signing\Signing\Domain\Repositories\Read\ReadRentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\Read\ReadSailorRentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -57,13 +61,33 @@ use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetBoatTripsSuggestionsImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Query\Impl\GetNumberBoatsOfFleetAvailableImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\DecreaseSailorRentalPackageHoursWhenBoatTripFinished;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\EditRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\AddOrSubHoursToSailorRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\CreateSailorRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\DecreaseSailorRentalPackageHoursWhenBoatTripFinishedImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Impl\EditRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackageImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackagesImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\SearchSailorRentalPackagesImpl;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
 use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadFleetRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadRentalPackageRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadSailorRentalPackageRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlFleetRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlRentalPackageRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlSailorRentalPackageRepository;
 use Illuminate\Support\ServiceProvider;
 use Tests\Adapters\ContextServiceTestImpl;
 use Tests\Unit\Adapters\Provider\FakeDateProvider;
@@ -71,6 +95,8 @@ use Tests\Unit\Adapters\Provider\FakeIdentityProvider;
 use Tests\Unit\Adapters\Provider\InMemoryAuthGateway;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
+use Tests\Unit\Adapters\Repositories\InMemoryRentalPackageRepository;
+use Tests\Unit\Adapters\Repositories\InMemorySailorRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\Read\InMemoryReadBoatTripRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
 use ConsoleTVs\Charts\Registrar as Charts;
@@ -93,7 +119,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
         $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
-
+        $this->app->singleton(CreateRentalPackage::class, CreateRentalPackageImpl::class);
+        $this->app->singleton(EditRentalPackage::class, EditRentalPackageImpl::class);
+        $this->app->singleton(CreateSailorRentalPackage::class, CreateSailorRentalPackageImpl::class);
+        $this->app->singleton(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class, DecreaseSailorRentalPackageHoursWhenBoatTripFinishedImpl::class);
+        $this->app->singleton(AddOrSubHoursToSailorRentalPackage::class, AddOrSubHoursToSailorRentalPackageImpl::class);
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
         $this->app->singleton(SendBoatTripStartedNotification::class, SendBoatTripStartedNotificationImpl::class);
@@ -103,6 +133,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GetFleet::class, GetFleetImpl::class);
         $this->app->singleton(GetNumberBoatsOfFleetAvailable::class, GetNumberBoatsOfFleetAvailableImpl::class);
         $this->app->singleton(GetBoatTripsSuggestions::class, GetBoatTripsSuggestionsImpl::class);
+        $this->app->singleton(GetRentalPackages::class, GetRentalPackagesImpl::class);
+        $this->app->singleton(GetRentalPackage::class, GetRentalPackageImpl::class);
+        $this->app->singleton(SearchSailorRentalPackages::class, SearchSailorRentalPackagesImpl::class);
 
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);
         $this->app->singleton(AuthGateway::class, AuthGatewayImpl::class);
@@ -116,17 +149,24 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
             $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
+            $this->app->singleton(RentalPackageRepository::class, InMemoryRentalPackageRepository::class);
+            $this->app->singleton(SailorRentalPackageRepository::class, InMemorySailorRentalPackageRepository::class);
         }
+
         if(config('app.env') == 'testing-db') {
             $this->app->singleton(IdentityProvider::class, FakeIdentityProvider::class);
             $this->app->singleton(DateProvider::class, FakeDateProvider::class);
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);
+            $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
             $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
+            $this->app->singleton(RentalPackageRepository::class, SqlRentalPackageRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
+            $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
+            $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
         }
 
         if(config('app.env') == 'local') {
@@ -136,9 +176,12 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(BoatTripRepository::class, SqlBoatTripRepository::class);
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);
             $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
+            $this->app->singleton(RentalPackageRepository::class, SqlRentalPackageRepository::class);
             $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
+            $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
+            $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
+            $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
         }
-
 
         $this->app->singleton(BoatTripReportingRepository::class, SqlBoatTripReportingRepository::class);
     }

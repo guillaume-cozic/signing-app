@@ -10,6 +10,8 @@ use App\Signing\Signing\Domain\Provider\IdentityProvider;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
+use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Event;
 
@@ -20,6 +22,8 @@ abstract class TestCase extends BaseTestCase
     protected IdentityProvider $identityProvider;
     protected FleetRepository $fleetRepository;
     protected BoatTripRepository $boatTripRepository;
+    protected RentalPackageRepository $rentalPackageRepository;
+    protected SailorRentalPackageRepository $sailorRentalPackageRepository;
     protected ReadBoatTripRepository $readBoatTripRepository;
     protected DateProvider $dateProvider;
     protected TranslationService $translationService;
@@ -33,6 +37,8 @@ abstract class TestCase extends BaseTestCase
         $this->fleetRepository = app(FleetRepository::class);
         $this->boatTripRepository = app(BoatTripRepository::class);
         $this->readBoatTripRepository = app(ReadBoatTripRepository::class);
+        $this->rentalPackageRepository = app(RentalPackageRepository::class);
+        $this->sailorRentalPackageRepository = app(SailorRentalPackageRepository::class);
         $this->dateProvider = app(DateProvider::class);
         $this->translationService = app(TranslationService::class);
         $this->contextService = app(ContextService::class);

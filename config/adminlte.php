@@ -231,7 +231,7 @@ return [
             'topnav' => true,
         ],
         [
-            'text' => 'dashboard',
+            'text' => 'Tableau de bord',
             'url'  => 'dashboard',
             'icon' => 'nav-icon fas fa-tachometer-alt',
         ],
@@ -239,6 +239,22 @@ return [
             'text' => 'Les flottes',
             'url'  => 'fleets',
             'icon' => 'nav-icon fas fa-ship',
+        ],
+        [
+            'text' => 'Forfaits',
+            'icon' => 'nav-icon fas fa-list',
+            'active' => ['rental*'],
+            'submenu' => [
+                [
+                    'text' => 'Modèle de forfait',
+                    'url'  => 'rental-package',
+                ],
+                [
+                    'text' => 'Forfaits clients',
+                    'url'  => 'sailor-rental-packages',
+                    'active' => ['sailor-rental-packages']
+                ],
+            ],
         ],
         [
             'text' => 'Utilisateurs',

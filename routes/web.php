@@ -95,6 +95,46 @@ Route::get('dashboard/suggestions', [\App\Http\Controllers\Signing\BoatTripContr
     ->middleware(['auth'])
     ->name('dashboard.suggestions');
 
+Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showAddRentalPackage'])
+    ->middleware(['auth'])
+    ->name('rental-package.add');
+
+Route::post('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processAddRentalPackage'])
+    ->middleware(['auth'])
+    ->name('rental-package.add.process');
+
+Route::post('rental-package/{id}/edit', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processEditRentalPackage'])
+    ->middleware(['auth'])
+    ->name('rental-package.edit.process');
+
+Route::get('rental-package/{id}/edit', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showEdit'])
+    ->middleware(['auth'])
+    ->name('rental-package.edit');
+
+Route::get('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.index');
+
+Route::post('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'processAdd'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.add');
+
+Route::post('sailor-rental-packages/list', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'listSailorRentalPackage'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.list');
+
+Route::post('sailor-rental-packages/{id}/add-hours', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'addHours'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.add-hours');
+
+Route::post('sailor-rental-packages/{id}/decrease-hours', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'decreaseHours'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.decrease-hours');
+
+Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'sailorAutocomplete'])
+    ->middleware(['auth'])
+    ->name('sailor.autocomplete');
+
 require __DIR__.'/auth.php';
 
 
