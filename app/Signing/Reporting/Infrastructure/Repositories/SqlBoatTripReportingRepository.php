@@ -79,7 +79,7 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
         }
 
         foreach($boatTrips as $boatTrip){
-            if(!isset($totalPerHour)){
+            if(!isset($totalPerHour[$boatTrip->hour])){
                 continue;
             }
             $totalPerHour[$boatTrip->hour] += $boatTrip->totalBoats();
