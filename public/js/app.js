@@ -1973,6 +1973,8 @@ $('#start_now').change(function () {
   }
 });
 $('.btn-add-boat-trip').click(function () {
+  $('.time-setter').show();
+  $('#modal-add-boat-trip form').trigger('reset');
   $('#modal-add-boat-trip').modal('show');
 });
 $('.btn-add-boat-trip-reservation').click(function () {
