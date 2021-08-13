@@ -1,7 +1,13 @@
 import notify from "./notify";
 
 window.tableBoatTrips = null;
-$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip({
+    trigger : 'hover'
+});
+
+$('[data-toggle="tooltip"]').on('click', function () {
+    $(this).tooltip('dispose');
+});
 
 $('#timepicker').datetimepicker({
     format:'H:mm',
@@ -56,6 +62,8 @@ $('#start_now').change(function (){
 });
 
 $('.btn-add-boat-trip').click(function(){
+    $('.time-setter').show();
+    $('#modal-add-boat-trip form').trigger('reset');
     $('#modal-add-boat-trip').modal('show');
 });
 
@@ -102,7 +110,9 @@ if($('#boat-trips-table').length != 0) {
             return JSON.parse(localStorage.getItem("boattrips"));
         },
         drawCallback: function (settings) {
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger : 'hover'
+            });
         },
         ajax: {
             url: $('#boat-trips-table').data('href'),
@@ -125,8 +135,9 @@ if($('#boat-trips-table').length != 0) {
 
     $('.dashboard-datatable').on('click', '.btn-cancel', function () {
         var url = $(this).data('href');
+        var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
         $.showConfirm({
-            title: "Voulez vous vraiment supprimer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
+            title: "Voulez vous vraiment supprimer cette sortie ?", body: body, textTrue: "Oui", textFalse: "Non",
             onSubmit: function (result) {
                 if (result) {
                     $.ajax({
@@ -154,8 +165,7 @@ $('.dashboard-datatable').on('click', '.btn-more', function () {
     var note = $(this).data('note');
     $.showConfirm({
         title: "Note diverse", body: note, textTrue: "Ok", textFalse: "fermer",
-        onSubmit: function (result) {
-        }
+        onSubmit: function (result) {}
     });
 });
 
@@ -366,7 +376,9 @@ if($('#boat-trips-table-reservations').length != 0) {
             return JSON.parse(localStorage.getItem("boattrips-reservations"));
         },
         drawCallback: function (settings) {
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger : 'hover'
+            });
         },
         ajax: {
             url: $('#boat-trips-table-reservations').data('href'),

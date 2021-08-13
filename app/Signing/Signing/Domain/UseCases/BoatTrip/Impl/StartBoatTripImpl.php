@@ -16,6 +16,9 @@ class StartBoatTripImpl implements StartBoatTrip
     public function execute(string $boatTripId)
     {
         $boatTrip = $this->boatTripRepository->get($boatTripId);
+        if(!isset($boatTrip)){
+            return;
+        }
         $boatTrip->start();
     }
 }

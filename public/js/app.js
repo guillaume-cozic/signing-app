@@ -1926,7 +1926,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
 
 window.tableBoatTrips = null;
-$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip({
+  trigger: 'hover'
+});
+$('[data-toggle="tooltip"]').on('click', function () {
+  $(this).tooltip('dispose');
+});
 $('#timepicker').datetimepicker({
   format: 'H:mm'
 });
@@ -1973,6 +1978,8 @@ $('#start_now').change(function () {
   }
 });
 $('.btn-add-boat-trip').click(function () {
+  $('.time-setter').show();
+  $('#modal-add-boat-trip form').trigger('reset');
   $('#modal-add-boat-trip').modal('show');
 });
 $('.btn-add-boat-trip-reservation').click(function () {
@@ -2017,7 +2024,9 @@ if ($('#boat-trips-table').length != 0) {
       return JSON.parse(localStorage.getItem("boattrips"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#boat-trips-table').data('href'),
@@ -2046,9 +2055,10 @@ if ($('#boat-trips-table').length != 0) {
   });
   $('.dashboard-datatable').on('click', '.btn-cancel', function () {
     var url = $(this).data('href');
+    var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
     $.showConfirm({
       title: "Voulez vous vraiment supprimer cette sortie ?",
-      body: "",
+      body: body,
       textTrue: "Oui",
       textFalse: "Non",
       onSubmit: function onSubmit(result) {
@@ -2291,7 +2301,9 @@ if ($('#boat-trips-table-reservations').length != 0) {
       return JSON.parse(localStorage.getItem("boattrips-reservations"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#boat-trips-table-reservations').data('href'),
@@ -2413,7 +2425,9 @@ if ($('#fleets-table').length != 0) {
       return JSON.parse(localStorage.getItem("fleets"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#fleets-table').data('href'),
@@ -2468,7 +2482,7 @@ if ($('#fleets-table').length != 0) {
     var url = $(this).data('href');
     $.showConfirm({
       title: "Voulez vous vraiment désactiver cette flotte ?",
-      body: "<div class='alert alert-info'>Cette flotte ne sera plus disponible lors de la création d'une sortie en mer.</div>",
+      body: "<div class='callout callout-danger'>Cette flotte ne sera plus disponible lors de la création d'une sortie en mer, et n'apparaitra pas sur le tableau de bord</div>",
       textTrue: "Oui",
       textFalse: "Non",
       onSubmit: function onSubmit(result) {
@@ -2492,7 +2506,7 @@ if ($('#fleets-table').length != 0) {
     var url = $(this).data('href');
     $.showConfirm({
       title: "Voulez vous vraiment activer cette flotte ?",
-      body: "",
+      body: "<div class='callout callout-info'>Cette flotte sera de nouveau disponible lors de la création d'une sortie en mer</div>",
       textTrue: "Oui",
       textFalse: "Non",
       onSubmit: function onSubmit(result) {
@@ -2625,7 +2639,9 @@ if ($('#sailor-rental-package-table').length != 0) {
       return JSON.parse(localStorage.getItem("sailor-rental-package"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#sailor-rental-package-table').data('href'),
