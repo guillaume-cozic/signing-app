@@ -31,7 +31,9 @@ if($('#sailor-rental-package-table').length != 0) {
             return JSON.parse(localStorage.getItem("sailor-rental-package"));
         },
         drawCallback: function (settings) {
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger : 'hover'
+            });
         },
         ajax: {
             url: $('#sailor-rental-package-table').data('href'),

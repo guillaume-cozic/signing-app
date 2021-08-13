@@ -1,7 +1,13 @@
 import notify from "./notify";
 
 window.tableBoatTrips = null;
-$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip({
+    trigger : 'hover'
+});
+
+$('[data-toggle="tooltip"]').on('click', function () {
+    $(this).tooltip('dispose');
+});
 
 $('#timepicker').datetimepicker({
     format:'H:mm',
@@ -104,7 +110,9 @@ if($('#boat-trips-table').length != 0) {
             return JSON.parse(localStorage.getItem("boattrips"));
         },
         drawCallback: function (settings) {
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger : 'hover'
+            });
         },
         ajax: {
             url: $('#boat-trips-table').data('href'),
@@ -156,8 +164,7 @@ $('.dashboard-datatable').on('click', '.btn-more', function () {
     var note = $(this).data('note');
     $.showConfirm({
         title: "Note diverse", body: note, textTrue: "Ok", textFalse: "fermer",
-        onSubmit: function (result) {
-        }
+        onSubmit: function (result) {}
     });
 });
 
@@ -368,7 +375,9 @@ if($('#boat-trips-table-reservations').length != 0) {
             return JSON.parse(localStorage.getItem("boattrips-reservations"));
         },
         drawCallback: function (settings) {
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger : 'hover'
+            });
         },
         ajax: {
             url: $('#boat-trips-table-reservations').data('href'),

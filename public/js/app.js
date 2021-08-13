@@ -1926,7 +1926,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
 
 window.tableBoatTrips = null;
-$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip({
+  trigger: 'hover'
+});
+$('[data-toggle="tooltip"]').on('click', function () {
+  $(this).tooltip('dispose');
+});
 $('#timepicker').datetimepicker({
   format: 'H:mm'
 });
@@ -2019,7 +2024,9 @@ if ($('#boat-trips-table').length != 0) {
       return JSON.parse(localStorage.getItem("boattrips"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#boat-trips-table').data('href'),
@@ -2293,7 +2300,9 @@ if ($('#boat-trips-table-reservations').length != 0) {
       return JSON.parse(localStorage.getItem("boattrips-reservations"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#boat-trips-table-reservations').data('href'),
@@ -2415,7 +2424,9 @@ if ($('#fleets-table').length != 0) {
       return JSON.parse(localStorage.getItem("fleets"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#fleets-table').data('href'),
@@ -2627,7 +2638,9 @@ if ($('#sailor-rental-package-table').length != 0) {
       return JSON.parse(localStorage.getItem("sailor-rental-package"));
     },
     drawCallback: function drawCallback(settings) {
-      $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+      });
     },
     ajax: {
       url: $('#sailor-rental-package-table').data('href'),

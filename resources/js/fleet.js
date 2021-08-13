@@ -27,7 +27,9 @@ if($('#fleets-table').length != 0) {
             return JSON.parse(localStorage.getItem("fleets"));
         },
         drawCallback: function (settings) {
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger : 'hover'
+            });
         },
         ajax: {
             url: $('#fleets-table').data('href'),
