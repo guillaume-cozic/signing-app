@@ -135,8 +135,9 @@ if($('#boat-trips-table').length != 0) {
 
     $('.dashboard-datatable').on('click', '.btn-cancel', function () {
         var url = $(this).data('href');
+        var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
         $.showConfirm({
-            title: "Voulez vous vraiment supprimer cette sortie ?", body: "", textTrue: "Oui", textFalse: "Non",
+            title: "Voulez vous vraiment supprimer cette sortie ?", body: body, textTrue: "Oui", textFalse: "Non",
             onSubmit: function (result) {
                 if (result) {
                     $.ajax({

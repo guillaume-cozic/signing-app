@@ -2055,9 +2055,10 @@ if ($('#boat-trips-table').length != 0) {
   });
   $('.dashboard-datatable').on('click', '.btn-cancel', function () {
     var url = $(this).data('href');
+    var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
     $.showConfirm({
       title: "Voulez vous vraiment supprimer cette sortie ?",
-      body: "",
+      body: body,
       textTrue: "Oui",
       textFalse: "Non",
       onSubmit: function onSubmit(result) {
@@ -2481,7 +2482,7 @@ if ($('#fleets-table').length != 0) {
     var url = $(this).data('href');
     $.showConfirm({
       title: "Voulez vous vraiment désactiver cette flotte ?",
-      body: "<div class='alert alert-info'>Cette flotte ne sera plus disponible lors de la création d'une sortie en mer.</div>",
+      body: "<div class='callout callout-danger'>Cette flotte ne sera plus disponible lors de la création d'une sortie en mer, et n'apparaitra pas sur le tableau de bord</div>",
       textTrue: "Oui",
       textFalse: "Non",
       onSubmit: function onSubmit(result) {
@@ -2505,7 +2506,7 @@ if ($('#fleets-table').length != 0) {
     var url = $(this).data('href');
     $.showConfirm({
       title: "Voulez vous vraiment activer cette flotte ?",
-      body: "",
+      body: "<div class='callout callout-info'>Cette flotte sera de nouveau disponible lors de la création d'une sortie en mer</div>",
       textTrue: "Oui",
       textFalse: "Non",
       onSubmit: function onSubmit(result) {
