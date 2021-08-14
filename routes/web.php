@@ -119,6 +119,10 @@ Route::post('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRenta
     ->middleware(['auth'])
     ->name('sailor-rental-package.add');
 
+Route::post('sailor-rental-packages/add', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'processAddAjax'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.add.ajax');
+
 Route::post('sailor-rental-packages/list', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'listSailorRentalPackage'])
     ->middleware(['auth'])
     ->name('sailor-rental-package.list');

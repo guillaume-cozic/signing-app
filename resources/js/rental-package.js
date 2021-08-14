@@ -1,5 +1,62 @@
+import notify from "./notify";
+
 $('.fleets-select').select2({
     theme: 'classic',
+});
+
+$('.html-datatable').dataTable({
+    responsive: true,
+    "language": {
+        "lengthMenu": "Afficher _MENU_ lignes par page",
+        "zeroRecords": "Aucun résultat",
+        "info": "",
+        "infoEmpty": "Aucun résultat",
+        "infoFiltered": "",
+        "sSearch": "Rechercher",
+        "sProcessing" : 'Chargement...',
+        "oPaginate": {
+            "sFirst": "Première",
+            "sPrevious": "Précédent",
+            "sNext": "Suivant",
+            "sLast": "Dernière"
+        },
+    },
+});
+
+$('.add-sailor-rental-package').click(function(){
+    var divError = $('#modal-sailor-rental-create .alert-error');
+    divError.html('');
+    divError.hide();
+    var rentalPackageId = $(this).data('rental-package-id');
+    $('#rental-package option[value='+rentalPackageId+']').prop('selected', true);
+    $('#modal-sailor-rental-create').modal('show');
+});
+
+$('#modal-sailor-rental-create form').submit(function (){
+    var form = $(this);
+    $.ajax({
+        url: form.attr('action'),
+        data: form.serialize(),
+        type: 'POST',
+        success:function (data){
+            notify('Le forfait client a bien été créé');
+            $('#modal-sailor-rental-create').modal('hide');
+            form.trigger('reset');
+        },
+        statusCode: {
+            422: function (data) {
+                var response = JSON.parse(data.responseText);
+                var errorString = '<ul>';
+                $.each(response.errors, function (key, value) {
+                    errorString += '<li>' + value + '</li>';
+                });
+                errorString += '</ul>';
+                form.find('.alert-error').html(errorString);
+                form.find('.alert-error').slideDown();
+            }
+        }
+    })
+    return false;
 });
 
 if($('#sailor-rental-package-table').length != 0) {

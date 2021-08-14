@@ -36,6 +36,16 @@ class SailorRentalPackageController extends Controller
         return redirect()->route('sailor-rental-package.index');
     }
 
+    public function processAddAjax(AddSailorRentalPackageRequest $request, CreateSailorRentalPackage $createSailorRentalPackage)
+    {
+        $rentalPackageId = $request->input('rental_package_id');
+        $name = $request->input('name');
+        $hours = $request->input('hours');
+
+        $createSailorRentalPackage->execute(Uuid::uuid4(), $rentalPackageId, $name, $hours);
+        return [];
+    }
+
     public function listSailorRentalPackage(Request $request, SearchSailorRentalPackages $searchSailorRentalPackages):array
     {
         $start = $request->input('start', 0);

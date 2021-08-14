@@ -53,6 +53,7 @@ class SqlReadFleetRepository implements ReadFleetRepository
         $fleets = FleetModel::query()
             ->sailingClub()
             ->where('state', Fleet::STATE_ACTIVE)
+            ->orderByRaw('name->\'$.' . App::getLocale().'\' asc')
             ->get();
         $fleets->transform(function ($item){
            $boatTrips = BoatTripModel::query()

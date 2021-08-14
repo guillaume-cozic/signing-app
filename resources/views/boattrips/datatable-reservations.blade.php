@@ -1,5 +1,5 @@
 <div class="p-2">
-    <div class="alert alert-info">
+    <div class="callout callout-info">
         Les réservations pour les jours suivant sont présentées sur cette page.
         Elles sont automatiquement affichées sur la page "En cours" le jour même de la réservation
     </div>
