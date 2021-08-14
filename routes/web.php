@@ -142,6 +142,10 @@ Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageControll
 require __DIR__.'/auth.php';
 
 
+Route::get('/contact-us', [App\Http\Controllers\ContactController::class, 'showContact'])->name('contact');
+
+
+
 Route::group(['prefix' => 'teams', 'namespace' => 'Teamwork'], function()
 {
     Route::get('/', [App\Http\Controllers\Teamwork\TeamController::class, 'index'])->name('teams.index');
