@@ -8,7 +8,7 @@
                     <h3 class="card-title">Liste des forfaits clients</h3>
                     @if(isset($rentalPackageId))
                         <div class="card-tools">
-                            <a href="{{ route('sailor-rental-package.index') }}" class="btn btn-sm btn-primary">
+                            <a href="{{ route('sailor-rental-package.index') }}" class="btn btn-sm btn-info">
                                 Voir tous les forfaits
                             </a>
                         </div>

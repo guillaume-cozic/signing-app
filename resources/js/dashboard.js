@@ -5,10 +5,6 @@ $('[data-toggle="tooltip"]').tooltip({
     trigger : 'hover'
 });
 
-$('[data-toggle="tooltip"]').on('click', function () {
-    $(this).tooltip('dispose');
-});
-
 $('#timepicker').datetimepicker({
     format:'H:mm',
 });

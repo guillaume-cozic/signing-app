@@ -8,7 +8,7 @@
                     <h3 class="card-title">Liste des forfaits</h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered html-datatable">
                         <thead>
                             <tr>
                                 <th>Nom du forfait</th>
@@ -38,13 +38,10 @@
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         <a class="p-1" href="{{ route('sailor-rental-package.index', ['rental_package_id' => $rentalPackage->id]) }}"
-                                           data-toggle="tooltip" data-placement="top" title="Consulter les forfaits client"
-                                        >
+                                           data-toggle="tooltip" data-placement="top" title="Consulter les forfaits client">
                                             <i class="text-info fa fa-list"></i>
                                         </a>
-                                        <!--a href="#">
-                                            <i class="text-success fa fa-user-plus"></i>
-                                        </a-->
+                                        <i data-rental-package-id="{{$rentalPackage->id}}" style="cursor: pointer" class="text-success fa fa-user-plus add-sailor-rental-package"  data-toggle="tooltip" data-placement="top" title="Ajouter un forfait client"></i>
                                     </td>
                                 </tr>
                             @endforeach
@@ -57,4 +54,6 @@
             @include('rental-package.add-form')
         </div>
     </div>
+    @include('rental-package.modals.add-sailor-rental-package')
 @endsection
+
