@@ -14,7 +14,8 @@ class SailorRentalPackageState implements State
         private string $name,
         private string $rentalPackageId,
         private Carbon $endValidity,
-        private float $hours
+        private float $hours,
+        private array $actions = [],
     ){}
 
     public function name():string
@@ -42,8 +43,20 @@ class SailorRentalPackageState implements State
         return $this->endValidity;
     }
 
+    public function actions():array
+    {
+        return $this->actions;
+    }
+
     public function toDomain():SailorRentalPackage
     {
-        return new SailorRentalPackage($this->id, $this->name, $this->rentalPackageId, $this->endValidity, $this->hours);
+        return new SailorRentalPackage(
+            $this->id,
+            $this->name,
+            $this->rentalPackageId,
+            $this->endValidity,
+            $this->hours,
+            $this->actions
+        );
     }
 }

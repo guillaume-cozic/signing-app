@@ -17,21 +17,11 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
 {
     public function __construct(private ContextService $contextService){}
 
-
     public function get(string $id): ?SailorRentalPackage
     {
-        $sailorRentalPackageModel = SailorRentalPackageModel::query()->where('uuid', $id)->first();
-        if(!isset($sailorRentalPackageModel)){
-            return null;
-        }
-        $sailor = SailorModel::query()->where('id', $sailorRentalPackageModel->sailor_id)->first();
-        return new SailorRentalPackage(
-            $sailorRentalPackageModel->uuid,
-            $sailor->name,
-            $sailorRentalPackageModel->rentalPackage->uuid,
-            $sailorRentalPackageModel->end_validity,
-            $sailorRentalPackageModel->hours,
-        );
+        return SailorRentalPackageModel::query()
+            ->where('uuid', $id)->first()
+            ?->toDomain();
     }
 
     public function getByNameAndRentalPackage(string $name, string $packageRentalId): ?SailorRentalPackage
@@ -44,21 +34,11 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
         if(!isset($sailor)){
             return null;
         }
-        $sailorRentalPackageModel = SailorRentalPackageModel::query()
+        return SailorRentalPackageModel::query()
             ->where('rental_package_id', $rentalPackage->id)
             ->where('sailor_id', $sailor->id)
-            ->first();
-        if(!isset($sailorRentalPackageModel)){
-            return null;
-        }
-        $sailor = SailorModel::query()->where('id', $sailorRentalPackageModel->sailor_id)->first();
-        return new SailorRentalPackage(
-            $sailorRentalPackageModel->uuid,
-            $sailor->name,
-            $sailorRentalPackageModel->rentalPackage->uuid,
-            $sailorRentalPackageModel->end_validity,
-            $sailorRentalPackageModel->hours,
-        );
+            ->first()
+            ?->toDomain();
     }
 
     public function save(SailorRentalPackageState $sailorRentalPackageState)
@@ -80,6 +60,7 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
         $sailorRentalPackageModel->end_validity = $sailorRentalPackageState->endValidity();
         $sailorRentalPackageModel->sailing_club_id = $this->contextService->get()->sailingClubId();
         $sailorRentalPackageModel->sailor_id = $sailor->id;
+        $sailorRentalPackageModel->actions = $sailorRentalPackageState->actions();
         $sailorRentalPackageModel->save();
     }
 }

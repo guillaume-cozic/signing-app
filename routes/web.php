@@ -135,6 +135,10 @@ Route::post('sailor-rental-packages/{id}/decrease-hours', [\App\Http\Controllers
     ->middleware(['auth'])
     ->name('sailor-rental-package.decrease-hours');
 
+Route::get('sailor-rental-packages/{id}/actions', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'getActions'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.actions');
+
 Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'sailorAutocomplete'])
     ->middleware(['auth'])
     ->name('sailor.autocomplete');
