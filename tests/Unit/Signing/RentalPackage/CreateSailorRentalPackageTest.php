@@ -6,8 +6,10 @@ namespace Tests\Unit\Signing\RentalPackage;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\RentalPackage\ActionSailor;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
+use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageNotFound;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
 use Carbon\Carbon;
@@ -73,16 +75,17 @@ class CreateSailorRentalPackageTest extends TestCase
         app(CreateSailorRentalPackage::class)->execute('sailor_rental_package_id', 'rental_package', 'frank', $hours = 8);
 
         $now = Carbon::instance($this->dateProvider->current());
-        $sailorRentalPackageExpected = new SailorRentalPackage(
+        $sailorRentalPackageExpected = new SailorRentalPackageState(
             'sailor_rental_package_id',
             'frank',
             'rental_package',
             $now->addDays($validity),
-            $hours + $hoursNotUsed
+            $hours + $hoursNotUsed,
+            [new ActionSailor(ActionSailor::ADD_HOURS, $hours, Carbon::instance($this->dateProvider->current()))]
         );
 
         $sailorRentalPackage = $this->sailorRentalPackageRepository->get('sailor_rental_package_id');
-        self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackage);
+        self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackage->getState());
     }
 
 }

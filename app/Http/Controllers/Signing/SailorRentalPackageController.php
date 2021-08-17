@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddSailorRentalPackageRequest;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetActionsSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
@@ -69,6 +70,10 @@ class SailorRentalPackageController extends Controller
                  data-toggle="tooltip" data-placement="top" title="Enlever des heures sur le forfait"
                 class="decrease-hours-to-sailor-rental fa fa-minus-circle text-red p-1"></i>';
 
+            $buttons .= '<i style="cursor: pointer;" data-src="'.route('sailor-rental-package.actions', ['id' => $searchSailorRentalPackage->id]).'"
+                 data-toggle="tooltip" data-placement="top" title="Historique"
+                class="actions-sailor-rental fa fa-list-ul p-1 text-blue"></i>';
+
             $hours = '<span class="badge badge-danger">'.$searchSailorRentalPackage->hours.'</span>';
             if($searchSailorRentalPackage->hours > 0){
                 $hours = '<span class="badge badge-success">'.$searchSailorRentalPackage->hours.'</span>';
@@ -126,5 +131,13 @@ class SailorRentalPackageController extends Controller
             ];
         }
         return $auto ?? [];
+    }
+
+    public function getActions(string $sailorRentalPackageId, GetActionsSailorRentalPackage $getActionsSailorRentalPackage)
+    {
+        $actions = $getActionsSailorRentalPackage->execute($sailorRentalPackageId);
+        return view('rental-package.sailor.list-actions', [
+            'actions' => $actions
+        ]);
     }
 }
