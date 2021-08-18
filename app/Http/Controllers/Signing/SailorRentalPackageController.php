@@ -4,8 +4,10 @@
 namespace App\Http\Controllers\Signing;
 
 
+use App\Exports\SailorRentalPackageTemplateImport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddSailorRentalPackageRequest;
+use App\Imports\SailorRentalPackageImport;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetActionsSailorRentalPackage;
@@ -13,6 +15,7 @@ use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 
 class SailorRentalPackageController extends Controller
@@ -139,5 +142,17 @@ class SailorRentalPackageController extends Controller
         return view('rental-package.sailor.list-actions', [
             'actions' => $actions
         ]);
+    }
+
+    public function downloadImportTemplate()
+    {
+        return Excel::download(new SailorRentalPackageTemplateImport, 'import-des-forfaits-locations.xlsx');
+    }
+
+    public function importSailorRentalPackage()
+    {
+        /*$import = new SailorRentalPackageImport;
+        $import->*/
+        Excel::import(new SailorRentalPackageImport, request()->file('file-import'));
     }
 }

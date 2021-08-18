@@ -139,6 +139,14 @@ Route::get('sailor-rental-packages/{id}/actions', [\App\Http\Controllers\Signing
     ->middleware(['auth'])
     ->name('sailor-rental-package.actions');
 
+Route::get('sailor-rental-packages/download-import-file', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'downloadImportTemplate'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.download-import');
+
+Route::post('sailor-rental-packages/import', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'importSailorRentalPackage'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.import');
+
 Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'sailorAutocomplete'])
     ->middleware(['auth'])
     ->name('sailor.autocomplete');
