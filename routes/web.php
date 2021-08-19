@@ -147,6 +147,10 @@ Route::post('sailor-rental-packages/import', [\App\Http\Controllers\Signing\Sail
     ->middleware(['auth'])
     ->name('sailor-rental-package.import');
 
+Route::get('sailor-rental-packages/import', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'showResultImport'])
+    ->middleware(['auth'])
+    ->name('sailor-rental-package.show-result-import');
+
 Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'sailorAutocomplete'])
     ->middleware(['auth'])
     ->name('sailor.autocomplete');

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Signing;
 use App\Exports\SailorRentalPackageTemplateImport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddSailorRentalPackageRequest;
+use App\Http\Requests\Domain\RentalPackage\ImportSailorRentalPackageRequest;
 use App\Imports\SailorRentalPackageImport;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
@@ -15,6 +16,7 @@ use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 
@@ -149,10 +151,32 @@ class SailorRentalPackageController extends Controller
         return Excel::download(new SailorRentalPackageTemplateImport, 'import-des-forfaits-locations.xlsx');
     }
 
-    public function importSailorRentalPackage()
+    public function importSailorRentalPackage(Request $request)
     {
-        /*$import = new SailorRentalPackageImport;
-        $import->*/
-        Excel::import(new SailorRentalPackageImport, request()->file('file-import'));
+        $rules = [
+            'file_import' => 'file|required|mimes:xlsx'
+        ];
+        $validator = Validator::make($request->all(), $rules, [
+            'file_import.required' => 'Vous devez fournir le document contenant les différents forfaits à importer',
+            'file_import.mimes' => 'Le document doit être au format xlsx'
+        ]);
+        if($validator->fails()){
+            return redirect()
+                ->route('sailor-rental-package.show-result-import')
+                ->withInput($request->all())
+                ->withErrors($validator->getMessageBag());
+        }
+
+        Excel::import(new SailorRentalPackageImport, request()->file('file_import'));
+        return redirect()->route('sailor-rental-package.show-result-import');
+    }
+
+    public function showResultImport()
+    {
+        $result = request()->session()->get('import_result');
+        request()->session()->flash('import_result', $result);
+        return view('rental-package.sailor.result-import', [
+            'result' => $result
+        ]);
     }
 }

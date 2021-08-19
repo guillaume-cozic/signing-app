@@ -11,7 +11,7 @@
                 <div class="card card-outline card-info">
                     <div class="card-body">
                         Si vous souhaitez importer massivement des forfaits clients,
-                        <a href="{{ route('rental-package.add') }}">créer vos différents types de forfaits</a>,
+                        <a target="_blank" href="{{ route('rental-package.add') }}">créer vos différents types de forfaits</a>,
                         télécharger ci dessous le document excel et remplissez le.
                     </div>
                     <div class="card-footer">
@@ -31,10 +31,15 @@
                 <form action="{{ route('sailor-rental-package.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
+                        <div class="callout callout-info">
+                            Une fois rempli vous pouvez importer le fichier via le formulaire ci dessous
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputFile">Importer le fichier</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input name="file-import" type="file" class="custom-file-input" id="exampleInputFile">
+                                <input name="file_import" type="file" class="custom-file-input" id="exampleInputFile">
                                 <label class="custom-file-label" for="exampleInputFile">Choisir le fichier</label>
                             </div>
                         </div>
