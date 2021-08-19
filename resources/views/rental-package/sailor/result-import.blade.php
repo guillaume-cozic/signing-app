@@ -8,7 +8,7 @@
                     Liste des erreurs d'import
                 </div>
                 <div class="card-body">
-                    @if(!empty($result['errors']))
+                    @if(!empty($result))
                         <div class="row">
                             <div class="col-4">
                                 <div class="info-box">
