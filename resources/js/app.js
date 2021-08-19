@@ -17,6 +17,7 @@ require('tempusdominus-bootstrap-4');
 require('bootstrap-show-modal');
 require('select2');
 require('bootstrap-autocomplete');
+import bsCustomFileInput from 'bs-custom-file-input';
 
 
 

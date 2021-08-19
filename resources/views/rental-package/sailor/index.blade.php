@@ -20,7 +20,15 @@
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            @include('rental-package.sailor.add-form')
+            <button class="btn-block mb-3 btn btn-success btn-modal-import-sailor-rental-package">
+                <i class="fa fa-copy"></i> Importer des forfaits clients
+            </button>
+            <div class="row">
+                <div class="col-12">
+                    @include('rental-package.sailor.add-form')
+                </div>
+            </div>
         </div>
     </div>
+    @include('rental-package.modals.import-form')
 @endsection

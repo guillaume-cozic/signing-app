@@ -1,4 +1,5 @@
 import notify from "./notify";
+import bsCustomFileInput from 'bs-custom-file-input';
 
 $('.fleets-select').select2({
     theme: 'classic',
@@ -132,6 +133,12 @@ $('.datatable').on('click', '.actions-sailor-rental', function(){
         }
     });
 });
+
+$('.btn-modal-import-sailor-rental-package').click(function(){
+    $('#modal-import-sailor-rental').modal('show');
+});
+
+bsCustomFileInput.init();
 
 $('#form-sailor-rental-add-hours').submit(function(){
     var form = $(this);
