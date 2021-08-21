@@ -79,6 +79,12 @@
     {{-- Body Content --}}
     @yield('body')
 
+    <script type="text/javascript">
+        var showModalNotClosed = '{{ !empty(\Illuminate\Support\Facades\Request::session()->get('boat-trips_not_closed')) }}';
+        console.log(showModalNotClosed);
+    </script>
+    @include('modal.message-boattrip-not-closed')
+
     {{-- Base Scripts --}}
     @if(!config('adminlte.enabled_laravel_mix'))
         <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>

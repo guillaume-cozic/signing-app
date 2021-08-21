@@ -1844,8 +1844,6 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment_timezone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment-timezone */ "./node_modules/moment-timezone/index.js");
 /* harmony import */ var moment_timezone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment_timezone__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bs-custom-file-input */ "./node_modules/bs-custom-file-input/dist/bs-custom-file-input.js");
-/* harmony import */ var bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1__);
 __webpack_require__(/*! bootstrap-notify */ "./node_modules/bootstrap-notify/bootstrap-notify.js");
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
@@ -1879,7 +1877,6 @@ __webpack_require__(/*! bootstrap-show-modal */ "./node_modules/bootstrap-show-m
 __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
 
 __webpack_require__(/*! bootstrap-autocomplete */ "./node_modules/bootstrap-autocomplete/dist/latest/bootstrap-autocomplete.js");
-
 
 $.ajaxSetup({
   headers: {
@@ -2387,6 +2384,15 @@ $('.autocomplete-sailor-name').on('autocomplete.select', function (e, i) {
 $('.autocomplete-sailor-name').on('change', function (e, i) {
   $('.input_sailor_id').val('');
 });
+$('body').on('click', '#closed_all', function () {
+  if ($(this).prop('checked') == true) {
+    $('.boattrip_close').prop('checked', true);
+    return;
+  }
+
+  $('.boattrip_close').prop('checked', false);
+  return;
+});
 
 /***/ }),
 
@@ -2562,11 +2568,21 @@ function notify(message) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+if (showModalNotClosed == true) {
+  $('#modal-message-boattrip-not-closed').modal('show');
+}
+
+$('[data-ajax-href]').each(function () {
+  var item = $(this);
+  var uri = item.attr('data-ajax-href');
+  $.ajax({
+    url: uri,
+    success: function success(html) {
+      item.html(html);
+    }
+  });
+});
+
 function reloadDashboard() {
   if ($('#boat-trips-table').length != 0) {
     loadAvailability();

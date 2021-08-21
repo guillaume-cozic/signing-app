@@ -91,4 +91,30 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
         ;
     }
 
+    public function getNotClosedYesterdayOrMore()
+    {
+        return BoatTripModel::query()
+            ->whereNull('end_at')
+            ->where(function ($query) {
+                return $query->where(function ($query){
+                    return $query->where(function ($query) {
+                        $query->whereRaw('date(should_start_at) != date(now())')
+                            ->whereRaw('UNIX_TIMESTAMP(should_start_at) < UNIX_TIMESTAMP(now())');
+                    })
+                    ->orWhere(function($query){
+                        $query->whereRaw('date(start_at) != date(now())')
+                            ->whereRaw('UNIX_TIMESTAMP(start_at) < UNIX_TIMESTAMP(now())');
+                    });
+                })
+                ->whereNull('start_at');
+            })
+            ->sailingClub()
+            ->get()
+            ->transform(function (BoatTripModel $item) {
+                return $item->toDto();
+            })
+            ?->toArray()
+        ;
+    }
+
 }

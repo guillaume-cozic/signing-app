@@ -320,7 +320,7 @@ class BoatTripController extends Controller
             $boats = '';
             $boatTrip = $suggestion->boatTrip;
             foreach($suggestion->boatTrip->boats as $boat => $qty){
-                $boats .= $qty. ' '.$boat.'</br>';
+                $boats .= $qty. ' ' . $boat.'</br>';
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
@@ -332,5 +332,26 @@ class BoatTripController extends Controller
             ];
         }
         return view('boattrips.suggestions', ['suggestions' => $boatTripsData]);
+    }
+
+    public function notEnded(Request $request)
+    {
+        return view('modal.partials.mass-close-form', [
+            'boatTrips' => $request->session()->get('boat-trips_not_closed')
+        ]);
+    }
+
+    public function massEnd(Request $request)
+    {
+        $boatTrips = $request->except('_token');
+        foreach($boatTrips as $boatTrip => $action){
+            if($action === 'close'){
+                app(EndBoatTrip::class)->execute($boatTrip);
+                continue;
+            }
+            app(CancelBoatTrip::class)->execute($boatTrip);
+        }
+        $request->session()->remove('boat-trips_not_closed');
+        return back();
     }
 }
