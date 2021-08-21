@@ -105,8 +105,7 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                         $query->whereRaw('date(start_at) != date(now())')
                             ->whereRaw('UNIX_TIMESTAMP(start_at) < UNIX_TIMESTAMP(now())');
                     });
-                })
-                ->whereNull('start_at');
+                });
             })
             ->sailingClub()
             ->get()
