@@ -26,6 +26,9 @@ class BoatTripDuration implements HasState
     {
         if($this->isEnded()) throw new BoatTripAlreadyEnded();
         $this->end = $endDate;
+        if($this->start === null){
+            $this->start = $this->shouldStartAt;
+        }
     }
 
     public function addTime(float $numberHours)

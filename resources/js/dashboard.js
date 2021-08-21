@@ -449,3 +449,12 @@ $('.autocomplete-sailor-name').on('autocomplete.select', function (e, i) {
 $('.autocomplete-sailor-name').on('change', function (e, i) {
     $('.input_sailor_id').val('');
 });
+
+$('body').on('click', '#closed_all', function (){
+    if($(this).prop('checked') == true) {
+        $('.boattrip_close').prop('checked', true);
+        return;
+    }
+    $('.boattrip_close').prop('checked', false);
+    return;
+});

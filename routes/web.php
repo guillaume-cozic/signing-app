@@ -8,7 +8,7 @@ Route::get('/home',  function (){
 });
 
 Route::get('/dashboard',  [\App\Http\Controllers\Signing\BoatTripController::class, 'index'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'boat-trips-not-closed'])
     ->name('dashboard');
 
 Route::get('/profile', [\App\Http\Controllers\UserController::class, 'profile'])
@@ -94,6 +94,14 @@ Route::get('dashboard/availability', [\App\Http\Controllers\Signing\FleetControl
 Route::get('dashboard/suggestions', [\App\Http\Controllers\Signing\BoatTripController::class, 'getSuggestionsBoatTrip'])
     ->middleware(['auth'])
     ->name('dashboard.suggestions');
+
+Route::get('boat-trips-not-ended', [\App\Http\Controllers\Signing\BoatTripController::class, 'notEnded'])
+    ->middleware(['auth'])
+    ->name('boat-trips.not-ended');
+
+Route::post('boat-trips-mass-end', [\App\Http\Controllers\Signing\BoatTripController::class, 'massEnd'])
+    ->middleware(['auth'])
+    ->name('boat-trips.mass-end');
 
 Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showAddRentalPackage'])
     ->middleware(['auth'])
