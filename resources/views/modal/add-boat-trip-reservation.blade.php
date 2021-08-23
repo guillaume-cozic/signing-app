@@ -86,7 +86,7 @@
                         <h5><i class="icon fas fa-ban"></i> Attention!</h5>
                         Au moins un support demandé n'est pas disponible.<br/>
                         Voulez vous tout de même continuer et créer la sortie en mer.
-                        <button id="btn-force" type="button" class="btn btn-default">Forcer la création de la sortie</button>
+                        <button type="button" class="btn-force btn btn-default">Forcer la création de la sortie</button>
                     </div>
                     <div class="alert-error-add-boat-trip alert alert-danger" style="display: none;">
                     </div>

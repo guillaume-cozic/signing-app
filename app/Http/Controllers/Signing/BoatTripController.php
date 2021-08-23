@@ -103,24 +103,27 @@ class BoatTripController extends Controller
 
             $buttons = '';
             if(in_array('start', $actions)) {
-                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Démarrer la sortie"
-                    class="btn-start fa fa-play text-green p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Démarrer la sortie">
+                        <i data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'" class="btn-start fa fa-play text-green p-1"></i>
+                    </a>';
             }
             if(in_array('end', $actions)) {
-                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Terminer la sortie"
-                    class="btn-end fa fa-pause text-blue p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Terminer la sortie">
+                    <i data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                    class="btn-end fa fa-pause text-blue p-1"></i>
+                    </a>';
             }
             if(in_array('cancel', $actions)) {
-                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
-                    class="btn-cancel fa fa-trash text-red p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Supprimer la sortie">
+                        <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+                        class="btn-cancel fa fa-trash text-red p-1"></i>
+                    </a>';
             }
             if(in_array('more', $actions)) {
-                $buttons .= '<i style="cursor: pointer;"
-                     data-toggle="tooltip" data-placement="top" title="Notes" data-note="'.$boatTrip->note.'"
-                    class="btn-more fa fa-clipboard-list text-gray p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Notes">
+                    <i style="cursor: pointer;"
+                      data-note="'.$boatTrip->note.'"
+                    class="btn-more fa fa-clipboard-list text-gray p-1"></i></a>';
             }
 
             $boatTripsData[] = [
