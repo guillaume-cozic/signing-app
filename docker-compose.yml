@@ -11,7 +11,8 @@ services:
     expose:
       - 9000
     volumes:
-      - ./:/var/www/html/:rw
+      - ../signing-app:/var/www/html/signingapp:rw
+      - ../landing-wellsail:/var/www/html/landing-wellsail:rw
       - ./dockerfiles/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     depends_on:
       - mysql_signing
@@ -40,7 +41,8 @@ services:
     ports:
       - 8002:80
     volumes:
-      - ./:/var/www/html/
+      - ../signing-app:/var/www/html/signingapp:rw
+      - ../landing-wellsail:/var/www/html/landing-wellsail:rw
       - ./nginx:/etc/nginx/conf.d/
     networks:
       - back-tier
