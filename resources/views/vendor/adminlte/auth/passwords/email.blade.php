@@ -1,4 +1,4 @@
-@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
+@extends('layouts.auth')
 
 @php( $password_email_url = View::getSection('password_email_url') ?? config('adminlte.password_email_url', 'password/email') )
 
@@ -8,41 +8,44 @@
     @php( $password_email_url = $password_email_url ? url($password_email_url) : '' )
 @endif
 
-@section('auth_header', __('adminlte::adminlte.password_reset_message'))
 
-@section('auth_body')
+@section('content')
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{ asset('images/undraw_remotely_2j6y.svg') }}" alt="Image" class="img-fluid">
+                </div>
+                <div class="col-md-6 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h3>WellSail : {{ __('adminlte::adminlte.password_reset_message') }}</h3>
+                            </div>
+                            <form action="{{ $password_email_url }}" method="post">
 
-    @if(session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
+                                @if(session('status'))
+                                    <div class="alert alert-success">
+                                        {{ session('status') }}
+                                    </div>
+                                @endif
 
-    <form action="{{ $password_email_url }}" method="post">
-        {{ csrf_field() }}
-
-        {{-- Email field --}}
-        <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
+                                @csrf
+                                <div class="form-group first">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="email">
+                                    @if($errors->has('email'))
+                                        <div class="invalid-feedback mt-1">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </div>
+                                    @endif
+                                </div>
+                                <input type="submit" value="Confirmer" class="btn btn-block btn-primary">
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            @if($errors->has('email'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </div>
-            @endif
         </div>
-
-        {{-- Send reset link button --}}
-        <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
-            <span class="fas fa-share-square"></span>
-            {{ __('adminlte::adminlte.send_password_reset_link') }}
-        </button>
-
-    </form>
-
-@stop
+    </div>
+@endsection

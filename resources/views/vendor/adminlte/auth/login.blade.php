@@ -1,8 +1,4 @@
-@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
-
-@section('adminlte_css_pre')
-    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-@stop
+@extends('layouts.auth')
 
 @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
 @php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
@@ -20,77 +16,63 @@
 
 @section('auth_header', __('adminlte::adminlte.login_message'))
 
-@section('auth_body')
-    <form action="{{ $login_url }}" method="post">
-        {{ csrf_field() }}
-
-        {{-- Email field --}}
-        <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
-            </div>
-            @if($errors->has('email'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </div>
-            @endif
-        </div>
-
-        {{-- Password field --}}
-        <div class="input-group mb-3">
-            <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                   placeholder="{{ __('adminlte::adminlte.password') }}">
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
-            </div>
-            @if($errors->has('password'))
-                <div class="invalid-feedback">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </div>
-            @endif
-        </div>
-
-        {{-- Login field --}}
+@section('content')
+<div class="content">
+    <div class="container">
         <div class="row">
-            <div class="col-7">
-                <div class="icheck-primary">
-                    <input type="checkbox" name="remember" id="remember">
-                    <label for="remember">{{ __('adminlte::adminlte.remember_me') }}</label>
+            <div class="col-md-6">
+                <img src="{{ asset('images/undraw_remotely_2j6y.svg') }}" alt="Image" class="img-fluid">
+            </div>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h3>WellSail : Se connecter</h3>
+                            <p class="mb-4">Accéder à votre espace de travail</p>
+                        </div>
+                        <form action="{{ $login_url }}" method="post">
+                            @csrf
+                            <div class="form-group first">
+                                <label for="email">Email</label>
+                                <input type="text" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="email">
+                                @if($errors->has('email'))
+                                    <div class="invalid-feedback mt-1">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group last mb-4">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="password" name="password" >
+                                @if($errors->has('password'))
+                                    <div class="invalid-feedback">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="d-flex mb-5 align-items-center">
+                                <label class="control control--checkbox mb-0"><span class="caption">Se souvenir de moi</span>
+                                    <input type="checkbox" checked="checked"/>
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <span class="ml-auto"><a href="{{$password_reset_url}}" class="forgot-pass">Mot de passe oublié</a></span>
+                            </div>
+                            <input type="submit" value="Se connecter" class="btn btn-block btn-primary">
+                            <span class="d-block text-left my-4 text-muted">&mdash; ou vous connectez avec &mdash;</span>
+                            <div class="social-login">
+                                <a href="#" class="facebook">
+                                    <span class="icon-facebook mr-3"></span>
+                                </a>
+                                <a href="#" class="google">
+                                    <span class="icon-google mr-3"></span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div class="col-5">
-                <button type=submit class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
-                    <span class="fas fa-sign-in-alt"></span>
-                    {{ __('adminlte::adminlte.sign_in') }}
-                </button>
-            </div>
         </div>
+    </div>
+</div>
+@endsection
 
-    </form>
-@stop
-
-@section('auth_footer')
-    {{-- Password reset link --}}
-    @if($password_reset_url)
-        <p class="my-0">
-            <a href="{{ $password_reset_url }}">
-                {{ __('adminlte::adminlte.i_forgot_my_password') }}
-            </a>
-        </p>
-    @endif
-
-    {{-- Register link --}}
-    @if($register_url)
-        <p class="my-0">
-            <a href="{{ $register_url }}">
-                {{ __('adminlte::adminlte.register_a_new_membership') }}
-            </a>
-        </p>
-    @endif
-@stop
