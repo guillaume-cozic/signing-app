@@ -58374,6 +58374,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/css/auth.css":
+/*!********************************!*\
+  !*** ./resources/css/auth.css ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./node_modules/moment-timezone/data/packed/latest.json":
 /*!**************************************************************!*\
   !*** ./node_modules/moment-timezone/data/packed/latest.json ***!
@@ -99856,7 +99869,8 @@ var TempusDominusBootstrap4 = function ($) {
 /******/ 		
 /******/ 		var deferredModules = [
 /******/ 			["./resources/js/app.js"],
-/******/ 			["./resources/css/app.css"]
+/******/ 			["./resources/css/app.css"],
+/******/ 			["./resources/css/auth.css"]
 /******/ 		];
 /******/ 		// no chunk on demand loading
 /******/ 		

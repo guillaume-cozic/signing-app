@@ -15,3 +15,8 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
     require('postcss-import'),
     require('autoprefixer'),
 ]);
+
+mix.js('resources/js/auth.js', 'public/js').postCss('resources/css/auth.css', 'public/css', [
+    require('postcss-import'),
+    require('autoprefixer'),
+]);
