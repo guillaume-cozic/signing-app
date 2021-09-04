@@ -24,7 +24,8 @@ class BoatTripController extends Controller
     {
         $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
         return view('dashboard', [
-            'fleets' => $fleets
+            'fleets' => $fleets,
+            'fleetsCount' => $fleets->count()
         ]);
     }
 

@@ -1,6 +1,7 @@
 <div class="card">
-    <div class="card-body p-0">
-        <table class="table table-striped">
+    <div class="card-body @if(!empty($fleets)) p-0 @endif">
+        @if(!empty($fleets))
+            <table class="table table-striped">
             <thead>
             <tr>
                 <th>Bateau</th>
@@ -37,5 +38,11 @@
                 @endforeach
             </tbody>
         </table>
+        @else
+            <div class="callout callout-warning">
+                Vous n'avez créé aucune flotte de bateaux.
+                <a style="color: inherit;" href="{{ route('fleet.list') }}">Créer votre première flotte pour ajouter des sorties en mer</a>
+            </div>
+        @endif
     </div>
 </div>
