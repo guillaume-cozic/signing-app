@@ -37,8 +37,7 @@
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                <input type="checkbox"
-                                       @if(old('state', 'on') === 'on') checked @endif
+                                <input type="checkbox" @if(old('state', 'on') === 'on') checked @endif
                                        class="custom-control-input" id="support_status" name="state">
                                 <label class="custom-control-label" for="support_status">Support actif</label>
                             </div>
@@ -51,5 +50,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var showModalInit = '{{ $showModalInit }}';
+    </script>
+    @include('modal.add-fleets-tuto')
 @endsection
 

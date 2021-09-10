@@ -19,9 +19,30 @@ use App\Http\Controllers\Controller;
 
 class FleetController extends Controller
 {
-    public function listShips()
+    private function getFleetsInit():array
     {
-        return view('signing.fleet.list');
+        return [
+            'Catamaran' => [
+                'Hobie cat 15',
+                'Hobie cat T1',
+                'Hobie cat 16',
+            ],
+            'Dériveur' => [
+                'Laser',
+                'Laser Pico',
+                'Fusion'
+            ]
+        ];
+    }
+
+    public function listShips(GetFleetsList $getFleetsList)
+    {
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
+        $fleetsInit = $this->getFleetsInit();
+        return view('signing.fleet.list', [
+            'fleetsInit' => $fleetsInit,
+            'showModalInit' => count($fleets) === 0
+        ]);
     }
 
     public function getFleetList(Request $request, GetFleetsList $getFleetsList)
@@ -103,4 +124,14 @@ class FleetController extends Controller
             'fleets' => $fleets
         ]);
     }
+
+    public function massCreate(Request $request, AddFleet $addFleet)
+    {
+        $fleets = $request->input('fleets');
+        foreach($fleets as $fleet) {
+            $addFleet->execute($fleet, '', 0, Fleet::STATE_ACTIVE);
+        }
+        return redirect()->back();
+    }
+
 }
