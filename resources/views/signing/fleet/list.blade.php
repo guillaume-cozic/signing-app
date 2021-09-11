@@ -19,7 +19,8 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">Nom du support</label>
-                            <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" id="name" placeholder="Entrer le nom du support">
+                            <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                                   name="name" id="name" placeholder="Entrer le nom du support" value="{{ old('name') }}">
                             @if ($errors->has('name'))
                                 <span class="error invalid-feedback">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -42,6 +43,11 @@
                                 <label class="custom-control-label" for="support_status">Support actif</label>
                             </div>
                         </div>
+                        @if(session()->has('fleet_error'))
+                            <div class="alert alert-danger">
+                                {{ session()->get('fleet_error') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Ajouter</button>

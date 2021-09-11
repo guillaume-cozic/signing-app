@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Signing;
 use App\Http\Requests\Domain\Fleet\AddFleetRequest;
 use App\Http\Requests\Domain\Fleet\EditFleetRequest;
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
@@ -26,11 +27,24 @@ class FleetController extends Controller
                 'Hobie cat 15',
                 'Hobie cat T1',
                 'Hobie cat 16',
+                'Rs cat 14',
+                'Rs cat 16',
             ],
             'Dériveur' => [
+                'Optimist',
                 'Laser',
                 'Laser Pico',
                 'Fusion'
+            ],
+            'Planche à voile' => [
+                'Planche à voile débutant',
+                'funboard'
+            ],
+            'Kayak et Paddle' => [
+                'Kayak simple',
+                'Kayak double',
+                'Paddle',
+                'Pédalo'
             ]
         ];
     }
@@ -79,12 +93,17 @@ class FleetController extends Controller
 
     public function add(AddFleetRequest $request, AddFleet $addFleet)
     {
-        $name = $request->input('name', '');
+        $name = trim($request->input('name', ''));
         $total = $request->input('total_available', 0);
         $state = $request->input('state');
         $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
-        $addFleet->execute($name, '', $total, $state);
-        return redirect()->route('fleet.list');
+        try {
+            $addFleet->execute($name, '', $total, $state);
+            return redirect()->route('fleet.list');
+        }catch (FleetAlreadyExist $e){
+            session()->flash('fleet_error',  "Une flotte du même nom existe déjà.");
+            return redirect()->route('fleet.list')->withInput($request->all());
+        }
     }
 
     public function showEdit(string $fleetId, GetFleet $getFleet)
