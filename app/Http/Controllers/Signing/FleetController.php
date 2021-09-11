@@ -148,7 +148,11 @@ class FleetController extends Controller
     {
         $fleets = $request->input('fleets');
         foreach($fleets as $fleet) {
-            $addFleet->execute($fleet, '', 0, Fleet::STATE_ACTIVE);
+            try {
+                $addFleet->execute($fleet, '', 0, Fleet::STATE_ACTIVE);
+            }catch (FleetAlreadyExist $e){
+                continue;
+            }
         }
         return redirect()->back();
     }
