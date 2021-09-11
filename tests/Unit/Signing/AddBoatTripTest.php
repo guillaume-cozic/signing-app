@@ -242,6 +242,7 @@ class AddBoatTripTest extends TestCase
         $s1 = new Fleet(new Id('abc'), 25);
         $this->fleetRepository->save($s1->getState());
 
+
         $boatTrip = BoatTripBuilder::build('abc')
             ->withBoats([$s1->id() => $qty = 25])
             ->withSailor(name: $name = 'tabarly')
@@ -250,8 +251,28 @@ class AddBoatTripTest extends TestCase
 
         $this->expectBoatNotAvailable();
 
-        $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
 
+        $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateBoatTripWithSailorRentalPackage()
+    {
+        $s1 = new Fleet(new Id('abc'), 25);
+        $this->fleetRepository->save($s1->getState());
+        $this->identityProvider->add($id = 'abc');
+
+
+        $sailorId = 'abcded';
+        $boatTripExpected = BoatTripBuilder::build('abc')
+            ->withSailor(name:'Tabarly', sailorId:$sailorId)
+            ->withBoats([$s1->id() => 2])
+            ->inProgress( 3);
+
+        $this->addBoatTripUseCase->execute(boats: [$s1->id() => 2], name: 'Tabarly', numberHours: 3, startNow: true, sailorId: $sailorId);
+        $this->assertBoatTripAdded('abc', $boatTripExpected);
     }
 
     private function assertBoatTripAdded(string $id, BoatTrip $boatTripExpected): void

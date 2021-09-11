@@ -2,7 +2,7 @@ $('.autocomplete-fleets-name').select2({
     theme: 'classic',
 });
 
-if(showModalInit == true) {
+if(typeof showModalInit !== "undefined" && showModalInit == true) {
     $('#modal-add-easy-fleets').modal('show');
 }
 

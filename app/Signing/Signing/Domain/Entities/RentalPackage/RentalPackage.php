@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Domain\Entities\RentalPackage;
 
 
+use App\Signing\Shared\Entities\Entity;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\HasState;
@@ -11,7 +12,7 @@ use App\Signing\Signing\Domain\Exceptions\RentalPackageValidityNegative;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use Carbon\Carbon;
 
-class RentalPackage implements HasState
+class RentalPackage extends Entity implements HasState
 {
     /**
      * @throws RentalPackageValidityNegative
@@ -80,5 +81,11 @@ class RentalPackage implements HasState
         $now = Carbon::instance(app(DateProvider::class)->current());
         $endValidity = $now->addDays($this->validityInDays);
         $sailorRentalPackage->reload($hours, $endValidity);
+    }
+
+    public function validityEndAtFromNow():Carbon
+    {
+        $now = Carbon::instance(app(DateProvider::class)->current());
+        return $now->addDays($this->validityInDays);
     }
 }

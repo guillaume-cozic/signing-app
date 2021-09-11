@@ -5,8 +5,10 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 
 
 use App\Signing\Shared\Services\ContextService;
+use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\RentalPackageModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
@@ -44,13 +46,7 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
     public function save(SailorRentalPackageState $sailorRentalPackageState)
     {
         $rentalPackage = RentalPackageModel::query()->where('uuid', $sailorRentalPackageState->rentalPackageId())->first();
-        $sailor = SailorModel::query()->where('name', $sailorRentalPackageState->name())->first();
-        if(!isset($sailor)){
-            $sailor = new SailorModel();
-            $sailor->name = $sailorRentalPackageState->name();
-            $sailor->uuid = Uuid::uuid4();
-            $sailor->save();
-        }
+        $sailor = SailorModel::query()->where('uuid', $sailorRentalPackageState->sailorId())->first();
 
         $sailorRentalPackageModel = SailorRentalPackageModel::query()
                 ->where('uuid', $sailorRentalPackageState->id())->first() ?? new SailorRentalPackageModel();
@@ -63,4 +59,15 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
         $sailorRentalPackageModel->actions = $sailorRentalPackageState->actions();
         $sailorRentalPackageModel->save();
     }
+
+    public function getBySailorAndRentalPackage(Sailor $sailor, RentalPackage $rentalPackage): ?SailorRentalPackage
+    {
+        return SailorRentalPackageModel::query()
+            ->where('rental_package_id', $rentalPackage->surrogateId())
+            ->where('sailor_id', $sailor->surrogateId())
+            ->first()
+            ?->toDomain();
+    }
+
+
 }

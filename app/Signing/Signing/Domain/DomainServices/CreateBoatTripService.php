@@ -31,10 +31,11 @@ class CreateBoatTripService
         bool $isMember = false,
         bool $isReservation = false,
         ?string $note = null,
+        ?string $sailorId = null,
     )
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
-            ->withSailor(name:$name, isInstructor: $isInstructor, isMember: $isMember)
+            ->withSailor(name:$name, isInstructor: $isInstructor, isMember: $isMember, sailorId: $sailorId)
             ->reservation($isReservation)
             ->withNote($note)
             ->withBoats($boats);

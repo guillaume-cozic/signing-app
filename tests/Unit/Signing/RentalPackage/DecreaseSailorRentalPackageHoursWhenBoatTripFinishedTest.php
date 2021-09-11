@@ -23,13 +23,13 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
      */
     public function shouldDecreaseSailorRentalPackageHours()
     {
-        $fleet = new Fleet(new Id('fleet'), 10);
-        $this->fleetRepository->save($fleet->getState());
+        $this->addFleet();
 
         $endValidityDate = (new Carbon())->addDays(10);
 
+        $sailorId = 'sailorId';
         $boatTrip = BoatTripBuilder::build('boat_trip_ended')
-            ->withSailor(name:'frank')
+            ->withSailor(name:'frank', sailorId: $sailorId)
             ->withBoats(['fleet' => 1])
             ->ended(1);
         $this->boatTripRepository->save($boatTrip->getState());
@@ -37,7 +37,7 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
         $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection(['fleet']), 'forfait kayak', 210);
         $this->rentalPackageRepository->save($rentalPackage->getState());
 
-        $sailorRentalPackage = new SailorRentalPackage('sailor_rental_package_id', 'frank', 'rental_package_id', $endValidityDate, 10);
+        $sailorRentalPackage = new SailorRentalPackage('sailor_rental_package_id', $sailorId, 'rental_package_id', $endValidityDate, 10);
         $this->sailorRentalPackageRepository->save($sailorRentalPackage->getState());
 
         app(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class)->execute($boatTrip->id());
@@ -45,7 +45,7 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
         $sailorRentalPackageSaved = $this->sailorRentalPackageRepository->get('sailor_rental_package_id');
         $sailorRentalPackageExpected = new SailorRentalPackageState(
             'sailor_rental_package_id',
-            'frank',
+            $sailorId,
             'rental_package_id',
             $endValidityDate,
             9,
@@ -59,11 +59,11 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
      */
     public function shouldDoNothingWhenSailorDoesNotHaveRentalPackage()
     {
-        $fleet = new Fleet(new Id('fleet'), 10);
-        $this->fleetRepository->save($fleet->getState());
+        $this->addFleet();
 
+        $sailorId = 'sailorId';
         $boatTrip = BoatTripBuilder::build('boat_trip_ended')
-            ->withSailor(name:'frank')
+            ->withSailor(name:'frank', sailorId: $sailorId)
             ->withBoats(['fleet' => 1])
             ->ended(1);
         $this->boatTripRepository->save($boatTrip->getState());
@@ -80,8 +80,7 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
      */
     public function shouldDoNothingWhenNoRentalPackageForTheFleet()
     {
-        $fleet = new Fleet(new Id('fleet'), 10);
-        $this->fleetRepository->save($fleet->getState());
+        $this->addFleet();
 
         $boatTrip = BoatTripBuilder::build('boat_trip_ended')
             ->withSailor(name:'frank')
@@ -91,5 +90,11 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
 
         app(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class)->execute($boatTrip->id());
         self::assertTrue(true);
+    }
+
+    private function addFleet(): void
+    {
+        $fleet = new Fleet(new Id('fleet'), 10);
+        $this->fleetRepository->save($fleet->getState());
     }
 }

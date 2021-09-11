@@ -28,6 +28,7 @@ use App\Signing\Signing\Domain\Repositories\Read\ReadRentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadSailorRentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\SailorRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -90,6 +91,7 @@ use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlRentalPackageRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlSailorRentalPackageRepository;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\SqlSailorRepository;
 use Illuminate\Support\ServiceProvider;
 use Tests\Adapters\ContextServiceTestImpl;
 use Tests\Unit\Adapters\Provider\FakeDateProvider;
@@ -99,6 +101,7 @@ use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\InMemorySailorRentalPackageRepository;
+use Tests\Unit\Adapters\Repositories\InMemorySailorRepository;
 use Tests\Unit\Adapters\Repositories\Read\InMemoryReadBoatTripRepository;
 use Tests\Unit\Adapters\Service\FakeTranslationService;
 use ConsoleTVs\Charts\Registrar as Charts;
@@ -154,6 +157,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
             $this->app->singleton(RentalPackageRepository::class, InMemoryRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, InMemorySailorRentalPackageRepository::class);
+            $this->app->singleton(SailorRepository::class, InMemorySailorRepository::class);
         }
 
         if(config('app.env') == 'testing-db') {
@@ -184,6 +188,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
             $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
+            $this->app->singleton(SailorRepository::class, SqlSailorRepository::class);
         }
 
         $this->app->singleton(BoatTripReportingRepository::class, SqlBoatTripReportingRepository::class);

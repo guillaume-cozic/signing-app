@@ -27,8 +27,22 @@ class AddBoatTripImpl implements AddBoatTrip
         bool $isMember = false,
         bool $isReservation = false,
         ?string $note = null,
+        ?string $sailorId = null
     )
     {
-        $this->createBoatTripService->execute(false, $boats,  $name, $numberHours, $startAtHours, $startNow, $autoStart, $isInstructor, $isMember, $isReservation, $note);
+        $this->createBoatTripService->execute(
+            false,
+            $boats,
+            $name,
+            $numberHours,
+            $startAtHours,
+            $startNow,
+            $autoStart,
+            $isInstructor,
+            $isMember,
+            $isReservation,
+            $note,
+            $sailorId
+        );
     }
 }

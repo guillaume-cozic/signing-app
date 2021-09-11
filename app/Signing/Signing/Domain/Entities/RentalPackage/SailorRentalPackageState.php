@@ -11,16 +11,16 @@ class SailorRentalPackageState implements State
 {
     public function __construct(
         private string $id,
-        private string $name,
+        private string $sailorId,
         private string $rentalPackageId,
         private Carbon $endValidity,
         private float $hours,
         private array $actions = [],
     ){}
 
-    public function name():string
+    public function sailorId():string
     {
-        return $this->name;
+        return $this->sailorId;
     }
 
     public function id():string
@@ -52,7 +52,7 @@ class SailorRentalPackageState implements State
     {
         return new SailorRentalPackage(
             $this->id,
-            $this->name,
+            $this->sailorId,
             $this->rentalPackageId,
             $this->endValidity,
             $this->hours,

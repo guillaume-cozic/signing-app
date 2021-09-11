@@ -37,9 +37,9 @@ class BoatTripBuilder
         return $this;
     }
 
-    public function withSailor(?string $memberId = null, ?string $name = '', ?bool $isInstructor = null, bool $isMember = null):self
+    public function withSailor(?string $memberId = null, ?string $name = '', ?bool $isInstructor = null, bool $isMember = null, string $sailorId = null):self
     {
-        $this->sailor = new Sailor($memberId, $name, $isInstructor, $isMember);
+        $this->sailor = new Sailor($memberId, $name, $isInstructor, $isMember, $sailorId);
         return $this;
     }
 

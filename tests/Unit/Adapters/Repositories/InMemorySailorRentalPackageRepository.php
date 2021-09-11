@@ -4,8 +4,10 @@
 namespace Tests\Unit\Adapters\Repositories;
 
 
+use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 
 class InMemorySailorRentalPackageRepository implements SailorRentalPackageRepository
@@ -33,4 +35,17 @@ class InMemorySailorRentalPackageRepository implements SailorRentalPackageReposi
         }
         return null;
     }
+
+
+    public function getBySailorAndRentalPackage(Sailor $sailor, RentalPackage $rentalPackage): ?SailorRentalPackage
+    {
+        foreach($this->sailorRentalPackages as $sailorRentalPackage) {
+            if($sailorRentalPackage->rentalPackageId() === $rentalPackage->id() && $sailorRentalPackage->sailorId() === $sailor->id()){
+                return $sailorRentalPackage->toDomain();
+            }
+        }
+        return null;
+    }
+
+
 }

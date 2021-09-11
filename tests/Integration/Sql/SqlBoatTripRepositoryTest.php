@@ -23,8 +23,9 @@ class SqlBoatTripRepositoryTest extends TestCase
         $fleet = new Fleet(new Id($fleetId = 'abcde'), 10);
         $this->fleetRepository->save($fleet->getState());
 
+        $sailorId = 'sailorId';
         $boatTrip = BoatTripBuilder::build($id = 'abcd')
-            ->withSailor(name:$name = 'Tabarly')
+            ->withSailor(name:$name = 'Tabarly', sailorId: $sailorId)
             ->withBoats([$fleetId => 1])
             ->inProgress(1);
 
