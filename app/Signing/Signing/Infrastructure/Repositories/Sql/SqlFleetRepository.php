@@ -9,6 +9,7 @@ use App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Signing\Domain\Entities\FleetState;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
+use Illuminate\Support\Facades\App;
 
 class SqlFleetRepository implements FleetRepository
 {
@@ -31,4 +32,15 @@ class SqlFleetRepository implements FleetRepository
         $fleetModel->sailing_club_id = $this->contextService->get()->sailingClubId();
         $fleetModel->save();
     }
+
+    public function getByName(string $name): ?Fleet
+    {
+        return FleetModel::query()
+            ->whereRaw('lower(name->\'$.' . App::getLocale().'\') = ?', '"'.strtolower($name).'"')
+            ->sailingClub()
+            ->first()
+            ?->toDomain();
+    }
+
+
 }

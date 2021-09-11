@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/php/Dockerfile
+    restart: unless-stopped
     ports:
     - 6001:6001
     expose:
@@ -25,6 +26,7 @@ services:
       context: .
       dockerfile: ./dockerfiles/mysql/Dockerfile
     container_name: mysql_signing
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: signing
       MYSQL_USER: signing
@@ -38,6 +40,7 @@ services:
   nginx_signing:
     image: nginx:latest
     container_name: nginx_signing
+    restart: unless-stopped
     ports:
       - 8002:80
     volumes:

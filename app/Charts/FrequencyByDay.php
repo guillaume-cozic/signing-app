@@ -27,7 +27,7 @@ class FrequencyByDay extends BaseChart
 
         $chartisan = Chartisan::build();
         $chartisan->labels(array_keys($reporting))
-            ->dataset('Fréquentation en nombre de bateux sur l\'eau', array_values($reporting));
+            ->dataset('Fréquentation en nombre d\'embarcations sur l\'eau', array_values($reporting));
 
 
         return $chartisan;

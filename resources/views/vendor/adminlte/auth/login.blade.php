@@ -58,7 +58,7 @@
                                 <span class="ml-auto"><a href="{{$password_reset_url}}" class="forgot-pass">Mot de passe oublié</a></span>
                             </div>
                             <input type="submit" value="Se connecter" class="btn btn-block btn-primary">
-                            <span class="d-block text-left my-4 text-muted">&mdash; ou vous connectez avec &mdash;</span>
+                            <!--span class="d-block text-left my-4 text-muted">&mdash; ou vous connectez avec &mdash;</span>
                             <div class="social-login">
                                 <a href="#" class="facebook">
                                     <span class="icon-facebook mr-3"></span>
@@ -66,7 +66,7 @@
                                 <a href="#" class="google">
                                     <span class="icon-google mr-3"></span>
                                 </a>
-                            </div>
+                            </div-->
                         </form>
                     </div>
                 </div>

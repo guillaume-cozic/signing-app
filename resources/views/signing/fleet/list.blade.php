@@ -19,7 +19,8 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">Nom du support</label>
-                            <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" name="name" id="name" placeholder="Entrer le nom du support">
+                            <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                                   name="name" id="name" placeholder="Entrer le nom du support" value="{{ old('name') }}">
                             @if ($errors->has('name'))
                                 <span class="error invalid-feedback">
                                     <strong>{{ $errors->first('name') }}</strong>
@@ -37,12 +38,16 @@
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                <input type="checkbox"
-                                       @if(old('state', 'on') === 'on') checked @endif
+                                <input type="checkbox" @if(old('state', 'on') === 'on') checked @endif
                                        class="custom-control-input" id="support_status" name="state">
                                 <label class="custom-control-label" for="support_status">Support actif</label>
                             </div>
                         </div>
+                        @if(session()->has('fleet_error'))
+                            <div class="alert alert-danger">
+                                {{ session()->get('fleet_error') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -51,5 +56,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var showModalInit = '{{ $showModalInit }}';
+    </script>
+    @include('modal.add-fleets-tuto')
 @endsection
 

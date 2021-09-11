@@ -27,6 +27,7 @@ class BoatTripsByFleet extends BaseChart
 
         $chartisan = Chartisan::build();
 
+        $values = $labels = [];
         foreach($reporting as $boat => $number){
             $fleet = FleetModel::where('uuid', $boat)->first();
             $labels[] = $fleet->name;

@@ -15,6 +15,7 @@ class Fleet implements HasState
 {
     private FleetRepository $fleetRepository;
     private TranslationService $translationService;
+    private array $translations = [];
 
     const STATE_ACTIVE = 'active';
     const STATE_INACTIVE = 'inactive';
@@ -37,12 +38,12 @@ class Fleet implements HasState
 
     public function create(string $title, string $description)
     {
-        $this->fleetRepository->save($this->getState());
-
-        $trans = [
+        $this->translations = [
             'name' => [App::getLocale() => $title],
         ];
-        $this->translationService->add($trans, $this->id(), 'support');
+        $this->fleetRepository->save($this->getState());
+
+        $this->translationService->add($this->translations, $this->id(), 'support');
     }
 
     public function update(int $totalAvailable, string $title, string $state)
@@ -76,6 +77,6 @@ class Fleet implements HasState
 
     public function getState(): FleetState
     {
-        return new FleetState($this->id->id(), $this->totalAvailable, $this->state);
+        return new FleetState($this->id->id(), $this->totalAvailable, $this->state, $this->translations);
     }
 }

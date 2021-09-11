@@ -47,6 +47,10 @@ Route::post('fleets/enable', [\App\Http\Controllers\Signing\FleetController::cla
     ->middleware(['auth'])
     ->name('fleet.enable');
 
+Route::post('fleets/mass', [\App\Http\Controllers\Signing\FleetController::class, 'massCreate'])
+    ->middleware(['auth'])
+    ->name('fleets.mass.create');
+
 Route::post('/boat-trips/list', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
     ->middleware(['auth'])
     ->name('boat-trips.list.data');

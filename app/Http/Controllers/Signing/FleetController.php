@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Signing;
 use App\Http\Requests\Domain\Fleet\AddFleetRequest;
 use App\Http\Requests\Domain\Fleet\EditFleetRequest;
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
@@ -19,9 +20,43 @@ use App\Http\Controllers\Controller;
 
 class FleetController extends Controller
 {
-    public function listShips()
+    private function getFleetsInit():array
     {
-        return view('signing.fleet.list');
+        return [
+            'Catamaran' => [
+                'Hobie cat 15',
+                'Hobie cat T1',
+                'Hobie cat 16',
+                'Rs cat 14',
+                'Rs cat 16',
+            ],
+            'Dériveur' => [
+                'Optimist',
+                'Laser',
+                'Laser Pico',
+                'Fusion'
+            ],
+            'Planche à voile' => [
+                'Planche à voile débutant',
+                'funboard'
+            ],
+            'Kayak et Paddle' => [
+                'Kayak simple',
+                'Kayak double',
+                'Paddle',
+                'Pédalo'
+            ]
+        ];
+    }
+
+    public function listShips(GetFleetsList $getFleetsList)
+    {
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
+        $fleetsInit = $this->getFleetsInit();
+        return view('signing.fleet.list', [
+            'fleetsInit' => $fleetsInit,
+            'showModalInit' => count($fleets) === 0
+        ]);
     }
 
     public function getFleetList(Request $request, GetFleetsList $getFleetsList)
@@ -58,12 +93,17 @@ class FleetController extends Controller
 
     public function add(AddFleetRequest $request, AddFleet $addFleet)
     {
-        $name = $request->input('name', '');
+        $name = trim($request->input('name', ''));
         $total = $request->input('total_available', 0);
         $state = $request->input('state');
         $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
-        $addFleet->execute($name, '', $total, $state);
-        return redirect()->route('fleet.list');
+        try {
+            $addFleet->execute($name, '', $total, $state);
+            return redirect()->route('fleet.list');
+        }catch (FleetAlreadyExist $e){
+            session()->flash('fleet_error',  "Une flotte du même nom existe déjà.");
+            return redirect()->route('fleet.list')->withInput($request->all());
+        }
     }
 
     public function showEdit(string $fleetId, GetFleet $getFleet)
@@ -103,4 +143,18 @@ class FleetController extends Controller
             'fleets' => $fleets
         ]);
     }
+
+    public function massCreate(Request $request, AddFleet $addFleet)
+    {
+        $fleets = $request->input('fleets');
+        foreach($fleets as $fleet) {
+            try {
+                $addFleet->execute($fleet, '', 0, Fleet::STATE_ACTIVE);
+            }catch (FleetAlreadyExist $e){
+                continue;
+            }
+        }
+        return redirect()->back();
+    }
+
 }

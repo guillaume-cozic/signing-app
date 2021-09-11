@@ -2402,6 +2402,14 @@ $('body').on('click', '#closed_all', function () {
   \*******************************/
 /***/ (() => {
 
+$('.autocomplete-fleets-name').select2({
+  theme: 'classic'
+});
+
+if (showModalInit == true) {
+  $('#modal-add-easy-fleets').modal('show');
+}
+
 if ($('#fleets-table').length != 0) {
   var table = $('#fleets-table').DataTable({
     processing: true,
