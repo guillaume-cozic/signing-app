@@ -10,6 +10,7 @@ use App\Signing\Signing\Domain\Entities\BoatTrip;
 use App\Signing\Signing\Domain\Entities\BoatTripState;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
+use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
 
 class SqlBoatTripRepository implements BoatTripRepository
 {
@@ -28,6 +29,7 @@ class SqlBoatTripRepository implements BoatTripRepository
     {
         $boatTripModel = BoatTripModel::query()->where('uuid', $boatTripState->id())->first() ?? new BoatTripModel();;
         $member = User::query()->where('uuid', $boatTripState->memberId())->first() ?? null;
+        $sailor = SailorModel::query()->where('uuid', $boatTripState->sailorId())->first() ?? null;
 
         $boatTripModel->uuid = $boatTripState->id();
         $boatTripModel->boats = $boatTripState->boats();
@@ -42,6 +44,7 @@ class SqlBoatTripRepository implements BoatTripRepository
         $boatTripModel->is_instructor = $boatTripState->isInstructor();
         $boatTripModel->is_reservation = $boatTripState->isReservation();
         $boatTripModel->note = $boatTripState->note();
+        $boatTripModel->sailor_id = $sailor->id ?? null;
         $boatTripModel->save();
     }
 

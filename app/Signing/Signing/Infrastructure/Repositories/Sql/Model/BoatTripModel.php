@@ -33,13 +33,18 @@ class BoatTripModel extends Model
         return $this->belongsTo(User::class, 'member_id', 'id');
     }
 
+    public function sailor():BelongsTo
+    {
+        return $this->belongsTo(SailorModel::class, 'sailor_id', 'id');
+    }
+
     public function toDomain():BoatTrip
     {
         $boatTripDuration = new BoatTripDuration($this->should_start_at, $this->start_at, $this->number_hours, $this->end_at);
         return new BoatTrip(
             new Id($this->uuid),
             $boatTripDuration,
-            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member),
+            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member, $this->sailor?->uuid),
             new BoatsCollection($this->boats),
             $this->is_reservation,
             $this->note

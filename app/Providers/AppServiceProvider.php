@@ -174,6 +174,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
             $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);
+            $this->app->singleton(SailorRepository::class, SqlSailorRepository::class);
         }
 
         if(config('app.env') == 'local') {

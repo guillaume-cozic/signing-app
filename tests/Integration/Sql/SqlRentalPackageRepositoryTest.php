@@ -53,6 +53,7 @@ class SqlRentalPackageRepositoryTest extends TestCase
         $this->rentalPackageRepository->save($rentalPackageExpected->getState());
 
         $rentalPackageSaved = $this->rentalPackageRepository->get('abc');
+        $rentalPackageExpected->setSurrogateId($rentalPackageSaved->surrogateId());
         self::assertEquals($rentalPackageExpected, $rentalPackageSaved);
     }
 
@@ -68,6 +69,7 @@ class SqlRentalPackageRepositoryTest extends TestCase
         $this->rentalPackageRepository->save($rentalPackageExpected->getState());
 
         $rentalPackageSaved = $this->rentalPackageRepository->getByFleet($fleet->id());
+        $rentalPackageExpected->setSurrogateId($rentalPackageSaved->surrogateId());
         self::assertEquals($rentalPackageExpected, $rentalPackageSaved);
     }
 

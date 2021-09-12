@@ -11,11 +11,13 @@ class SqlSailorRepository implements SailorRepository
 {
     public function getByName(string $name): ?Sailor
     {
-        $sailor = SailorModel::query()->where('name', $name)->first();
-        if(!isset($sailor)){
+        $sailorModel = SailorModel::query()->where('name', $name)->first();
+        if(!isset($sailorModel)){
             return null;
         }
-        return $sailor?->toState()?->toDomain()?->setSurrogateId($sailor->id);
+        $sailor = $sailorModel->toState()->toDomain();
+        $sailor->setSurrogateId($sailorModel->id);
+        return $sailor;
     }
 
     public function save(SailorState $sailor)

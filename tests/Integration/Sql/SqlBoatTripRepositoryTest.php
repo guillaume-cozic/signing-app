@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -24,6 +25,9 @@ class SqlBoatTripRepositoryTest extends TestCase
         $this->fleetRepository->save($fleet->getState());
 
         $sailorId = 'sailorId';
+        $sailor = new Sailor(name:'Guillaume', sailorId: $sailorId);
+        $this->sailorRepository->save($sailor->getState());
+
         $boatTrip = BoatTripBuilder::build($id = 'abcd')
             ->withSailor(name:$name = 'Tabarly', sailorId: $sailorId)
             ->withBoats([$fleetId => 1])
