@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Sql;
+namespace Tests\Repositories\Sql;
 
 use App\Signing\Signing\Domain\Entities\State\SailorState;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

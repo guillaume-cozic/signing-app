@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Integration\Sql\Read;
+namespace Tests\Repositories\Sql\Read;
 
 
 use App\Signing\Shared\Entities\Id;
