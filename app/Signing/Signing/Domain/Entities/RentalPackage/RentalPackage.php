@@ -5,9 +5,9 @@ namespace App\Signing\Signing\Domain\Entities\RentalPackage;
 
 
 use App\Signing\Shared\Entities\Entity;
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
-use App\Signing\Signing\Domain\Entities\HasState;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageValidityNegative;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use Carbon\Carbon;

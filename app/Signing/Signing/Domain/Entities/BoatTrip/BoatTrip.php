@@ -1,19 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
 
 use App\Events\BoatTrip\BoatTripEnded;
 use App\Events\BoatTrip\BoatTripStarted;
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\AuthGateway;
+use App\Signing\Signing\Domain\Entities\BoatAvailabilityChecker;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
-use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 
 class BoatTrip implements HasState
 {

@@ -4,8 +4,8 @@
 namespace App\Signing\Signing\Domain\Repositories;
 
 
-use App\Signing\Signing\Domain\Entities\BoatTrip;
-use App\Signing\Signing\Domain\Entities\BoatTripState;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripState;
 
 interface BoatTripRepository
 {

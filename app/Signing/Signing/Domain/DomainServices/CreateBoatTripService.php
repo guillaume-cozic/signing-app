@@ -6,7 +6,7 @@ namespace App\Signing\Signing\Domain\DomainServices;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\DateProvider;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 

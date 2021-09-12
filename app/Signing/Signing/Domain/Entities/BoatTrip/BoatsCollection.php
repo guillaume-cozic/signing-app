@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
 
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;

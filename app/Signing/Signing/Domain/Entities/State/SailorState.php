@@ -4,8 +4,8 @@
 namespace App\Signing\Signing\Domain\Entities\State;
 
 
+use App\Signing\Shared\Entities\State;
 use App\Signing\Signing\Domain\Entities\Sailor;
-use App\Signing\Signing\Domain\Entities\State;
 
 class SailorState implements State
 {

@@ -5,6 +5,7 @@ namespace App\Signing\Signing\Domain\Entities;
 
 
 use App\Signing\Shared\Entities\Entity;
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
 use App\Signing\Signing\Domain\Entities\State\SailorState;

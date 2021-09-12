@@ -6,10 +6,10 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Model;
 
 use App\Models\User;
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\BoatsCollection;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatsCollection;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripDuration;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
-use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\Entities\Sailor;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

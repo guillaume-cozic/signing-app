@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
 
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;

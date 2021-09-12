@@ -4,8 +4,8 @@
 namespace Tests\Unit\Adapters\Repositories;
 
 
-use App\Signing\Signing\Domain\Entities\BoatTrip;
-use App\Signing\Signing\Domain\Entities\BoatTripState;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripState;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 
 class InMemoryBoatTripRepository implements BoatTripRepository

@@ -11,6 +11,9 @@ class FleetCollection
 {
     private FleetRepository $fleetRepository;
 
+    /**
+     * @throws FleetNotFound
+     */
     public function __construct(
         private array $fleets
     ){

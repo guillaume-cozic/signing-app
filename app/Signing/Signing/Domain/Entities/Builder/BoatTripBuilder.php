@@ -5,11 +5,11 @@ namespace App\Signing\Signing\Domain\Entities\Builder;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Shared\Providers\DateProvider;
-use App\Signing\Signing\Domain\Entities\BoatsCollection;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Shared\Providers\DateProvider;;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatsCollection;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripDuration;
 use App\Signing\Signing\Domain\Entities\Sailor;
-use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 
 class BoatTripBuilder
 {

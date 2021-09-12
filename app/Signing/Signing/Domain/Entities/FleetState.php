@@ -5,6 +5,7 @@ namespace App\Signing\Signing\Domain\Entities;
 
 
 use App\Signing\Shared\Entities\Id;
+use App\Signing\Shared\Entities\State;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 
 class FleetState implements State

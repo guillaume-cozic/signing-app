@@ -6,8 +6,8 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 
 use App\Models\User;
 use App\Signing\Shared\Services\ContextService;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
-use App\Signing\Signing\Domain\Entities\BoatTripState;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripState;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
