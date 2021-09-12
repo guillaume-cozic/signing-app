@@ -5,10 +5,10 @@ namespace Tests\Unit\Signing\RentalPackage;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\RentalPackage\ActionSailor;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
-use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
 use App\Signing\Signing\Domain\Entities\State\SailorState;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
@@ -106,7 +106,7 @@ class CreateSailorRentalPackageTest extends TestCase
      */
     private function addRentalPackage(Fleet $fleet, int $validityRentalPackage): RentalPackage
     {
-        $rentalPackage = new RentalPackage('rental_package', new Fleet\FleetCollection([$fleet->id()]), 'forfait kayak', $validityRentalPackage);
+        $rentalPackage = new RentalPackage('rental_package', new FleetCollection([$fleet->id()]), 'forfait kayak', $validityRentalPackage);
         $this->rentalPackageRepository->save($rentalPackage->getState());
         return $rentalPackage;
     }

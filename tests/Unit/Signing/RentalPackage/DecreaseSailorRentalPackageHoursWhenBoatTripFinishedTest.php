@@ -6,7 +6,7 @@ namespace Tests\Unit\Signing\RentalPackage;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\RentalPackage\ActionSailor;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;

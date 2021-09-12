@@ -6,7 +6,7 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Model;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Dto\FleetDto;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 

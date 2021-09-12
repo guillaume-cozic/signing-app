@@ -8,7 +8,7 @@ use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Entities\User;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;

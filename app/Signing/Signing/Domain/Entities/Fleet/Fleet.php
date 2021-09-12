@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\Fleet;
 
 
 use App\Signing\Shared\Entities\HasState;

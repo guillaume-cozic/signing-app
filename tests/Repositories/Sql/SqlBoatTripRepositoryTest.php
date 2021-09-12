@@ -7,7 +7,7 @@ namespace Tests\Repositories\Sql;
 use App\Models\User;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Entities\Sailor;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;

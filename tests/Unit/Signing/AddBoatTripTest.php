@@ -9,7 +9,7 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Entities\User;
 use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
@@ -284,6 +284,6 @@ class AddBoatTripTest extends TestCase
     private function expectBoatNotAvailable(): void
     {
         self::expectException(BoatNotAvailable::class);
-        self::expectExceptionMessage('error.support_not_available');
+        self::expectExceptionMessage('error.boat_not_available');
     }
 }
