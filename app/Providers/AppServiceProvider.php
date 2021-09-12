@@ -33,8 +33,10 @@ use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\AddTimeToBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\AddReservation;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
+use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\AddReservationImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\CancelBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\ForceAddBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\StartBoatTripImpl;
@@ -80,8 +82,6 @@ use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackag
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\GetRentalPackagesImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\Impl\SearchSailorRentalPackagesImpl;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
-use App\Signing\Signing\Domain\UseCases\System\CreateFleetWhenTeamCreated;
-use App\Signing\Signing\Domain\UseCases\System\Impl\CreateFleetWhenTeamCreatedImpl;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadBoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Read\SqlReadFleetRepository;
@@ -120,7 +120,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(DelayBoatTripStart::class, DelayBoatTripStartImpl::class);
         $this->app->singleton(DisableFleet::class, DisableFleetImpl::class);
         $this->app->singleton(EnableFleet::class, EnableFleetImpl::class);
-        $this->app->singleton(CreateFleetWhenTeamCreated::class, CreateFleetWhenTeamCreatedImpl::class);
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
         $this->app->singleton(ForceAddBoatTrip::class, ForceAddBoatTripImpl::class);
         $this->app->singleton(StartBoatTrip::class, StartBoatTripImpl::class);
@@ -142,6 +141,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GetRentalPackage::class, GetRentalPackageImpl::class);
         $this->app->singleton(GetActionsSailorRentalPackage::class, GetActionsSailorRentalPackageImpl::class);
         $this->app->singleton(SearchSailorRentalPackages::class, SearchSailorRentalPackagesImpl::class);
+        $this->app->singleton(AddReservation::class, AddReservationImpl::class);
 
         $this->app->singleton(ContextService::class, ContextServiceImpl::class);
         $this->app->singleton(AuthGateway::class, AuthGatewayImpl::class);

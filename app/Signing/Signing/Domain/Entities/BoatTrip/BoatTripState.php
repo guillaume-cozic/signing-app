@@ -16,7 +16,6 @@ class BoatTripState implements State
         private BoatTripDurationState $duration,
         private array $boats,
         private SailorState $sailor,
-        private bool $isReservation,
         private ?string $note = null
     ){}
 
@@ -24,7 +23,6 @@ class BoatTripState implements State
     {
         return BoatTripBuilder::build($this->id)
             ->withBoats($this->boats)
-            ->reservation($this->isReservation)
             ->withNote($this->note)
             ->withSailor($this->memberId(), $this->name(), $this->isInstructor(), $this->isMember(), $this->sailorId())
             ->fromState($this->numberHours(), $this->startAt(), $this->endAt(), $this->shouldStartAt());
@@ -102,7 +100,7 @@ class BoatTripState implements State
 
     public function isReservation(): ?bool
     {
-        return $this->isReservation;
+        return false;
     }
 
     public function note(): ?string

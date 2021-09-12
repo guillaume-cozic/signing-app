@@ -25,7 +25,6 @@ class AddBoatTripImpl implements AddBoatTrip
         ?bool $autoStart = false,
         bool $isInstructor = false,
         bool $isMember = false,
-        bool $isReservation = false,
         ?string $note = null,
         ?string $sailorId = null
     )
@@ -40,7 +39,6 @@ class AddBoatTripImpl implements AddBoatTrip
             $autoStart,
             $isInstructor,
             $isMember,
-            $isReservation,
             $note,
             $sailorId
         );

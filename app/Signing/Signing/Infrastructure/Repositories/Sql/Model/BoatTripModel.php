@@ -93,7 +93,8 @@ class BoatTripModel extends Model
             $this->is_member,
             $this->is_instructor,
             $this->is_reservation,
-            $this->note
+            $this->note,
+            $this->sailor->uuid
         );
     }
 }

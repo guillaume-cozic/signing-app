@@ -27,7 +27,6 @@ class BoatTrip implements HasState
         private BoatTripDuration $duration,
         private Sailor $sailor,
         private ?BoatsCollection $boats = null,
-        private bool $isReservation = false,
         private ?string $note = null
     ){
         $this->boatTripRepository = app(BoatTripRepository::class);
@@ -130,7 +129,6 @@ class BoatTrip implements HasState
             $this->duration->getState(),
             $this->boats->boats(),
             $this->sailor->getState(),
-            $this->isReservation,
             $this->note
         );
     }

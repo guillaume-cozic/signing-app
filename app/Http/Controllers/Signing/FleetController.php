@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Requests\Domain\Fleet\AddFleetRequest;
 use App\Http\Requests\Domain\Fleet\EditFleetRequest;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;

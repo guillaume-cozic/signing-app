@@ -15,7 +15,6 @@ interface AddBoatTrip
         ?bool $autoStart = false,
         bool $isInstructor = false,
         bool $isMember = false,
-        bool $isReservation = false,
         ?string $note = null,
         ?string $sailorId = null
     );

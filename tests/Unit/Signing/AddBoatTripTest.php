@@ -13,7 +13,6 @@ use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
@@ -54,7 +53,6 @@ class AddBoatTripTest extends TestCase
             null,
             $isInstructor = true,
             $isMember = true,
-            false,
             'une note quelconque'
         );
 
@@ -196,40 +194,6 @@ class AddBoatTripTest extends TestCase
 
 
         $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
-
-        Event::assertNotDispatched(BoatTripStarted::class);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldAddBoatTripReservation()
-    {
-        $s1 = new Fleet(new Id('abc'), 25);
-        $this->fleetRepository->save($s1->getState());
-        $this->identityProvider->add($id = 'abc');
-
-        $shouldStartAt = Carbon::instance($this->dateProvider->current())->addHours(5);
-        $this->addBoatTripUseCase->execute(
-            [$s1->id() => $qty = 2],
-            $name = 'Tabarly',
-            $numberHours = 3,
-            $shouldStartAt->format('Y-m-d H:i'),
-            null,
-            null,
-            false,
-            false,
-            $isReservation = true
-        );
-
-        $boatTripExpected = BoatTripBuilder::build('abc')
-            ->withBoats([$s1->id() => $qty])
-            ->withSailor(name: $name, isInstructor: false, isMember: false)
-            ->reservation(true)
-            ->notStarted((new \DateTime())->setTimestamp(strtotime($shouldStartAt->format('Y-m-d H:i'))), 3);
-
-        $boatTripSaved = $this->boatTripRepository->get('abc');
-        self::assertEquals($boatTripExpected, $boatTripSaved);
 
         Event::assertNotDispatched(BoatTripStarted::class);
     }

@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\BoatTrip\AddBoatTripRequest;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
@@ -271,13 +271,14 @@ class BoatTripController extends Controller
         $isMember = $request->input('is_member', false) == 'on';
         $isInstructor = $request->input('is_instructor', false) == 'on';
         $isReservation = $request->input('is_reservation', false);
+        $sailorId = $request->input('sailor_id', null);
         $note = $request->input('note');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $isReservation, $note);
+        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $isReservation, $note, $sailorId);
         return [];
     }
 
