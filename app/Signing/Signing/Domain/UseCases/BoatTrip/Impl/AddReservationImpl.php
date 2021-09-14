@@ -19,7 +19,8 @@ class AddReservationImpl implements AddReservation
         string $shouldStartAt,
         bool $isInstructor,
         bool $isMember,
-        string $note
+        string $note,
+        bool $force = false
     )
     {
         $duration = new BoatTripDuration(
@@ -27,6 +28,6 @@ class AddReservationImpl implements AddReservation
             numberHours: $numberHours
         );
         $sailor = new Sailor(name: $name, isInstructor: $isInstructor, isMember: $isMember);
-        return new Reservation(new Id(), $duration, $sailor, new BoatsCollection($boats), $note);
+        (new Reservation(new Id(), $duration, $sailor, new BoatsCollection($boats), $note))->create($force);
     }
 }

@@ -36,7 +36,7 @@ class AddReservationTest extends TestCase
             ->setSecond(0)
             ->setMicros(0);
 
-        $reservation = $this->addReservation->execute(
+        $this->addReservation->execute(
             $boats = [$s1->id() => $qty = 2],
             $name = 'Tabarly',
             $numberHours = 3,
@@ -46,6 +46,7 @@ class AddReservationTest extends TestCase
             'note'
         );
 
+        $reservationSaved = $this->boatTripRepository->getReservation($id);
         $reservationExpected = new Reservation(
             new Id('abc'),
             new BoatTripDuration(shouldStartAt: $shouldStartAt, numberHours: $numberHours),
@@ -53,13 +54,13 @@ class AddReservationTest extends TestCase
             new BoatsCollection($boats),
             'note'
         );
-        self::assertEquals($reservationExpected, $reservation);
+        self::assertEquals($reservationExpected, $reservationSaved);
     }
 
     /**
      * @test
      */
-    public function shouldNotCreateReservationWhenNotBoatsAvailable()
+    public function shouldNotCreateReservationWhenNoBoatsAvailable()
     {
         $s1 = new Fleet(new Id('abc'), 25);
         $this->fleetRepository->save($s1->getState());
@@ -69,7 +70,16 @@ class AddReservationTest extends TestCase
             ->setSecond(0)
             ->setMicros(0);
 
-        $reservation = $this->addReservation->execute(
+        $reservation = new Reservation(
+            new Id('abcf'),
+            new BoatTripDuration(shouldStartAt:$shouldStartAt, numberHours: 1),
+            new Sailor(name:'tabarly'),
+            new BoatsCollection([$s1->id() => $qty = 25])
+        );
+        $this->boatTripRepository->save($reservation->getState());
+
+        $this->expectBoatNotAvailable();
+        $this->addReservation->execute(
             $boats = [$s1->id() => $qty = 2],
             $name = 'Tabarly',
             $numberHours = 3,
@@ -78,9 +88,49 @@ class AddReservationTest extends TestCase
             $isMember = false,
             'note'
         );
-        $this->reservationRepository->save($reservation);
+    }
 
-        $this->expectBoatNotAvailable();
+    /**
+     * @test
+     */
+    public function shouldForceReservationWhenNoBoatsAvailable()
+    {
+        $s1 = new Fleet(new Id('abc'), 25);
+        $this->fleetRepository->save($s1->getState());
+        $this->identityProvider->add($id = 'abc');
+
+        $shouldStartAt = Carbon::instance($this->dateProvider->current())->addHours(5)
+            ->setSecond(0)
+            ->setMicros(0);
+
+        $reservation = new Reservation(
+            new Id('abcf'),
+            new BoatTripDuration(shouldStartAt:$shouldStartAt, numberHours: 1),
+            new Sailor(name:'tabarly'),
+            new BoatsCollection([$s1->id() => $qty = 25])
+        );
+        $this->boatTripRepository->save($reservation->getState());
+
+        $this->addReservation->execute(
+            $boats = [$s1->id() => $qty = 2],
+            $name = 'Tabarly',
+            $numberHours = 3,
+            $shouldStartAt->format('Y-m-d H:i'),
+            $isInstructor = false,
+            $isMember = false,
+            'note',
+            true
+        );
+
+        $reservationSaved = $this->boatTripRepository->getReservation($id);
+        $reservationExpected = new Reservation(
+            new Id('abc'),
+            new BoatTripDuration(shouldStartAt: $shouldStartAt, numberHours: $numberHours),
+            new Sailor(name:$name, isInstructor: $isInstructor, isMember: $isMember),
+            new BoatsCollection($boats),
+            'note'
+        );
+        self::assertEquals($reservationExpected, $reservationSaved);
     }
 
     private function expectBoatNotAvailable(): void

@@ -4,8 +4,10 @@
 namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
 
+use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Entities\State;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Entities\State\SailorState;
 
@@ -26,6 +28,17 @@ class BoatTripState implements State
             ->withNote($this->note)
             ->withSailor($this->memberId(), $this->name(), $this->isInstructor(), $this->isMember(), $this->sailorId())
             ->fromState($this->numberHours(), $this->startAt(), $this->endAt(), $this->shouldStartAt());
+    }
+
+    public function toReservation():Reservation
+    {
+        return new Reservation(
+            new Id($this->id),
+            new BoatTripDuration(shouldStartAt: $this->shouldStartAt(), numberHours: $this->numberHours()),
+            new Sailor(name: $this->name()),
+            new BoatsCollection($this->boats),
+            $this->note()
+        );
     }
 
     public function hasBoat(string $boatIdAsked):bool
