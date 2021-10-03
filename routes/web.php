@@ -112,7 +112,7 @@ Route::middleware(['auth'])->group(function (){
     Route::prefix('reservation')->group(function (){
         Route::post('', [ReservationController::class, 'add'])->name('reservation.add');
         Route::post('force', [ReservationController::class, 'forceAdd'])->name('reservation.add.force');
-        Route::get('', [ReservationController::class, 'reservations'])->name('reservation.list');
+        Route::post('list', [ReservationController::class, 'reservations'])->name('reservation.list');
     });
 
     Route::prefix('rental-package')->group(function (){
@@ -121,7 +121,6 @@ Route::middleware(['auth'])->group(function (){
         Route::post('{id}/edit', [RentalPackageController::class, 'processEditRentalPackage'])->name('rental-package.edit.process');
         Route::get('{id}/edit', [RentalPackageController::class, 'showEdit'])->name('rental-package.edit');
     });
-
 
     Route::prefix('sailor-rental-packages')->group(function () {
         Route::get('', [SailorRentalPackageController::class, 'index'])->name('sailor-rental-package.index');

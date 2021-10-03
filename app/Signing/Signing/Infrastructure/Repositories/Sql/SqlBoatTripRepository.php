@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Signing\Shared\Services\ContextService;
 use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
 use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripState;
+use App\Signing\Signing\Domain\Entities\BoatTrip\Reservation;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
@@ -91,6 +92,15 @@ class SqlBoatTripRepository implements BoatTripRepository
                 return $model->toDomain();
             })
             ->toArray();
+    }
+
+    public function getReservation(string $id): ?Reservation
+    {
+        return BoatTripModel::query()
+            ->with('member')
+            ->where('uuid', $id)
+            ->first()
+            ?->toReservationDomain();
     }
 
 

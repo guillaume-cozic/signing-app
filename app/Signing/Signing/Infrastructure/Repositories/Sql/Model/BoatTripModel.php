@@ -9,6 +9,7 @@ use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatTrip\BoatsCollection;
 use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
 use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTrip\Reservation;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
 use App\Signing\Signing\Domain\Entities\Sailor;
 use Carbon\Carbon;
@@ -46,7 +47,18 @@ class BoatTripModel extends Model
             $boatTripDuration,
             new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member, $this->sailor?->uuid),
             new BoatsCollection($this->boats),
-            $this->is_reservation,
+            $this->note
+        );
+    }
+
+    public function toReservationDomain():Reservation
+    {
+        $boatTripDuration = new BoatTripDuration($this->should_start_at, $this->start_at, $this->number_hours, $this->end_at);
+        return new Reservation(
+            new Id($this->uuid),
+            $boatTripDuration,
+            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member, $this->sailor?->uuid),
+            new BoatsCollection($this->boats),
             $this->note
         );
     }
@@ -94,7 +106,7 @@ class BoatTripModel extends Model
             $this->is_instructor,
             $this->is_reservation,
             $this->note,
-            $this->sailor->uuid
+            $this->sailor->uuid ?? null
         );
     }
 }

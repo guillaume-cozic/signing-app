@@ -203,7 +203,6 @@ class BoatTripController extends Controller
         $startAuto = $request->input('start_auto');
         $isMember = $request->input('is_member', false) == 'on';
         $isInstructor = $request->input('is_instructor', false) == 'on';
-        $isReservation = $request->input('is_reservation', false);
         $sailorId = $request->input('sailor_id', null);
         $note = $request->input('note');
 
@@ -211,7 +210,7 @@ class BoatTripController extends Controller
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $isReservation, $note, $sailorId);
+        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId);
         return [];
     }
 
@@ -225,7 +224,6 @@ class BoatTripController extends Controller
         $startAuto = $request->input('start_auto');
         $isMember = $request->input('is_member', false) == 'on';
         $isInstructor = $request->input('is_instructor', false) == 'on';
-        $isReservation = $request->input('is_reservation', false);
         $sailorId = $request->input('sailor_id', null);
         $note = $request->input('note');
 
@@ -233,7 +231,7 @@ class BoatTripController extends Controller
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto);
+        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId);
         return [];
     }
 

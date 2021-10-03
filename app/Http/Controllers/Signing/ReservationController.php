@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\BoatTrip\AddBoatTripRequest;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\ReservationParameters;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\AddReservation;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use Illuminate\Http\Request;
@@ -20,7 +22,11 @@ class ReservationController extends Controller
     public function forceAdd(AddBoatTripRequest $request, AddReservation $addReservation)
     {
         list($name, $hours, $shouldStartAt, $isMember, $isInstructor, $note, $boatsProcessed) = $this->form($request);
-        $addReservation->execute($boatsProcessed, $name, $hours, $shouldStartAt, $isInstructor, $isMember, $note, true);
+
+        (new UseCaseHandler($addReservation))
+            ->execute(
+                new ReservationParameters($boatsProcessed, $name, $hours, $shouldStartAt, $isInstructor, $isMember, $note, true)
+            );
         return [];
     }
 
