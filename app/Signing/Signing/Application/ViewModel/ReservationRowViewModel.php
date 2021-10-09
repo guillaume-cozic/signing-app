@@ -15,12 +15,14 @@ class ReservationRowViewModel
     public string $messageBadgeSailorColor;
 
     public function __construct(
-        private string $id,
-        private array $boats,
-        private Carbon $shouldStartAt,
-        private bool $isMember,
-        private bool $isInstructor,
-        private string $note,
+        public string $id,
+        public array $boats,
+        public Carbon $shouldStartAt,
+        public bool $isMember,
+        public bool $isInstructor,
+        public ?string $note,
+        public float $hours,
+        public string $name,
     )
     {
         $this->boats();
@@ -28,11 +30,13 @@ class ReservationRowViewModel
         $this->sailorType();
     }
 
-    public function actions()
+    public function actions():array
     {
         return [
            'cancel' => [
-               'route' => route('boat-trip.cancel', ['boatTripId' => $this->id])
+               'route' => route('boat-trip.cancel', ['boatTripId' => $this->id]),
+               'message' => 'Supprimer la réservation',
+               'class' => 'btn-cancel fa fa-trash text-red p-1'
            ]
         ];
     }
@@ -41,7 +45,7 @@ class ReservationRowViewModel
     {
         $total = 0;
         $this->messageListBoats = [];
-        foreach ($this->boats as $qty => $boat){
+        foreach ($this->boats as $boat => $qty){
             $this->messageListBoats[] = $qty. ' '.$boat;
             $total += $qty;
         }
@@ -51,7 +55,7 @@ class ReservationRowViewModel
     public function startAtHumanReadable($locale = 'fr_FR')
     {
         setlocale(LC_TIME, $locale);
-        $this->messageShouldStartAt = utf8_encode(strftime('%a %e %b à %H:%M', $this->shouldStartAt->getTimestamp()));
+        $this->messageShouldStartAt = utf8_encode(strftime('%a %e %b &agrave; %H:%M', $this->shouldStartAt->getTimestamp()));
     }
 
     public function sailorType()
@@ -65,4 +69,5 @@ class ReservationRowViewModel
             $this->messageBadgeSailorType = 'Moniteur';
         }
     }
+
 }

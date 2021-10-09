@@ -15,7 +15,10 @@ class ReservationController extends Controller
     public function add(AddBoatTripRequest $request, AddReservation $addReservation)
     {
         list($name, $hours, $shouldStartAt, $isMember, $isInstructor, $note, $boatsProcessed) = $this->form($request);
-        $addReservation->execute($boatsProcessed, $name, $hours, $shouldStartAt, $isInstructor, $isMember, $note);
+        (new UseCaseHandler($addReservation))
+            ->execute(
+                new ReservationParameters($boatsProcessed, $name, $hours, $shouldStartAt, $isInstructor, $isMember, $note)
+            );
         return [];
     }
 
@@ -38,24 +41,16 @@ class ReservationController extends Controller
         $sortDir = $request->input('order.0.dir', null);
         $sortIndex = $request->input('order.0.column', null);
         $sort = $request->input('columns.'.$sortIndex.'.name', null);
-        $filters = [
-            'reservations' => (bool)$request->input('reservations', false)
-        ];
+        $filters = ['reservations' => true];
         $boatTrips = $getBoatTripsList->execute($search, $start, $perPage, $sort, $sortDir, $filters);
 
         foreach ($boatTrips as $boatTrip) {
-            $boats = '';
-            $total = 0;
-            foreach($boatTrip->boats as $boat => $qty){
-                $boats .= $qty. ' '.$boat.'</br>';
-                $total += $qty;
-            }
-            $boats = $boats !== '' ? $boats : 'Matériel perso';
+            $boatTripViewModel = $boatTrip->toReservationRowViewModel();
 
-            $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
-
+            $boats = implode('<br/>', $boatTripViewModel->messageListBoats);
             $state = 'success';
             $message = 'Réservation';
+
 
             $buttons = '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
                  data-toggle="tooltip" data-placement="top" title="Supprimer la réservation"
@@ -68,19 +63,15 @@ class ReservationController extends Controller
             }
 
             $badgeName = "";
-            if($boatTrip->isMember){
-                $badgeName = '<span class="badge bg-primary">Adhérent</span>';
-            }
-            if($boatTrip->isInstructor){
-                $badgeName = '<span class="badge bg-info">Moniteur</span>';
+            if($boatTripViewModel->isMember || $boatTripViewModel->isIstructor){
+                $badgeName = '<span class="badge bg-'.$boatTripViewModel->messageBadgeSailorColor.'">'.$boatTripViewModel->messageBadgeSailorType.'</span>';
             }
 
-            setlocale(LC_TIME, "fr_FR");
             $boatTripsData[] = [
                 $boats,
-                '<span class="badge bg-info">'.$total.'</span>',
-                mb_convert_encoding($badgeName.' '.$boatTrip->name, 'UTF-8', 'UTF-8'),
-                '<i class="fas fa-clock time-icon"></i> '.utf8_encode(strftime('%a %e %b à %H:%M', $startAt->getTimestamp())).' <small>'.$boatTrip->hours.' h</small>',
+                '<span class="badge bg-info">'.$boatTripViewModel->total.'</span>',
+                $badgeName.' '.$boatTripViewModel->name,
+                '<i class="fas fa-clock time-icon"></i> '.$boatTripViewModel->messageShouldStartAt.' <small>'.$boatTrip->hours.' h</small>',
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                     </span>',

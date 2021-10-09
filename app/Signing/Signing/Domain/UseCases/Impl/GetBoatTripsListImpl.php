@@ -16,6 +16,6 @@ class GetBoatTripsListImpl implements GetBoatTripsList
     public function execute(?string $search = '', int $start = 0, int $perPage = 10, string $sort = null, string $dirSort = "asc", array $filters = [])
     {
         $page = $start/$perPage +1;
-        return $this->boatTripRepository->getInProgress($search, $page, $perPage, $sort, $dirSort, $filters);
+        return $this->boatTripRepository->search($search, $page, $perPage, $sort, $dirSort, $filters);
     }
 }
