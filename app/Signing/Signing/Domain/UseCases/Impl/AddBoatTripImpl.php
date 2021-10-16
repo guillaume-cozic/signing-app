@@ -26,7 +26,8 @@ class AddBoatTripImpl implements AddBoatTrip
         bool $isInstructor = false,
         bool $isMember = false,
         ?string $note = null,
-        ?string $sailorId = null
+        ?string $sailorId = null,
+        bool $doNotDecreaseHours = false,
     )
     {
         $this->createBoatTripService->execute(
@@ -40,7 +41,8 @@ class AddBoatTripImpl implements AddBoatTrip
             $isInstructor,
             $isMember,
             $note,
-            $sailorId
+            $sailorId,
+            $doNotDecreaseHours
         );
     }
 }

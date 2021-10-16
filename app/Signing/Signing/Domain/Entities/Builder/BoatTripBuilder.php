@@ -18,6 +18,7 @@ class BoatTripBuilder
     private Sailor $sailor;
     private BoatTripDuration $boatTripDuration;
     private ?string $note = null;
+    private array $options = ['do_not_decrease_hours' => false];
 
     private function __construct(private string $id)
     {
@@ -51,25 +52,31 @@ class BoatTripBuilder
     public function inProgress(?float $numberHours):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note, $this->options);
     }
 
     public function notStarted(?\DateTime $shouldStartAt, ?float $numberHours):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(shouldStartAt: $shouldStartAt, numberHours: $numberHours);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note, $this->options);
     }
 
     public function ended(?float $numberHours):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration(start: $this->dateProvider->current(), numberHours: $numberHours, end: $this->dateProvider->current());
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note, $this->options);
     }
 
     public function fromState(?float $numberHours, ?\DateTime $startAt, ?\DateTime $endAt = null, ?\DateTime $shouldStartAt = null):BoatTrip
     {
         $boatTripDuration = $this->boatTripDuration ?? new BoatTripDuration($shouldStartAt, $startAt, $numberHours, $endAt);
-        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note);
+        return new BoatTrip(new Id($this->id), $boatTripDuration, $this->sailor, $this->boats, $this->note, $this->options);
+    }
+
+    public function withOptions(array $options):self
+    {
+        $this->options = $options;
+        return $this;
     }
 
     public function withNote(string $note = null):self
@@ -80,6 +87,6 @@ class BoatTripBuilder
 
     public function get():BoatTrip
     {
-        return new BoatTrip(new Id($this->id), $this->boatTripDuration, $this->sailor, $this->boats, $this->note);
+        return new BoatTrip(new Id($this->id), $this->boatTripDuration, $this->sailor, $this->boats, $this->note, $this->options);
     }
 }

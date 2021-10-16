@@ -38,7 +38,7 @@ class FleetController extends Controller
             ],
             'Planche à voile' => [
                 'Planche à voile débutant',
-                'funboard'
+                'Funboard',
             ],
             'Kayak et Paddle' => [
                 'Kayak simple',

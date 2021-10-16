@@ -201,10 +201,11 @@ class BoatTripController extends Controller
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
         $startAuto = $request->input('start_auto');
-        $isMember = $request->input('is_member', false) == 'on';
-        $isInstructor = $request->input('is_instructor', false) == 'on';
+        $isMember = $request->has('is_member');
+        $isInstructor = $request->has('is_instructor');
         $sailorId = $request->input('sailor_id', null);
         $note = $request->input('note');
+        $doNotDecreaseHours = $request->has('do_not_decrease_hours');
 
         $boatsProcessed = [];
         foreach($boats as $boat){

@@ -24,7 +24,13 @@
                             </div>
                         </div>
                         <div class="div-detail-sailor">
+                            <div class="detail-sailor">
 
+                            </div>
+                            <div class="form-check">
+                                <input name="do_not_decrease" id="do-not-decreases" class="form-check-input" type="checkbox">
+                                <label for="do-not-decreases" class="form-check-label">Ne pas décompter les heures sur le forfait</label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">

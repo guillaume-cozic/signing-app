@@ -131,7 +131,7 @@ if($('#boat-trips-table').length != 0) {
 
     $('.dashboard-datatable').on('click', '.btn-cancel', function () {
         var url = $(this).data('href');
-        var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
+        var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées dans les différentes statistiques</div>";
         $.showConfirm({
             title: "Voulez vous vraiment supprimer cette sortie ?", body: body, textTrue: "Oui", textFalse: "Non",
             onSubmit: function (result) {
@@ -444,14 +444,14 @@ $('.autocomplete-sailor-name').autoComplete({
 
 $('.autocomplete-sailor-name').on('autocomplete.select', function (e, i) {
     $('.input_sailor_id').val(i.value);
-    $('.div-detail-sailor').html(i.html);
+    $('.detail-sailor').html(i.html);
     $('.div-detail-sailor').slideDown();
 });
 
 $('.autocomplete-sailor-name').on('change', function (e, i) {
     $('.input_sailor_id').val('');
     $('.div-detail-sailor').slideUp();
-    $('.div-detail-sailor').html('');
+    $('.detail-sailor').html('');
 });
 
 $('body').on('click', '#closed_all', function (){

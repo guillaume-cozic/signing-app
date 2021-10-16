@@ -31,11 +31,13 @@ class CreateBoatTripService
         bool $isMember = false,
         ?string $note = null,
         ?string $sailorId = null,
+        bool $doNotDecreaseHours = false,
     )
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
             ->withSailor(name:$name, isInstructor: $isInstructor, isMember: $isMember, sailorId: $sailorId)
             ->withNote($note)
+            ->withOptions(['do_not_decrease_hours' => $doNotDecreaseHours])
             ->withBoats($boats);
 
         $boatTrip = $this->buildBoatTrip($startNow, $boatTripBuilder, $numberHours, $startAtHours, $startAuto);

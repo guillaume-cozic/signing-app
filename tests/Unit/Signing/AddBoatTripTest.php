@@ -233,9 +233,10 @@ class AddBoatTripTest extends TestCase
         $boatTripExpected = BoatTripBuilder::build('abc')
             ->withSailor(name:'Tabarly', sailorId:$sailorId)
             ->withBoats([$s1->id() => 2])
+            ->withOptions(['do_not_decrease_hours' => true])
             ->inProgress( 3);
 
-        $this->addBoatTripUseCase->execute(boats: [$s1->id() => 2], name: 'Tabarly', numberHours: 3, startNow: true, sailorId: $sailorId);
+        $this->addBoatTripUseCase->execute(boats: [$s1->id() => 2], name: 'Tabarly', numberHours: 3, startNow: true, sailorId: $sailorId, doNotDecreaseHours: true);
         $this->assertBoatTripAdded('abc', $boatTripExpected);
     }
 
