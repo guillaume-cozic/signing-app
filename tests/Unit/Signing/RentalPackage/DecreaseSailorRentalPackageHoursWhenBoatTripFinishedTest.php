@@ -57,6 +57,42 @@ class DecreaseSailorRentalPackageHoursWhenBoatTripFinishedTest extends TestCase
     /**
      * @test
      */
+    public function shouldNotDecreaseSailorRentalPackageHours()
+    {
+        $this->addFleet();
+
+        $endValidityDate = (new Carbon())->addDays(10);
+
+        $sailorId = 'sailorId';
+        $boatTrip = BoatTripBuilder::build('boat_trip_ended')
+            ->withSailor(name:'frank', sailorId: $sailorId)
+            ->withBoats(['fleet' => 1])
+            ->withOptions(['do_not_decrease_hours' => true])
+            ->ended(1);
+        $this->boatTripRepository->save($boatTrip->getState());
+
+        $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection(['fleet']), 'forfait kayak', 210);
+        $this->rentalPackageRepository->save($rentalPackage->getState());
+
+        $sailorRentalPackage = new SailorRentalPackage('sailor_rental_package_id', $sailorId, 'rental_package_id', $endValidityDate, 10);
+        $this->sailorRentalPackageRepository->save($sailorRentalPackage->getState());
+
+        app(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class)->execute($boatTrip->id());
+
+        $sailorRentalPackageSaved = $this->sailorRentalPackageRepository->get('sailor_rental_package_id');
+        $sailorRentalPackageExpected = new SailorRentalPackageState(
+            'sailor_rental_package_id',
+            $sailorId,
+            'rental_package_id',
+            $endValidityDate,
+            10
+        );
+        self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackageSaved->getState());
+    }
+
+    /**
+     * @test
+     */
     public function shouldDoNothingWhenSailorDoesNotHaveRentalPackage()
     {
         $this->addFleet();

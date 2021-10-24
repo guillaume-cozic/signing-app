@@ -115,6 +115,7 @@ class BoatTrip implements HasState
 
     public function updateSailorRentalPackage()
     {
+        if($this->options['do_not_decrease_hours'] === true) return;
         foreach($this->hoursUsed() as $boatId => $hours){
             $rentalPackage = app(RentalPackageRepository::class)->getByFleet($boatId);
             if(isset($rentalPackage)){

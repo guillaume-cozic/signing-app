@@ -21,6 +21,7 @@ class BoatTripsDTo
         public ?bool $isInstructor = false,
         public ?bool $isReservation = false,
         public ?string $note = null,
+        public ?string $sailorId = null,
     ){}
 
     public function startAt():?\DateTime

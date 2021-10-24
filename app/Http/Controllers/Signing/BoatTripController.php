@@ -61,6 +61,9 @@ class BoatTripController extends Controller
             if($boatTrip->isInstructor){
                 $badgeName = '<span class="badge bg-info">Moniteur</span>';
             }
+            if($boatTrip->sailorId !== null){
+                $badgeName = '<span data-toggle="tooltip" data-placement="top" title="Forfait" class="badge bg-indigo">F</span>';
+            }
 
             $actions = [];
 
