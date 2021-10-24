@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\Fleet;
 
 
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Services\Translations\TranslationService;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;

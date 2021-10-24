@@ -6,10 +6,11 @@ namespace Tests\Feature\Query\RentalPackages;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Application\ViewModel\RentalPackageViewModel;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Carbon\Carbon;
@@ -41,13 +42,19 @@ class GetRentalPackagesTest extends TestCase
         $support1Model->name = $hobieCatName = 'Hobie cat 15';
         $support1Model->save();
 
+        $sailor = new Sailor(name:'frank', sailorId:'sailor_frank_id');
+        $this->sailorRepository->save($sailor->getState());
+
+        $sailor = new Sailor(name:'frank', sailorId:'sailor_guillaume_id');
+        $this->sailorRepository->save($sailor->getState());
+
         $rentalPackage = new RentalPackage('abc', new FleetCollection([$supportId1]), 'name', 10);
         $this->rentalPackageRepository->save($rentalPackage->getState());
 
-        $sailorRentalPackage = new SailorRentalPackage('abcde', 'frank', 'abc', new Carbon(), 10);
+        $sailorRentalPackage = new SailorRentalPackage('abcde', 'sailor_frank_id', 'abc', new Carbon(), 10);
         $this->sailorRentalPackageRepository->save($sailorRentalPackage->getState());
 
-        $sailorRentalPackage = new SailorRentalPackage('abcd', 'guillaume', 'abc', new Carbon(), 0);
+        $sailorRentalPackage = new SailorRentalPackage('abcd', 'sailor_guillaume_id', 'abc', new Carbon(), 0);
         $this->sailorRentalPackageRepository->save($sailorRentalPackage->getState());
 
         $rentalPackages = app(GetRentalPackages::class)->execute();

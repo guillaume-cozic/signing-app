@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Signing;
 use App\Exports\SailorRentalPackageTemplateImport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddSailorRentalPackageRequest;
-use App\Http\Requests\Domain\RentalPackage\ImportSailorRentalPackageRequest;
 use App\Imports\SailorRentalPackageImport;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;

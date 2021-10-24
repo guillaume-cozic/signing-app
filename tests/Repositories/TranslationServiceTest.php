@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Integration;
+namespace Tests\Repositories;
 
 
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;

@@ -4,8 +4,8 @@
 namespace Tests\Unit\Signing\RentalPackage;
 
 
-use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\FleetState;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetState;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackageState;
 use App\Signing\Signing\Domain\Exceptions\FleetNotFound;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\EditRentalPackage;

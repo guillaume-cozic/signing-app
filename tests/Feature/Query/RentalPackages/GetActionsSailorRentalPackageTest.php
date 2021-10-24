@@ -6,11 +6,12 @@ namespace Tests\Feature\Query\RentalPackages;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Application\ViewModel\ActionsSailorRentalPackageViewModel;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\RentalPackage\ActionSailor;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Exceptions\SailorRentalPackageNotFound;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetActionsSailorRentalPackage;
 use Carbon\Carbon;
@@ -29,11 +30,14 @@ class GetActionsSailorRentalPackageTest extends TestCase
         $fleet = new Fleet(new Id('fleet'), 10);
         $this->fleetRepository->save($fleet->getState());
 
+        $sailor = new Sailor(name:'tabarly', sailorId:'sailor_id');
+        $this->sailorRepository->save($sailor->getState());
+
         $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection(['fleet']), 'forfait', 365);
         $this->rentalPackageRepository->save($rentalPackage->getState());
         $sailorRentalPackage = new SailorRentalPackage(
             'sailor_rental_package_id',
-                'tabarly',
+                'sailor_id',
             'rental_package_id',
             Carbon::instance($this->dateProvider->current()),
             10,
@@ -62,11 +66,14 @@ class GetActionsSailorRentalPackageTest extends TestCase
         $fleet = new Fleet(new Id('fleet'), 10);
         $this->fleetRepository->save($fleet->getState());
 
+        $sailor = new Sailor(name:'tabarly', sailorId:'sailor_id');
+        $this->sailorRepository->save($sailor->getState());
+
         $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection(['fleet']), 'forfait', 365);
         $this->rentalPackageRepository->save($rentalPackage->getState());
         $sailorRentalPackage = new SailorRentalPackage(
             'sailor_rental_package_id',
-            'tabarly',
+            'sailor_id',
             'rental_package_id',
             Carbon::instance($this->dateProvider->current()),
             10,

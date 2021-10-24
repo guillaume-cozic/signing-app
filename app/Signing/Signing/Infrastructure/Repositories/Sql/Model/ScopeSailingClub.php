@@ -11,7 +11,12 @@ trait ScopeSailingClub
 {
     public function scopeSailingClub($query):Builder
     {
-        $sailingClubId = app(ContextService::class)->get()->sailingClubId();
+        $sailingClubId = $this->contextService()->get()->sailingClubId();
         return $query->where($this->table.'.sailing_club_id', $sailingClubId);
+    }
+
+    public function contextService():ContextService
+    {
+        return app(ContextService::class);
     }
 }

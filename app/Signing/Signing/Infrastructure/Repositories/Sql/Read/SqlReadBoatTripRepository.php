@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
-    public function getInProgress(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc", array $filters = [])
+    public function search(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc", array $filters = [])
     {
         $fleets = [];
         if(!empty($search)){

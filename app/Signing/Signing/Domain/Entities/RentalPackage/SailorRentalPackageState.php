@@ -4,23 +4,23 @@
 namespace App\Signing\Signing\Domain\Entities\RentalPackage;
 
 
-use App\Signing\Signing\Domain\Entities\State;
+use App\Signing\Shared\Entities\State;
 use Carbon\Carbon;
 
 class SailorRentalPackageState implements State
 {
     public function __construct(
         private string $id,
-        private string $name,
+        private string $sailorId,
         private string $rentalPackageId,
         private Carbon $endValidity,
         private float $hours,
         private array $actions = [],
     ){}
 
-    public function name():string
+    public function sailorId():string
     {
-        return $this->name;
+        return $this->sailorId;
     }
 
     public function id():string
@@ -52,7 +52,7 @@ class SailorRentalPackageState implements State
     {
         return new SailorRentalPackage(
             $this->id,
-            $this->name,
+            $this->sailorId,
             $this->rentalPackageId,
             $this->endValidity,
             $this->hours,

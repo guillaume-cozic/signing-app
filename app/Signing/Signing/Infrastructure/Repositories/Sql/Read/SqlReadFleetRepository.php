@@ -4,7 +4,7 @@
 namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Read;
 
 
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Repositories\Read\ReadFleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;

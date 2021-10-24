@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Domain\Entities;
 
 
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatsCollection;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
@@ -28,7 +29,7 @@ class BoatAvailabilityChecker
     public function checkIfEnough():void
     {
         foreach($this->boatsAsked->boats() as $boatId => $qty) {
-            if (!$this->isBoatAvailable($boatId, $qty)) throw new BoatNotAvailable('error.support_not_available');
+            if (!$this->isBoatAvailable($boatId, $qty)) throw new BoatNotAvailable('error.boat_not_available');
         }
     }
 

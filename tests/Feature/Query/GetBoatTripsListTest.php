@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Carbon\Carbon;

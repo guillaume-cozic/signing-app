@@ -4,8 +4,9 @@
 namespace Tests\Unit\Adapters\Repositories;
 
 
-use App\Signing\Signing\Domain\Entities\BoatTrip;
-use App\Signing\Signing\Domain\Entities\BoatTripState;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripState;
+use App\Signing\Signing\Domain\Entities\BoatTrip\Reservation;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 
 class InMemoryBoatTripRepository implements BoatTripRepository
@@ -15,6 +16,11 @@ class InMemoryBoatTripRepository implements BoatTripRepository
     public function get(string $id): ?BoatTrip
     {
         return isset($this->boatTrips[$id]) ? $this->boatTrips[$id]->toBoatTrip() : null;
+    }
+
+    public function getReservation(string $id): ?Reservation
+    {
+        return isset($this->boatTrips[$id]) ? $this->boatTrips[$id]->toReservation() : null;
     }
 
     public function save(BoatTripState $b)

@@ -4,8 +4,8 @@
 namespace App\Signing\Signing\Domain\Entities\RentalPackage;
 
 
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Providers\DateProvider;
-use App\Signing\Signing\Domain\Entities\HasState;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use Carbon\Carbon;
 
@@ -13,7 +13,7 @@ class SailorRentalPackage implements HasState
 {
     public function __construct(
         private string $id,
-        private string $name,
+        private string $sailorId,
         private string $rentalPackageId,
         private Carbon $endValidity,
         private float $hours,
@@ -23,6 +23,11 @@ class SailorRentalPackage implements HasState
     public function id():string
     {
         return $this->id;
+    }
+
+    public function sailorId():string
+    {
+        return $this->sailorId;
     }
 
     public function reload(float $hours, Carbon $endValidity)
@@ -60,6 +65,6 @@ class SailorRentalPackage implements HasState
 
     public function getState(): SailorRentalPackageState
     {
-        return new SailorRentalPackageState($this->id, $this->name, $this->rentalPackageId, $this->endValidity, $this->hours, $this->actions);
+        return new SailorRentalPackageState($this->id, $this->sailorId, $this->rentalPackageId, $this->endValidity, $this->hours, $this->actions);
     }
 }

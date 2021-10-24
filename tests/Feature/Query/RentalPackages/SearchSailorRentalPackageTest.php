@@ -6,10 +6,11 @@ namespace Tests\Feature\Query\RentalPackages;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Application\ViewModel\SailorRentalPackageViewModel;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Carbon\Carbon;
@@ -45,7 +46,10 @@ class SearchSailorRentalPackageTest extends TestCase
         $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection([$supportId1]), 'rental_package_name', 10);
         $this->rentalPackageRepository->save($rentalPackage->getState());
 
-        $sailorRentalPackage = new SailorRentalPackage('abc', 'frank', 'rental_package_id', new Carbon(), 10);
+        $sailor = new Sailor(name:'frank', sailorId:'sailor_id');
+        $this->sailorRepository->save($sailor->getState());
+
+        $sailorRentalPackage = new SailorRentalPackage('abc', 'sailor_id', 'rental_package_id', new Carbon(), 10);
         $this->sailorRentalPackageRepository->save($sailorRentalPackage->getState());
 
         $sailorViewModel = new SailorRentalPackageViewModel('abc', 'frank', 'rental_package_name', 10);

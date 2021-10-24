@@ -5,8 +5,7 @@ namespace Tests\Unit\Signing;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\UseCases\DisableFleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
 use Tests\TestCase;
 

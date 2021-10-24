@@ -35,7 +35,7 @@ class SailorRentalPackageModel extends Model
         }
         return new SailorRentalPackage(
             $this->uuid,
-            $this->sailor->name,
+            $this->sailor->uuid,
             $this->rentalPackage->uuid,
             $this->end_validity,
             $this->hours,

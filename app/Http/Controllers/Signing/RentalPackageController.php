@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Signing;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddRentalPackageRequest;
 use App\Http\Requests\Domain\RentalPackage\EditRentalPackageRequest;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\EditRentalPackage;

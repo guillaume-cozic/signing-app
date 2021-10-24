@@ -12,6 +12,8 @@ use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\Repositories\Read\ReadBoatTripRepository;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
+use App\Signing\Signing\Domain\Repositories\SailorRepository;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Event;
 
@@ -24,6 +26,7 @@ abstract class TestCase extends BaseTestCase
     protected BoatTripRepository $boatTripRepository;
     protected RentalPackageRepository $rentalPackageRepository;
     protected SailorRentalPackageRepository $sailorRentalPackageRepository;
+    protected SailorRepository $sailorRepository;
     protected ReadBoatTripRepository $readBoatTripRepository;
     protected DateProvider $dateProvider;
     protected TranslationService $translationService;
@@ -39,11 +42,17 @@ abstract class TestCase extends BaseTestCase
         $this->readBoatTripRepository = app(ReadBoatTripRepository::class);
         $this->rentalPackageRepository = app(RentalPackageRepository::class);
         $this->sailorRentalPackageRepository = app(SailorRentalPackageRepository::class);
+        $this->sailorRepository = app(SailorRepository::class);
         $this->dateProvider = app(DateProvider::class);
         $this->translationService = app(TranslationService::class);
         $this->contextService = app(ContextService::class);
         $this->contextService->setSailingClubId(1);
         $this->authGateway = app(AuthGateway::class);
         Event::fake();
+    }
+
+    public function now():Carbon
+    {
+        return Carbon::instance($this->dateProvider->current());
     }
 }

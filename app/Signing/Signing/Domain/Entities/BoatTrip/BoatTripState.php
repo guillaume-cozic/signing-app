@@ -1,10 +1,13 @@
 <?php
 
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
 
+use App\Signing\Shared\Entities\Id;
+use App\Signing\Shared\Entities\State;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Entities\State\SailorState;
 
@@ -15,18 +18,29 @@ class BoatTripState implements State
         private BoatTripDurationState $duration,
         private array $boats,
         private SailorState $sailor,
-        private bool $isReservation,
-        private ?string $note = null
+        private ?string $note = null,
+        private array $options = []
     ){}
 
     public function toBoatTrip():BoatTrip
     {
         return BoatTripBuilder::build($this->id)
             ->withBoats($this->boats)
-            ->reservation($this->isReservation)
             ->withNote($this->note)
-            ->withSailor($this->memberId(), $this->name(), $this->isInstructor(), $this->isMember())
+            ->withOptions($this->options)
+            ->withSailor($this->memberId(), $this->name(), $this->isInstructor(), $this->isMember(), $this->sailorId())
             ->fromState($this->numberHours(), $this->startAt(), $this->endAt(), $this->shouldStartAt());
+    }
+
+    public function toReservation():Reservation
+    {
+        return new Reservation(
+            new Id($this->id),
+            new BoatTripDuration(shouldStartAt: $this->shouldStartAt(), numberHours: $this->numberHours()),
+            new Sailor(name: $this->name()),
+            new BoatsCollection($this->boats),
+            $this->note()
+        );
     }
 
     public function hasBoat(string $boatIdAsked):bool
@@ -84,6 +98,11 @@ class BoatTripState implements State
         return $this->sailor->memberId();
     }
 
+    public function sailorId(): ?string
+    {
+        return $this->sailor->sailorId();
+    }
+
     public function isInstructor(): ?bool
     {
         return $this->sailor->isInstructor();
@@ -96,11 +115,16 @@ class BoatTripState implements State
 
     public function isReservation(): ?bool
     {
-        return $this->isReservation;
+        return false;
     }
 
     public function note(): ?string
     {
         return $this->note;
+    }
+
+    public function options(): ?array
+    {
+        return $this->options;
     }
 }

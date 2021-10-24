@@ -4,8 +4,8 @@
 namespace App\Signing\Signing\Domain\Entities\RentalPackage;
 
 
+use App\Signing\Shared\Entities\State;
 use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
-use App\Signing\Signing\Domain\Entities\State;
 
 class RentalPackageState implements State
 {

@@ -1,19 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Signing\Signing\Domain\Entities;
+namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
 
 use App\Events\BoatTrip\BoatTripEnded;
 use App\Events\BoatTrip\BoatTripStarted;
+use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\AuthGateway;
+use App\Signing\Signing\Domain\Entities\BoatAvailabilityChecker;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
-use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 
 class BoatTrip implements HasState
 {
@@ -25,8 +27,8 @@ class BoatTrip implements HasState
         private BoatTripDuration $duration,
         private Sailor $sailor,
         private ?BoatsCollection $boats = null,
-        private bool $isReservation = false,
-        private ?string $note = null
+        private ?string $note = null,
+        private array $options = [],
     ){
         $this->boatTripRepository = app(BoatTripRepository::class);
         $this->authGateway = app(AuthGateway::class);
@@ -113,6 +115,7 @@ class BoatTrip implements HasState
 
     public function updateSailorRentalPackage()
     {
+        if($this->options['do_not_decrease_hours'] === true) return;
         foreach($this->hoursUsed() as $boatId => $hours){
             $rentalPackage = app(RentalPackageRepository::class)->getByFleet($boatId);
             if(isset($rentalPackage)){
@@ -128,8 +131,8 @@ class BoatTrip implements HasState
             $this->duration->getState(),
             $this->boats->boats(),
             $this->sailor->getState(),
-            $this->isReservation,
-            $this->note
+            $this->note,
+            $this->options,
         );
     }
 }
