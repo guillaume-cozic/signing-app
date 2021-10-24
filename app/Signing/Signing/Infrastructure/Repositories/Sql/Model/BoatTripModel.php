@@ -26,7 +26,8 @@ class BoatTripModel extends Model
         'start_at' => 'datetime',
         'end_at' => 'datetime',
         'should_start_at' => 'datetime',
-        'boats' => 'array'
+        'boats' => 'array',
+        'options' => 'array'
     ];
 
     public function member():BelongsTo
@@ -47,7 +48,8 @@ class BoatTripModel extends Model
             $boatTripDuration,
             new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member, $this->sailor?->uuid),
             new BoatsCollection($this->boats),
-            $this->note
+            $this->note,
+            $this->options ?? []
         );
     }
 

@@ -122,4 +122,9 @@ class BoatTripState implements State
     {
         return $this->note;
     }
+
+    public function options(): ?array
+    {
+        return $this->options;
+    }
 }

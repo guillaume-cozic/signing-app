@@ -46,6 +46,7 @@ class SqlBoatTripRepository implements BoatTripRepository
         $boatTripModel->is_reservation = $boatTripState->isReservation();
         $boatTripModel->note = $boatTripState->note();
         $boatTripModel->sailor_id = $sailor->id ?? null;
+        $boatTripModel->options = $boatTripState->options() ?? [];
         $boatTripModel->save();
     }
 
