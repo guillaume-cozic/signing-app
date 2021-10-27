@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
-use App\Charts\BoatTripsByFleet;
-use App\Charts\FrequencyByDay;
+
 use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripEndedNotificationImpl;
 use App\Signing\Notifications\Domain\UseCases\Notifications\Impl\SendBoatTripStartedNotificationImpl;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripEndedNotification;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripStartedNotification;
+use App\Signing\Reporting\Domain\Charts\BoatTripsByDay;
+use App\Signing\Reporting\Domain\Charts\BoatTripsByFleet;
+use App\Signing\Reporting\Domain\Charts\FrequencyByDay;
 use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
 use App\Signing\Shared\Providers\AuthGateway;
@@ -30,9 +32,7 @@ use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Domain\Repositories\SailorRepository;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
-use App\Signing\Signing\Domain\UseCases\AddMemberBoatTrip;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
-use App\Signing\Signing\Domain\UseCases\AddTimeToBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\AddReservation;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
@@ -41,17 +41,13 @@ use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\CancelBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\ForceAddBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\Impl\StartBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\StartBoatTrip;
-use App\Signing\Signing\Domain\UseCases\DelayBoatTripStart;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
 use App\Signing\Signing\Domain\UseCases\EndBoatTrip;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Impl\AddBoatTripImpl;
-use App\Signing\Signing\Domain\UseCases\Impl\AddMemberBoatTripImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\AddFleetImpl;
-use App\Signing\Signing\Domain\UseCases\Impl\AddTimeToBoatTripImpl;
-use App\Signing\Signing\Domain\UseCases\Impl\DelayBoatTripStartImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\DisableFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\EnableFleetImpl;
 use App\Signing\Signing\Domain\UseCases\Impl\EndBoatTripImpl;
@@ -114,10 +110,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AddFleet::class, AddFleetImpl::class);
         $this->app->singleton(AddBoatTrip::class, AddBoatTripImpl::class);
         $this->app->singleton(EndBoatTrip::class, EndBoatTripImpl::class);
-        $this->app->singleton(AddMemberBoatTrip::class, AddMemberBoatTripImpl::class);
-        $this->app->singleton(AddTimeToBoatTrip::class, AddTimeToBoatTripImpl::class);
         $this->app->singleton(UpdateFleet::class, UpdateFleetImpl::class);
-        $this->app->singleton(DelayBoatTripStart::class, DelayBoatTripStartImpl::class);
         $this->app->singleton(DisableFleet::class, DisableFleetImpl::class);
         $this->app->singleton(EnableFleet::class, EnableFleetImpl::class);
         $this->app->singleton(CancelBoatTrip::class, CancelBoatTripImpl::class);
@@ -198,7 +191,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Charts $charts)
     {
         $charts->register([
-            \App\Charts\BoatTripsByDay::class,
+            BoatTripsByDay::class,
             BoatTripsByFleet::class,
             FrequencyByDay::class,
         ]);
