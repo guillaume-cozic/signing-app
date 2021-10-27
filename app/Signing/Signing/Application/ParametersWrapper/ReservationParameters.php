@@ -14,7 +14,8 @@ class ReservationParameters implements Parameters
         public bool $isInstructor,
         public bool $isMember,
         public string $note,
-        public bool $force = false){}
+        public bool $force = false
+    ){}
 
     public function loggable(): array
     {
