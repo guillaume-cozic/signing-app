@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Charts;
+namespace App\Signing\Reporting\Domain\Charts;
 
 use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
