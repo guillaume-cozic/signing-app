@@ -7,6 +7,7 @@ namespace App\Signing\Signing\Domain\Entities\Fleet;
 use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Services\Translations\TranslationService;
+use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use Illuminate\Support\Facades\App;
@@ -39,6 +40,10 @@ class Fleet implements HasState
 
     public function create(string $title, string $description)
     {
+        $fleet = $this->fleetRepository->getByName($title);
+        if($fleet !== null){
+            throw new FleetAlreadyExist();
+        }
         $this->translations = [
             'name' => [App::getLocale() => $title],
         ];
@@ -50,6 +55,11 @@ class Fleet implements HasState
     public function update(int $totalAvailable, string $title, string $state)
     {
         if($totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
+
+        $fleetCheck = $this->fleetRepository->getByName($title);
+        if(isset($fleetCheck) && $this->id() !== $fleetCheck->id()){
+            throw new FleetAlreadyExist();
+        }
         $this->totalAvailable = $totalAvailable;
         $this->state = $state;
         $this->fleetRepository->save($this->getState());

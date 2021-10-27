@@ -16,20 +16,12 @@ use App\Signing\Signing\Domain\UseCases\AddFleet;
 
 class AddFleetImpl implements AddFleet, UseCase
 {
-    public function __construct(
-        private FleetRepository $fleetRepository
-    ){}
-
     /**
      * @throws FleetAlreadyExist
      * @throws NumberBoatsCantBeNegative
      */
     public function execute(string $title, string $description, int $totalAvailable, string $state)
     {
-        $fleet = $this->fleetRepository->getByName($title);
-        if($fleet !== null){
-            throw new FleetAlreadyExist();
-        }
         (new Fleet(new Id(), $totalAvailable, $state))->create($title, $description);
     }
 

@@ -21,10 +21,6 @@ class UpdateFleetImpl implements UpdateFleet, UseCase
         $fleet = $this->fleetRepository->get($id);
         if(!isset($fleet)) throw new FleetNotFound();
 
-        $fleetCheck = $this->fleetRepository->getByName($title);
-        if(isset($fleetCheck) && $id !== $fleetCheck->id()){
-            throw new FleetAlreadyExist();
-        }
         $fleet->update($newTotal, $title, $state);
     }
 
