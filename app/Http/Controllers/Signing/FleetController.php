@@ -6,6 +6,9 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Requests\Domain\Fleet\AddFleetRequest;
 use App\Http\Requests\Domain\Fleet\EditFleetRequest;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\AddFleetParameters;
+use App\Signing\Signing\Application\ParametersWrapper\EditFleetParameters;
 use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -93,12 +96,11 @@ class FleetController extends Controller
 
     public function add(AddFleetRequest $request, AddFleet $addFleet)
     {
-        $name = trim($request->input('name', ''));
-        $total = $request->input('total_available', 0);
-        $state = $request->input('state');
-        $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
         try {
-            $addFleet->execute($name, '', $total, $state);
+            $name = trim($request->input('name', ''));
+            $total = $request->input('total_available', 0);
+            $state = $request->has('state') ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
+            (new UseCaseHandler($addFleet))->execute(new AddFleetParameters($name, $total, $state));
             return redirect()->route('fleet.list');
         }catch (FleetAlreadyExist $e){
             session()->flash('fleet_error',  "Une flotte du même nom existe déjà.");
@@ -118,9 +120,8 @@ class FleetController extends Controller
     {
         $name = $request->input('name', '');
         $total = $request->input('total_available', 0);
-        $state = $request->input('state');
-        $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
-        $updateFleet->execute($fleetId, $total, $name, $state);
+        $state = $request->has('state') ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
+        (new UseCaseHandler($updateFleet))->execute(new EditFleetParameters($fleetId, $name, $total, $state));
         return redirect()->route('fleet.list');
     }
 
@@ -149,7 +150,7 @@ class FleetController extends Controller
         $fleets = $request->input('fleets');
         foreach($fleets as $fleet) {
             try {
-                $addFleet->execute($fleet, '', 0, Fleet::STATE_ACTIVE);
+                (new UseCaseHandler($addFleet))->execute(new AddFleetParameters($fleet, 0, Fleet::STATE_ACTIVE));
             }catch (FleetAlreadyExist $e){
                 continue;
             }

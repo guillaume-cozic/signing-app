@@ -31,7 +31,7 @@ class InMemoryFleetRepository implements FleetRepository
     public function getByName(string $name): ?Fleet
     {
         foreach($this->fleets as $fleet) {
-            if($fleet->translations()['name'][App::getLocale()] === $name){
+            if(isset($fleet->translations()['name'][App::getLocale()]) && $fleet->translations()['name'][App::getLocale()] === $name){
                 return $fleet->toDomain();
             }
         }
