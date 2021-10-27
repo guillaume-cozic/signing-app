@@ -11,7 +11,6 @@ use App\Signing\Signing\Application\ParametersWrapper\AddFleetParameters;
 use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
-use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 
 class AddFleetImpl implements AddFleet, UseCase
