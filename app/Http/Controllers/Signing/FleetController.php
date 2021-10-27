@@ -9,6 +9,7 @@ use App\Http\Requests\Domain\Fleet\EditFleetRequest;
 use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
 use App\Signing\Signing\Application\ParametersWrapper\AddFleetParameters;
 use App\Signing\Signing\Application\ParametersWrapper\EditFleetParameters;
+use App\Signing\Signing\Application\ParametersWrapper\IdentityFleetParameters;
 use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
@@ -127,13 +128,15 @@ class FleetController extends Controller
 
     public function disable(Request $request, DisableFleet $disableFleet)
     {
-        $disableFleet->execute($request->input('fleet_id'));
+        $fleetId = $request->input('fleet_id');
+        (new UseCaseHandler($disableFleet))->execute(new IdentityFleetParameters($fleetId));
         return [];
     }
 
     public function enable(Request $request, EnableFleet $enableFleet)
     {
-        $enableFleet->execute($request->input('fleet_id'));
+        $fleetId = $request->input('fleet_id');
+        (new UseCaseHandler($enableFleet))->execute(new IdentityFleetParameters($fleetId));
         return [];
     }
 
