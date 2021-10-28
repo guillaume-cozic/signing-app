@@ -10,9 +10,7 @@ use App\Signing\Signing\Domain\Entities\Fleet\FleetState;
 use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\Exceptions\FleetNotFound;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
-use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
-use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
 class UpdateFleetTest extends TestCase
