@@ -8,6 +8,9 @@ use App\Exports\SailorRentalPackageTemplateImport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddSailorRentalPackageRequest;
 use App\Imports\SailorRentalPackageImport;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\AddSubHoursSailorRentalPackageParameters;
+use App\Signing\Signing\Application\ParametersWrapper\SailorRentalPackageParameters;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetActionsSailorRentalPackage;
@@ -37,7 +40,7 @@ class SailorRentalPackageController extends Controller
         $name = $request->input('name');
         $hours = $request->input('hours');
 
-        $createSailorRentalPackage->execute(Uuid::uuid4(), $rentalPackageId, $name, $hours);
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
         return redirect()->route('sailor-rental-package.index');
     }
 
@@ -47,7 +50,7 @@ class SailorRentalPackageController extends Controller
         $name = $request->input('name');
         $hours = $request->input('hours');
 
-        $createSailorRentalPackage->execute(Uuid::uuid4(), $rentalPackageId, $name, $hours);
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
         return [];
     }
 
@@ -102,14 +105,14 @@ class SailorRentalPackageController extends Controller
     public function addHours(string $sailorRentalPackageId, Request $request, AddOrSubHoursToSailorRentalPackage $addOrSubHoursToSailorRentalPackage)
     {
         $hours = $request->input('hours');
-        $addOrSubHoursToSailorRentalPackage->execute($sailorRentalPackageId, $hours);
+        (new UseCaseHandler($addOrSubHoursToSailorRentalPackage))->execute(new AddSubHoursSailorRentalPackageParameters($sailorRentalPackageId, $hours));
         return [];
     }
 
     public function decreaseHours(string $sailorRentalPackageId, Request $request, AddOrSubHoursToSailorRentalPackage $addOrSubHoursToSailorRentalPackage)
     {
         $hours = $request->input('hours');
-        $addOrSubHoursToSailorRentalPackage->execute($sailorRentalPackageId, -$hours);
+        (new UseCaseHandler($addOrSubHoursToSailorRentalPackage))->execute(new AddSubHoursSailorRentalPackageParameters($sailorRentalPackageId, $hours));
         return [];
     }
 
