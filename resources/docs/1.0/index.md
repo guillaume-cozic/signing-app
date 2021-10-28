@@ -4,7 +4,7 @@
     - [Sortie en mer](/{{route}}/{{version}}/boat-trip)
     - [Réservation](/{{route}}/{{version}}/boat-trip)
 - ## Gestion des forfaits de locations
-    - [Forfait](/{{route}}/{{version}}/rental-package)
+    - [Modèle de Forfait](/{{route}}/{{version}}/rental-package)
     - [Forfait client](/{{route}}/{{version}}/sailor-rental-package)
 - ## Reporting
     - [Reporting](/{{route}}/{{version}}/team)
