@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Signing;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddRentalPackageRequest;
 use App\Http\Requests\Domain\RentalPackage\EditRentalPackageRequest;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\RentalPackageParameters;
 use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateRentalPackage;
@@ -33,7 +35,7 @@ class RentalPackageController extends Controller
         $name = $request->input('name');
         $validityInDay = $request->input('validity');
 
-        $createRentalPackage->execute(Uuid::uuid4(), $fleets, $name, $validityInDay);
+        (new UseCaseHandler($createRentalPackage))->execute(new RentalPackageParameters(Uuid::uuid4(), $fleets, $name, $validityInDay));
         return redirect()->route('rental-package.add');
     }
 
@@ -52,7 +54,7 @@ class RentalPackageController extends Controller
         $fleets = $request->input('fleets');
         $name = $request->input('name');
         $validityInDay = $request->input('validity');
-        $editRentalPackage->execute($rentalPackageId, $fleets, $name, $validityInDay);
+        (new UseCaseHandler($editRentalPackage))->execute(new RentalPackageParameters($rentalPackageId, $fleets, $name, $validityInDay));
         return redirect()->route('rental-package.add');
     }
 }
