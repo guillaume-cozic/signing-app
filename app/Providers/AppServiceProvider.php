@@ -97,7 +97,6 @@ use Tests\Unit\Adapters\Repositories\InMemoryRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\InMemorySailorRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\InMemorySailorRepository;
 use Tests\Unit\Adapters\Repositories\Read\InMemoryReadBoatTripRepository;
-use Tests\Unit\Adapters\Service\FakeTranslationService;
 use ConsoleTVs\Charts\Registrar as Charts;
 
 
