@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Events\BoatTrip\BoatTripEnded;
-use App\Events\BoatTrip\BoatTripStarted;
 use App\Listeners\BoatTrip\DecreaseSailorRentalPackageHoursListener;
 use App\Listeners\BoatTrip\SendNotificationBoatTripEnded;
 use App\Listeners\BoatTrip\SendNotificationBoatTripStarted;
 use App\Listeners\CreateTeam;
 use App\Listeners\Teamwork\JoinTeamListener;
+use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripEnded;
+use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripStarted;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
