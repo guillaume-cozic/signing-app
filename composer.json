@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "binarytorch/larecipe": "^2.4",
         "consoletvs/charts": "7.*",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",

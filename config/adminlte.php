@@ -277,6 +277,11 @@ return [
             'url'  => 'reporting',
             'icon' => 'nav-icon fas fa-chart-bar',
         ],
+        [
+            'text' => 'Documentation',
+            'url'  => 'docs',
+            'icon' => 'nav-icon fa fa-question',
+        ],
         /*[
             'text' => 'Facturation',
             'url'  => 'billing',
