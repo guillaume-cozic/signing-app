@@ -4,6 +4,15 @@
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Liste des flottes</h3>
+                    <div class="card-tools">
+                        <a href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'fleets']) }}" target="_blank" class="btn btn-tool"
+                           data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
+                            <i class="fas fa-question-circle text-primary"></i>
+                        </a>
+                    </div>
+                </div>
                 <div class="card-body p-2">
                     @include('signing.fleet.datatable')
                 </div>

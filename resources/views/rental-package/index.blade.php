@@ -6,6 +6,12 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Liste des forfaits</h3>
+                    <div class="card-tools">
+                        <a href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'rental-package']) }}" target="_blank" class="btn btn-tool"
+                           data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
+                            <i class="fas fa-question-circle text-primary"></i>
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered html-datatable">
