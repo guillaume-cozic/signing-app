@@ -18,8 +18,6 @@ use App\Signing\Shared\Providers\Impl\AuthGatewayImpl;
 use App\Signing\Shared\Providers\Impl\DateProviderImpl;
 use App\Signing\Shared\Services\ContextService;
 use App\Signing\Shared\Services\ContextServiceImpl;
-use App\Signing\Shared\Services\Translations\TranslationService;
-use App\Signing\Shared\Services\Translations\TranslationServiceImpl;
 use App\Signing\Signing\Domain\Provider\IdentityProvider;
 use App\Signing\Signing\Domain\Provider\IdentityProviderImpl;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
@@ -144,7 +142,6 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(DateProvider::class, FakeDateProvider::class);
             $this->app->singleton(FleetRepository::class, InMemoryFleetRepository::class);
             $this->app->singleton(BoatTripRepository::class, InMemoryBoatTripRepository::class);
-            $this->app->singleton(TranslationService::class, FakeTranslationService::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
             $this->app->singleton(ReadBoatTripRepository::class, InMemoryReadBoatTripRepository::class);
@@ -162,7 +159,6 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
             $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
             $this->app->singleton(RentalPackageRepository::class, SqlRentalPackageRepository::class);
-            $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ContextService::class, ContextServiceTestImpl::class);
             $this->app->singleton(AuthGateway::class, InMemoryAuthGateway::class);
             $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
@@ -178,7 +174,6 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(ReadBoatTripRepository::class, SqlReadBoatTripRepository::class);
             $this->app->singleton(ReadFleetRepository::class, SqlReadFleetRepository::class);
             $this->app->singleton(RentalPackageRepository::class, SqlRentalPackageRepository::class);
-            $this->app->singleton(TranslationService::class, TranslationServiceImpl::class);
             $this->app->singleton(ReadRentalPackageRepository::class, SqlReadRentalPackageRepository::class);
             $this->app->singleton(ReadSailorRentalPackageRepository::class, SqlReadSailorRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, SqlSailorRentalPackageRepository::class);

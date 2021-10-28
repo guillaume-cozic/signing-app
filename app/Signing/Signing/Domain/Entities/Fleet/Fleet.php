@@ -6,7 +6,6 @@ namespace App\Signing\Signing\Domain\Entities\Fleet;
 
 use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Shared\Services\Translations\TranslationService;
 use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
@@ -16,7 +15,6 @@ use JetBrains\PhpStorm\Pure;
 class Fleet implements HasState
 {
     private FleetRepository $fleetRepository;
-    private TranslationService $translationService;
     private array $translations = [];
 
     const STATE_ACTIVE = 'active';
@@ -30,7 +28,6 @@ class Fleet implements HasState
     {
         if($this->totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
         $this->fleetRepository = app(FleetRepository::class);
-        $this->translationService = app(TranslationService::class);
     }
 
     #[Pure] public function id():string
@@ -38,7 +35,7 @@ class Fleet implements HasState
         return $this->id->id();
     }
 
-    public function create(string $title, string $description)
+    public function create(string $title)
     {
         $fleet = $this->fleetRepository->getByName($title);
         if($fleet !== null){
@@ -48,8 +45,6 @@ class Fleet implements HasState
             'name' => [App::getLocale() => $title],
         ];
         $this->fleetRepository->save($this->getState());
-
-        $this->translationService->add($this->translations, $this->id(), 'support');
     }
 
     public function update(int $totalAvailable, string $title, string $state)
@@ -63,10 +58,6 @@ class Fleet implements HasState
         $this->totalAvailable = $totalAvailable;
         $this->state = $state;
         $this->fleetRepository->save($this->getState());
-        $trans = [
-            'name' => [App::getLocale() => $title],
-        ];
-        $this->translationService->add($trans, $this->id(), 'support');
     }
 
     public function disable()
