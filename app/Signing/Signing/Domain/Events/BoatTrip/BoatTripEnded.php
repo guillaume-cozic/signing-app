@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Events\BoatTrip;
+namespace App\Signing\Signing\Domain\Events\BoatTrip;
 
 
-class BoatTripStarted
+class BoatTripEnded
 {
     public function __construct(
         public string $boatTripId,

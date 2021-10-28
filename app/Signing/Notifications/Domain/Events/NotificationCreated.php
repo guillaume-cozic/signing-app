@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Events;
+namespace App\Signing\Notifications\Domain\Events;
 
 
 use Illuminate\Broadcasting\Channel;

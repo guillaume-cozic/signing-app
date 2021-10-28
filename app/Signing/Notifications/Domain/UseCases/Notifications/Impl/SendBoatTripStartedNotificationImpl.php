@@ -4,8 +4,8 @@
 namespace App\Signing\Notifications\Domain\UseCases\Notifications\Impl;
 
 
-use App\Events\NotificationCreated;
 use App\Models\User;
+use App\Signing\Notifications\Domain\Events\NotificationCreated;
 use App\Signing\Notifications\Domain\Notifications\BoatTripStarted;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripStartedNotification;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\BoatTripModel;
