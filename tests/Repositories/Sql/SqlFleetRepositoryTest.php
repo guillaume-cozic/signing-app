@@ -6,6 +6,7 @@ namespace Tests\Repositories\Sql;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetState;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -18,13 +19,14 @@ class SqlFleetRepositoryTest extends TestCase
      */
     public function shouldInsertFleet()
     {
-        $fleet = new Fleet(new Id($id = 'abc'), 20, Fleet::STATE_INACTIVE);
-
-        $this->fleetRepository->save($fleet->getState());
+        $fleet = new FleetState($id = 'abc', 10, Fleet::STATE_ACTIVE, ['name' => ['fr' => 'hobie cat 15']]);
+        $this->fleetRepository->save($fleet);
 
         $this->assertDatabaseHas('fleet', ['uuid' => $id]);
         $fleetSaved = $this->fleetRepository->get($id);
-        self::assertEquals($fleet, $fleetSaved);
+
+        $fleetExpected = new Fleet(new Id($id), 10);
+        self::assertEquals($fleetExpected->getState(), $fleetSaved->getState());
     }
 
     /**
@@ -32,15 +34,12 @@ class SqlFleetRepositoryTest extends TestCase
      */
     public function shouldUpdateFleet()
     {
-        $fleet = new Fleet(new Id($id = 'abc'), 20);
+        $fleet = new FleetState($id = 'abc', 20, Fleet::STATE_ACTIVE, ['name' => ['fr' => 'hobie cat 15']]);
+        $this->fleetRepository->save($fleet);
 
-        $this->fleetRepository->save($fleet->getState());
+        $fleetUpdatedExpected = new FleetState($id = 'abc', 19, Fleet::STATE_ACTIVE, ['name' => ['fr' => 'hobie cat 15']]);
+        $this->fleetRepository->save($fleetUpdatedExpected);
 
-        $fleetUpdatedExpected = new Fleet(new Id($id), 19);
-        $this->fleetRepository->save($fleetUpdatedExpected->getState());
-
-        $this->assertDatabaseHas('fleet', ['uuid' => $id]);
-        $fleetSaved = $this->fleetRepository->get($id);
-        self::assertEquals($fleetUpdatedExpected, $fleetSaved);
+        $this->assertDatabaseHas('fleet', ['uuid' => $id, 'total_available' => 19]);
     }
 }

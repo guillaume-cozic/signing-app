@@ -30,6 +30,7 @@ class SqlFleetRepository implements FleetRepository
         $fleetModel->uuid = $fleetState->id();
         $fleetModel->state = $fleetState->state();
         $fleetModel->sailing_club_id = $this->contextService->get()->sailingClubId();
+        $fleetModel->name = $fleetState->translations()['name'] ?? [];
         $fleetModel->save();
     }
 
