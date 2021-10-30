@@ -34,7 +34,7 @@ Un forfait client valide dispose d'au moins une heure de navigation et n'a pas d
 ---
 ![image](/docs/rental-packages.png)
 
-<a name="list-rental-package"></a>
+<a name="edit-rental-package"></a>
 ## Editer un modèle de forfait
 
 - Cliquez sur l'icône <i class="text-primary fa fa-edit fa-lg"></i> pour éditer le modèle de forfait
