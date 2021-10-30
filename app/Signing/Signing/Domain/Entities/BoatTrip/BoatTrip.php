@@ -13,7 +13,6 @@ use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
-use \App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
 
 class BoatTrip implements HasState
@@ -56,40 +55,19 @@ class BoatTrip implements HasState
      */
     public function end(\DateTime $endDate)
     {
-        $this->duration->end($endDate);
+        $this->duration = $this->duration->end($endDate);
         $this->boatTripRepository->save($this->getState());
         $currentUser = $this->authGateway->user();
         event(new BoatTripEnded($this->id->id(), $currentUser->id()));
     }
 
-    /**
-     * @throws BoatTripAlreadyEnded
-     * @throws TimeCantBeNegative
-     */
-    public function addTime(float $numberHours)
-    {
-        $this->duration->addTime($numberHours);
-        $this->boatTripRepository->save($this->getState());
-    }
-
-
     public function start()
     {
         if($this->duration->isStarted()) return;
-        $this->duration->start();
+        $this->duration = $this->duration->start();
         $this->boatTripRepository->save($this->getState());
         $currentUser = $this->authGateway->user();
         event(new BoatTripStarted($this->id->id(), $currentUser->id()));
-    }
-
-    /**
-     * @throws BoatTripAlreadyEnded
-     * @throws TimeCantBeNegative
-     */
-    public function delayStart(int $minutes)
-    {
-        $this->duration->delayStart($minutes);
-        $this->boatTripRepository->save($this->getState());
     }
 
     public function cancel()

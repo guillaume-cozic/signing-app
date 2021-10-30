@@ -8,7 +8,6 @@ use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Signing\Domain\Entities\State\BoatTripDurationState;
 use App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
-use App\Signing\Signing\Domain\Exceptions\TimeCantBeNegative;
 
 class BoatTripDuration implements HasState
 {
@@ -23,32 +22,17 @@ class BoatTripDuration implements HasState
         $this->dateProvider = app(DateProvider::class);
     }
 
-    public function end(\DateTime $endDate)
+    public function end(\DateTime $endDate):BoatTripDuration
     {
         if($this->isEnded()) throw new BoatTripAlreadyEnded();
-        $this->end = $endDate;
-        if($this->start === null){
-            $this->start = $this->shouldStartAt;
-        }
+        $this->start = $this->start ?? $this->shouldStartAt;
+        return new BoatTripDuration($this->shouldStartAt, $this->start, $this->numberHours, $endDate);
+
     }
 
-    public function addTime(float $numberHours)
+    public function start():BoatTripDuration
     {
-        if($numberHours < 0) throw new TimeCantBeNegative();
-        if($this->isEnded()) throw new BoatTripAlreadyEnded();
-        $this->numberHours += $numberHours;
-    }
-
-    public function start()
-    {
-        $this->start = $this->dateProvider->current();
-    }
-
-    public function delayStart(int $minutes)
-    {
-        if($minutes < 0) throw new TimeCantBeNegative();
-        if($this->isEnded()) throw new BoatTripAlreadyEnded();
-        $this->start->add(\DateInterval::createFromDateString('+'.$minutes.' minutes'));
+        return new BoatTripDuration($this->shouldStartAt, $this->dateProvider->current(), $this->numberHours);
     }
 
     public function isEnded():bool
