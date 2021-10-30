@@ -16,6 +16,7 @@ interface ForceAddBoatTrip
         bool $isInstructor = false,
         bool $isMember = false,
         ?string $note = null,
-        ?string $sailorId = null
+        ?string $sailorId = null,
+        bool $doNotDecreaseHours = false,
     );
 }
