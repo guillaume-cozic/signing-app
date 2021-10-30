@@ -1,143 +1,143 @@
 <?php
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Reporting\ReportingController;
+use App\Http\Controllers\Signing\BoatTripController;
+use App\Http\Controllers\Signing\FleetController;
+use App\Http\Controllers\Signing\RentalPackageController;
+use App\Http\Controllers\Signing\ReservationController;
+use App\Http\Controllers\Signing\SailorRentalPackageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',  [\App\Http\Controllers\Controller::class, 'home']);
+Route::get('/',  [Controller::class, 'home']);
 Route::get('/home',  function (){
     return redirect()->intended('/dashboard');
 });
 
-Route::get('/dashboard',  [\App\Http\Controllers\Signing\BoatTripController::class, 'index'])
-    ->middleware(['auth'])
+Route::get('/dashboard',  [BoatTripController::class, 'index'])
+    ->middleware(['auth', 'boat-trips-not-closed'])
     ->name('dashboard');
 
-Route::get('/profile', [\App\Http\Controllers\UserController::class, 'profile'])
+Route::get('/profile', [UserController::class, 'profile'])
     ->middleware(['auth'])
     ->name('user.profile');
 
-Route::post('/profile', [\App\Http\Controllers\UserController::class, 'update'])
+Route::post('/profile', [UserController::class, 'update'])
     ->middleware(['auth'])
     ->name('user.profile.save');
 
-Route::get('/fleets', [\App\Http\Controllers\Signing\FleetController::class, 'listShips'])
+Route::get('/fleets', [FleetController::class, 'listShips'])
     ->middleware(['auth'])
     ->name('fleet.list');
 
-Route::post('/fleet', [\App\Http\Controllers\Signing\FleetController::class, 'add'])
+Route::post('/fleet', [FleetController::class, 'add'])
     ->middleware(['auth'])
     ->name('fleet.add');
 
-Route::post('/fleets', [\App\Http\Controllers\Signing\FleetController::class, 'getFleetList'])
+Route::post('/fleets', [FleetController::class, 'getFleetList'])
     ->middleware(['auth'])
     ->name('fleet.list.data');
 
-Route::get('{fleetId}/fleet', [\App\Http\Controllers\Signing\FleetController::class, 'showEdit'])
+Route::get('{fleetId}/fleet', [FleetController::class, 'showEdit'])
     ->middleware(['auth'])
     ->name('page.fleet.edit');
 
-Route::post('{fleetId}/fleet', [\App\Http\Controllers\Signing\FleetController::class, 'edit'])
+Route::post('{fleetId}/fleet', [FleetController::class, 'edit'])
     ->middleware(['auth'])
     ->name('fleet.edit');
 
-Route::post('fleets/disable', [\App\Http\Controllers\Signing\FleetController::class, 'disable'])
+Route::post('fleets/disable', [FleetController::class, 'disable'])
     ->middleware(['auth'])
     ->name('fleet.disable');
 
-Route::post('fleets/enable', [\App\Http\Controllers\Signing\FleetController::class, 'enable'])
+Route::post('fleets/enable', [FleetController::class, 'enable'])
     ->middleware(['auth'])
     ->name('fleet.enable');
 
-Route::post('/boat-trips/list', [\App\Http\Controllers\Signing\BoatTripController::class, 'search'])
+Route::post('fleets/mass', [FleetController::class, 'massCreate'])
+    ->middleware(['auth'])
+    ->name('fleets.mass.create');
+
+Route::post('/boat-trips/list', [BoatTripController::class, 'search'])
     ->middleware(['auth'])
     ->name('boat-trips.list.data');
 
-Route::post('/boat-trips/list/ended', [\App\Http\Controllers\Signing\BoatTripController::class, 'endedBoatTripList'])
+Route::post('/boat-trips/list/ended', [BoatTripController::class, 'endedBoatTripList'])
     ->middleware(['auth'])
     ->name('ended-boat-trips.list.data');
 
-Route::post('/boat-trips/list/reservations', [\App\Http\Controllers\Signing\BoatTripController::class, 'reservations'])
-    ->middleware(['auth'])
-    ->name('reservations-boat-trips.list.data');
-
-Route::post('/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'add'])
+Route::post('/boat-trips', [BoatTripController::class, 'add'])
     ->middleware(['auth'])
     ->name('boat-trips.add');
 
-Route::post('/boat-trips/force', [\App\Http\Controllers\Signing\BoatTripController::class, 'forceAdd'])
+Route::post('/boat-trips/force', [BoatTripController::class, 'forceAdd'])
     ->middleware(['auth'])
     ->name('boat-trips.force-add');
 
-Route::post('{boatTripId}/boat-trip/cancel', [\App\Http\Controllers\Signing\BoatTripController::class, 'cancel'])
+Route::post('{boatTripId}/boat-trip/cancel', [BoatTripController::class, 'cancel'])
     ->middleware(['auth'])
     ->name('boat-trip.cancel');
 
-Route::post('{boatTripId}/boat-trip/end', [\App\Http\Controllers\Signing\BoatTripController::class, 'end'])
+Route::post('{boatTripId}/boat-trip/end', [BoatTripController::class, 'end'])
     ->middleware(['auth'])
     ->name('boat-trip.end');
 
-Route::post('{boatTripId}/boat-trip/start', [\App\Http\Controllers\Signing\BoatTripController::class, 'start'])
+Route::post('{boatTripId}/boat-trip/start', [BoatTripController::class, 'start'])
     ->middleware(['auth'])
     ->name('boat-trip.start');
 
-Route::post('modal/boat-trips', [\App\Http\Controllers\Signing\BoatTripController::class, 'serveHtmlModal'])
-    ->middleware(['auth'])
-    ->name('boat-trips.modal');
-
-Route::get('reporting', [\App\Http\Controllers\Reporting\ReportingController::class, 'showReporting'])
+Route::get('reporting', [ReportingController::class, 'showReporting'])
     ->middleware(['auth'])
     ->name('reporting.show');
 
-Route::get('dashboard/availability', [\App\Http\Controllers\Signing\FleetController::class, 'showAvailabilityBoats'])
+Route::get('dashboard/availability', [FleetController::class, 'showAvailabilityBoats'])
     ->middleware(['auth'])
     ->name('dashboard.availability');
 
-Route::get('dashboard/suggestions', [\App\Http\Controllers\Signing\BoatTripController::class, 'getSuggestionsBoatTrip'])
+Route::get('dashboard/suggestions', [BoatTripController::class, 'getSuggestionsBoatTrip'])
     ->middleware(['auth'])
     ->name('dashboard.suggestions');
 
-Route::get('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showAddRentalPackage'])
+Route::get('boat-trips-not-ended', [BoatTripController::class, 'notEnded'])
     ->middleware(['auth'])
-    ->name('rental-package.add');
+    ->name('boat-trips.not-ended');
 
-Route::post('rental-package', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processAddRentalPackage'])
+Route::post('boat-trips-mass-end', [BoatTripController::class, 'massEnd'])
     ->middleware(['auth'])
-    ->name('rental-package.add.process');
+    ->name('boat-trips.mass-end');
 
-Route::post('rental-package/{id}/edit', [\App\Http\Controllers\Signing\RentalPackageController::class, 'processEditRentalPackage'])
-    ->middleware(['auth'])
-    ->name('rental-package.edit.process');
+Route::middleware(['auth'])->group(function (){
 
-Route::get('rental-package/{id}/edit', [\App\Http\Controllers\Signing\RentalPackageController::class, 'showEdit'])
-    ->middleware(['auth'])
-    ->name('rental-package.edit');
+    Route::prefix('reservation')->group(function (){
+        Route::post('', [ReservationController::class, 'add'])->name('reservation.add');
+        Route::post('force', [ReservationController::class, 'forceAdd'])->name('reservation.add.force');
+        Route::post('list', [ReservationController::class, 'reservations'])->name('reservation.list');
+    });
 
-Route::get('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('sailor-rental-package.index');
+    Route::prefix('rental-package')->group(function (){
+        Route::get('', [RentalPackageController::class, 'showAddRentalPackage'])->name('rental-package.add');
+        Route::post('', [RentalPackageController::class, 'processAddRentalPackage'])->name('rental-package.add.process');
+        Route::post('{id}/edit', [RentalPackageController::class, 'processEditRentalPackage'])->name('rental-package.edit.process');
+        Route::get('{id}/edit', [RentalPackageController::class, 'showEdit'])->name('rental-package.edit');
+    });
 
-Route::post('sailor-rental-packages', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'processAdd'])
-    ->middleware(['auth'])
-    ->name('sailor-rental-package.add');
+    Route::prefix('sailor-rental-packages')->group(function () {
+        Route::get('', [SailorRentalPackageController::class, 'index'])->name('sailor-rental-package.index');
+        Route::post('', [SailorRentalPackageController::class, 'processAdd'])->name('sailor-rental-package.add');
+        Route::post('add', [SailorRentalPackageController::class, 'processAddAjax'])->name('sailor-rental-package.add.ajax');
+        Route::post('list', [SailorRentalPackageController::class, 'listSailorRentalPackage'])->name('sailor-rental-package.list');
+        Route::post('{id}/add-hours', [SailorRentalPackageController::class, 'addHours'])->name('sailor-rental-package.add-hours');
+        Route::post('{id}/decrease-hours', [SailorRentalPackageController::class, 'decreaseHours'])->name('sailor-rental-package.decrease-hours');
+        Route::get('{id}/actions', [SailorRentalPackageController::class, 'getActions'])->name('sailor-rental-package.actions');
+        Route::get('download-import-file', [SailorRentalPackageController::class, 'downloadImportTemplate'])->name('sailor-rental-package.download-import');
+        Route::post('import', [SailorRentalPackageController::class, 'importSailorRentalPackage'])->name('sailor-rental-package.import');
+        Route::get('import', [SailorRentalPackageController::class, 'showResultImport'])->name('sailor-rental-package.show-result-import');
+    });
 
-Route::post('sailor-rental-packages/add', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'processAddAjax'])
-    ->middleware(['auth'])
-    ->name('sailor-rental-package.add.ajax');
-
-Route::post('sailor-rental-packages/list', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'listSailorRentalPackage'])
-    ->middleware(['auth'])
-    ->name('sailor-rental-package.list');
-
-Route::post('sailor-rental-packages/{id}/add-hours', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'addHours'])
-    ->middleware(['auth'])
-    ->name('sailor-rental-package.add-hours');
-
-Route::post('sailor-rental-packages/{id}/decrease-hours', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'decreaseHours'])
-    ->middleware(['auth'])
-    ->name('sailor-rental-package.decrease-hours');
-
-Route::get('sailors', [\App\Http\Controllers\Signing\SailorRentalPackageController::class, 'sailorAutocomplete'])
-    ->middleware(['auth'])
-    ->name('sailor.autocomplete');
+    Route::get('sailors', [SailorRentalPackageController::class, 'sailorAutocomplete'])->name('sailor.autocomplete');
+    Route::post('modal/boat-trips', [BoatTripController::class, 'serveHtmlModal'])->name('boat-trips.modal');
+});
 
 require __DIR__.'/auth.php';
 

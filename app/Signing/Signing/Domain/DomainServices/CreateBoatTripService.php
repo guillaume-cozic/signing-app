@@ -6,7 +6,7 @@ namespace App\Signing\Signing\Domain\DomainServices;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Providers\DateProvider;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 
@@ -29,14 +29,15 @@ class CreateBoatTripService
         ?bool $startAuto = false,
         bool $isInstructor = false,
         bool $isMember = false,
-        bool $isReservation = false,
         ?string $note = null,
+        ?string $sailorId = null,
+        bool $doNotDecreaseHours = false,
     )
     {
         $boatTripBuilder = BoatTripBuilder::build((new Id())->id())
-            ->withSailor(name:$name, isInstructor: $isInstructor, isMember: $isMember)
-            ->reservation($isReservation)
+            ->withSailor(name:$name, isInstructor: $isInstructor, isMember: $isMember, sailorId: $sailorId)
             ->withNote($note)
+            ->withOptions(['do_not_decrease_hours' => $doNotDecreaseHours])
             ->withBoats($boats);
 
         $boatTrip = $this->buildBoatTrip($startNow, $boatTripBuilder, $numberHours, $startAtHours, $startAuto);

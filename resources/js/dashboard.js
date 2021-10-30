@@ -32,8 +32,6 @@ $('input[name=is_instructor]').change(function(){
     }
 });
 
-
-
 function initTimePicker(minutes) {
     var timestamp = Date.now() + minutes * 60 * 1000;
     var date = new Date(timestamp);
@@ -59,11 +57,13 @@ $('#start_now').change(function (){
 
 $('.btn-add-boat-trip').click(function(){
     $('.time-setter').show();
+    $('.div-detail-sailor').hide();
     $('#modal-add-boat-trip form').trigger('reset');
     $('#modal-add-boat-trip').modal('show');
 });
 
 $('.btn-add-boat-trip-reservation').click(function(){
+    $('.div-detail-sailor').hide();
     $('#modal-add-boat-trip-reservation').modal('show');
 });
 
@@ -131,7 +131,7 @@ if($('#boat-trips-table').length != 0) {
 
     $('.dashboard-datatable').on('click', '.btn-cancel', function () {
         var url = $(this).data('href');
-        var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
+        var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées dans les différentes statistiques</div>";
         $.showConfirm({
             title: "Voulez vous vraiment supprimer cette sortie ?", body: body, textTrue: "Oui", textFalse: "Non",
             onSubmit: function (result) {
@@ -444,8 +444,21 @@ $('.autocomplete-sailor-name').autoComplete({
 
 $('.autocomplete-sailor-name').on('autocomplete.select', function (e, i) {
     $('.input_sailor_id').val(i.value);
+    $('.detail-sailor').html(i.html);
+    $('.div-detail-sailor').slideDown();
 });
 
 $('.autocomplete-sailor-name').on('change', function (e, i) {
     $('.input_sailor_id').val('');
+    $('.div-detail-sailor').slideUp();
+    $('.detail-sailor').html('');
+});
+
+$('body').on('click', '#closed_all', function (){
+    if($(this).prop('checked') == true) {
+        $('.boattrip_close').prop('checked', true);
+        return;
+    }
+    $('.boattrip_close').prop('checked', false);
+    return;
 });

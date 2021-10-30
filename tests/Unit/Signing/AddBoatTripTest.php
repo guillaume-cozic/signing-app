@@ -4,16 +4,15 @@
 namespace Tests\Unit\Signing;
 
 
-use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Shared\Entities\User;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
 use App\Signing\Signing\Domain\Entities\Builder\BoatTripBuilder;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
@@ -54,7 +53,6 @@ class AddBoatTripTest extends TestCase
             null,
             $isInstructor = true,
             $isMember = true,
-            false,
             'une note quelconque'
         );
 
@@ -203,44 +201,11 @@ class AddBoatTripTest extends TestCase
     /**
      * @test
      */
-    public function shouldAddBoatTripReservation()
-    {
-        $s1 = new Fleet(new Id('abc'), 25);
-        $this->fleetRepository->save($s1->getState());
-        $this->identityProvider->add($id = 'abc');
-
-        $shouldStartAt = Carbon::instance($this->dateProvider->current())->addHours(5);
-        $this->addBoatTripUseCase->execute(
-            [$s1->id() => $qty = 2],
-            $name = 'Tabarly',
-            $numberHours = 3,
-            $shouldStartAt->format('Y-m-d H:i'),
-            null,
-            null,
-            false,
-            false,
-            $isReservation = true
-        );
-
-        $boatTripExpected = BoatTripBuilder::build('abc')
-            ->withBoats([$s1->id() => $qty])
-            ->withSailor(name: $name, isInstructor: false, isMember: false)
-            ->reservation(true)
-            ->notStarted((new \DateTime())->setTimestamp(strtotime($shouldStartAt->format('Y-m-d H:i'))), 3);
-
-        $boatTripSaved = $this->boatTripRepository->get('abc');
-        self::assertEquals($boatTripExpected, $boatTripSaved);
-
-        Event::assertNotDispatched(BoatTripStarted::class);
-    }
-
-    /**
-     * @test
-     */
     public function shouldNotCreateBoatTripWhenFleetReserved()
     {
         $s1 = new Fleet(new Id('abc'), 25);
         $this->fleetRepository->save($s1->getState());
+
 
         $boatTrip = BoatTripBuilder::build('abc')
             ->withBoats([$s1->id() => $qty = 25])
@@ -250,8 +215,29 @@ class AddBoatTripTest extends TestCase
 
         $this->expectBoatNotAvailable();
 
-        $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
 
+        $this->addBoatTripUseCase->execute([$s1->id() => 2], $name = 'Tabarly', $numberHours = 3);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreateBoatTripWithSailorRentalPackage()
+    {
+        $s1 = new Fleet(new Id('abc'), 25);
+        $this->fleetRepository->save($s1->getState());
+        $this->identityProvider->add($id = 'abc');
+
+
+        $sailorId = 'abcded';
+        $boatTripExpected = BoatTripBuilder::build('abc')
+            ->withSailor(name:'Tabarly', sailorId:$sailorId)
+            ->withBoats([$s1->id() => 2])
+            ->withOptions(['do_not_decrease_hours' => true])
+            ->inProgress( 3);
+
+        $this->addBoatTripUseCase->execute(boats: [$s1->id() => 2], name: 'Tabarly', numberHours: 3, startNow: true, sailorId: $sailorId, doNotDecreaseHours: true);
+        $this->assertBoatTripAdded('abc', $boatTripExpected);
     }
 
     private function assertBoatTripAdded(string $id, BoatTrip $boatTripExpected): void
@@ -263,6 +249,6 @@ class AddBoatTripTest extends TestCase
     private function expectBoatNotAvailable(): void
     {
         self::expectException(BoatNotAvailable::class);
-        self::expectExceptionMessage('error.support_not_available');
+        self::expectExceptionMessage('error.boat_not_available');
     }
 }

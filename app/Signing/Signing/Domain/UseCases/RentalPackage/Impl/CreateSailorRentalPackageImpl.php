@@ -4,33 +4,36 @@
 namespace App\Signing\Signing\Domain\UseCases\RentalPackage\Impl;
 
 
+use App\Signing\Shared\Entities\Id;
+use App\Signing\Shared\Exception\DomainException;
+use App\Signing\Shared\Services\UseCaseHandler\Parameters;
+use App\Signing\Shared\Services\UseCaseHandler\UseCase;
+use App\Signing\Signing\Application\ParametersWrapper\SailorRentalPackageParameters;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
+use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageNotFound;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
-use App\Signing\Signing\Domain\Repositories\SailorRentalPackageRepository;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
 
-class CreateSailorRentalPackageImpl implements CreateSailorRentalPackage
+class CreateSailorRentalPackageImpl implements CreateSailorRentalPackage, UseCase
 {
     public function __construct(
         private RentalPackageRepository $rentalPackageRepository,
-        private SailorRentalPackageRepository $sailorRentalPackageRepository
     ){}
 
     /**
      * @throws RentalPackageNotFound
      */
-    public function execute(string $sailorRentalPackageId, string $rentalPackageId, string $name, float $hours)
+    public function execute(string $sailorRentalPackageId, string $rentalPackageId, ?string $name, float $hours, string $sailorId = null)
     {
         $rentalPackage = $this->checkIfRentalPackageExist($rentalPackageId);
 
-        $sailorRentalPackage = $this->sailorRentalPackageRepository->getByNameAndRentalPackage($name, $rentalPackageId);
-        if(isset($sailorRentalPackage)){
-            $rentalPackage->reloadRentalPackage($sailorRentalPackage, $hours);
-            return;
+        if($sailorId === null){
+            $sailorId = (new Id())->id();
+            (new Sailor(name:$name, sailorId: $sailorId))->create();
         }
-
-        $rentalPackage->createSailorRentalPackage($sailorRentalPackageId, $name, $hours);
+        $sailor = new Sailor(name:$name, sailorId: $sailorId);
+        $sailor->addRentalPackage($sailorRentalPackageId, $rentalPackage, $hours, $rentalPackage->validityEndAtFromNow());
     }
 
     /**
@@ -43,5 +46,10 @@ class CreateSailorRentalPackageImpl implements CreateSailorRentalPackage
             throw new RentalPackageNotFound();
         }
         return $rentalPackage;
+    }
+
+    public function handle(SailorRentalPackageParameters|Parameters $parameters)
+    {
+        $this->execute($parameters->id, $parameters->rentalPackageId, $parameters->name, $parameters->hours);
     }
 }

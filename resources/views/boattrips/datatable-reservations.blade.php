@@ -3,7 +3,8 @@
         Les réservations pour les jours suivant sont présentées sur cette page.
         Elles sont automatiquement affichées sur la page "En cours" le jour même de la réservation
     </div>
-    <table style="width: 100%;" class="table table-striped dashboard-datatable" id="boat-trips-table-reservations" data-href="{{route('reservations-boat-trips.list.data')}}">
+    <table style="width: 100%;" class="table table-striped dashboard-datatable" id="boat-trips-table-reservations"
+           data-href="{{route('reservation.list')}}">
         <thead>
              <tr role="row">
                 <th data-priority="35">

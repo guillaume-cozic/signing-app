@@ -31,7 +31,7 @@ class SearchSailorRentalPackagesImpl implements SearchSailorRentalPackages
             $rentalPackage = $this->readRentalPackageRepository->get($sailorRentalPackage->rentalPackageId());
             return new SailorRentalPackageViewModel(
                 $sailorRentalPackage->id(),
-                $sailorRentalPackage->name(),
+                $sailorRentalPackage->sailorId(),
                 $rentalPackage->name(),
                 $sailorRentalPackage->hours()
             );

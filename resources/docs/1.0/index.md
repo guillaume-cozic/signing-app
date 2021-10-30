@@ -1,0 +1,13 @@
+- ## Pour bien commencer
+    - [Gestion des flottes](/{{route}}/{{version}}/fleet)
+- ## Tableau de bord
+    - [Sortie en mer](/{{route}}/{{version}}/boat-trip)
+    - [Réservation](/{{route}}/{{version}}/boat-trip)
+- ## Gestion des forfaits de locations
+    - [Modèle de Forfait](/{{route}}/{{version}}/rental-package)
+    - [Forfait client](/{{route}}/{{version}}/sailor-rental-package)
+    - [Importer des forfaits](/{{route}}/{{version}}/import-sailor-rental-package)
+- ## Reporting
+    - [Reporting](/{{route}}/{{version}}/team)
+- ## Gestion de l'équipe
+    - [Inviter un collaborateur](/{{route}}/{{version}}/team)

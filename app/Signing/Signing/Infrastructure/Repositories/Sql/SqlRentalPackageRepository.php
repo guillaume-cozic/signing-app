@@ -21,12 +21,13 @@ class SqlRentalPackageRepository implements RentalPackageRepository
         if(!isset($rentalPackageModel)){
             return null;
         }
-        return new RentalPackage(
+        ($rentalPackage = new RentalPackage(
             $id,
             new FleetCollection($rentalPackageModel->fleets),
             $rentalPackageModel->name,
             $rentalPackageModel->validity
-        );
+        ))->setSurrogateId($rentalPackageModel->id);
+        return $rentalPackage;
     }
 
     public function save(RentalPackageState $r)
@@ -48,11 +49,12 @@ class SqlRentalPackageRepository implements RentalPackageRepository
         if(!isset($rentalPackageModel)){
             return null;
         }
-        return new RentalPackage(
+        ($rentalPackage = new RentalPackage(
             $rentalPackageModel->uuid,
             new FleetCollection($rentalPackageModel->fleets),
             $rentalPackageModel->name,
             $rentalPackageModel->validity
-        );
+        ))->setSurrogateId($rentalPackageModel->id);
+        return $rentalPackage;
     }
 }

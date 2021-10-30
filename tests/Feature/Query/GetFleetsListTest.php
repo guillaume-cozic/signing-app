@@ -6,8 +6,7 @@ namespace Tests\Feature\Query;
 
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\Dto\FleetDto;
-use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\State;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

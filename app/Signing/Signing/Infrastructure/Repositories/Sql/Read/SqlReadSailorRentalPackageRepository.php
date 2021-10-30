@@ -4,6 +4,7 @@
 namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Read;
 
 
+use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
 use App\Signing\Signing\Domain\Repositories\Read\ReadSailorRentalPackageRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\RentalPackageModel;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorRentalPackageModel;
@@ -51,4 +52,15 @@ class SqlReadSailorRentalPackageRepository implements ReadSailorRentalPackageRep
             ->where('rental_package_id', $rentalPackage->id)
             ->count();
     }
+
+    public function get(string $sailorRentalPackageId):? SailorRentalPackageState
+    {
+        return SailorRentalPackageModel::query()
+            ->where('uuid', $sailorRentalPackageId)
+            ->first()
+            ?->toState()
+        ;
+    }
+
+
 }

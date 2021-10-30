@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Signing App',
+    'title' => 'WellSail',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Signing</b>app',
+    'logo' => '<b>WellSail</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Signing App',
+    'logo_img_alt' => 'WellSail',
 
     /*
     |--------------------------------------------------------------------------
@@ -242,7 +242,7 @@ return [
         ],
         [
             'text' => 'Forfaits',
-            'icon' => 'nav-icon fas fa-list',
+            'icon' => 'nav-icon fas fa-copy',
             'active' => ['rental*'],
             'submenu' => [
                 [
@@ -276,6 +276,11 @@ return [
             'text' => 'Reporting',
             'url'  => 'reporting',
             'icon' => 'nav-icon fas fa-chart-bar',
+        ],
+        [
+            'text' => 'Documentation',
+            'url'  => 'docs',
+            'icon' => 'nav-icon fa fa-question-circle',
         ],
         /*[
             'text' => 'Facturation',

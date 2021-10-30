@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Ajouter une sortie</h4>
+                <h4 class="modal-title">Ajouter une sortie en mer</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -10,14 +10,26 @@
             <form id="form-add-boat-trip" action="{{ route('boat-trips.add') }}" method="POST" class="form-add-boat-trip">
                 @csrf
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
-                            <div class="form-group">
-                                <label for="name">Nom</label>
-                                <input type="search" class="form-control autocomplete-sailor-name" name="name" id="name"
-                                       placeholder="Nom de la personne"
-                                       autocomplete="off"/>
+                    <div class="callout callout-info">
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
+                                <div class="form-group">
+                                    <label for="name">Nom et ou prénom du client</label>
+                                    <input type="search" class="form-control autocomplete-sailor-name"
+                                           name="name" id="name"
+                                           placeholder="Nom du client"
+                                           autocomplete="off"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="div-detail-sailor">
+                            <div class="detail-sailor">
+
+                            </div>
+                            <div class="form-check">
+                                <input name="do_not_decrease" id="do-not-decreases" class="form-check-input" type="checkbox">
+                                <label for="do-not-decreases" class="form-check-label">Ne pas décompter les heures sur le forfait</label>
                             </div>
                         </div>
                     </div>
@@ -129,11 +141,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="alert-boat-not-available alert alert-danger" style="display: none;">
+                    <div class="alert-boat-not-available callout callout-danger" style="display: none;">
                         <h5><i class="icon fas fa-ban"></i> Attention!</h5>
-                        Au moins un support demandé n'est pas disponible.<br/>
+                        Malheureusement au moins une des embarcations n'est pas disponible.<br/>
                         Voulez vous tout de même continuer et créer la sortie en mer.
-                        <button id="btn-force" type="button" class="btn btn-default">Forcer la création de la sortie</button>
+                        <button type="button" class="btn-force btn btn-danger">Forcer la création de la sortie</button>
                     </div>
                     <div class="alert-error-add-boat-trip alert alert-danger" style="display: none;">
                     </div>

@@ -6,10 +6,11 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql\Model;
 
 use App\Models\User;
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\BoatsCollection;
-use App\Signing\Signing\Domain\Entities\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatsCollection;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTrip;
+use App\Signing\Signing\Domain\Entities\BoatTrip\BoatTripDuration;
+use App\Signing\Signing\Domain\Entities\BoatTrip\Reservation;
 use App\Signing\Signing\Domain\Entities\Dto\BoatTripsDTo;
-use App\Signing\Signing\Domain\Entities\BoatTripDuration;
 use App\Signing\Signing\Domain\Entities\Sailor;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -25,12 +26,18 @@ class BoatTripModel extends Model
         'start_at' => 'datetime',
         'end_at' => 'datetime',
         'should_start_at' => 'datetime',
-        'boats' => 'array'
+        'boats' => 'array',
+        'options' => 'array'
     ];
 
     public function member():BelongsTo
     {
         return $this->belongsTo(User::class, 'member_id', 'id');
+    }
+
+    public function sailor():BelongsTo
+    {
+        return $this->belongsTo(SailorModel::class, 'sailor_id', 'id');
     }
 
     public function toDomain():BoatTrip
@@ -39,9 +46,21 @@ class BoatTripModel extends Model
         return new BoatTrip(
             new Id($this->uuid),
             $boatTripDuration,
-            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member),
+            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member, $this->sailor?->uuid),
             new BoatsCollection($this->boats),
-            $this->is_reservation,
+            $this->note,
+            $this->options ?? []
+        );
+    }
+
+    public function toReservationDomain():Reservation
+    {
+        $boatTripDuration = new BoatTripDuration($this->should_start_at, $this->start_at, $this->number_hours, $this->end_at);
+        return new Reservation(
+            new Id($this->uuid),
+            $boatTripDuration,
+            new Sailor($this->member?->uuid, $this->name, $this->is_instructor, $this->is_member, $this->sailor?->uuid),
+            new BoatsCollection($this->boats),
             $this->note
         );
     }
@@ -88,7 +107,8 @@ class BoatTripModel extends Model
             $this->is_member,
             $this->is_instructor,
             $this->is_reservation,
-            $this->note
+            $this->note,
+            $this->sailor->uuid ?? null
         );
     }
 }

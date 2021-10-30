@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "binarytorch/larecipe": "^2.4",
         "consoletvs/charts": "7.*",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
@@ -19,6 +20,7 @@
         "laravel/breeze": "^1.0",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "maatwebsite/excel": "^3.1",
         "mpociot/teamwork": "^6.1",
         "predis/predis": "^1.1",
         "sentry/sentry-laravel": "^2.8",

@@ -1,4 +1,5 @@
 import notify from "./notify";
+import bsCustomFileInput from 'bs-custom-file-input';
 
 $('.fleets-select').select2({
     theme: 'classic',
@@ -120,6 +121,24 @@ $('.datatable').on('click', '.decrease-hours-to-sailor-rental', function(){
     $('#form-sailor-rental-decrease-hours').trigger('reset');
     $('#form-sailor-rental-decrease-hours').attr('action', $(this).data('src'));
 });
+
+$('.datatable').on('click', '.actions-sailor-rental', function(){
+    $.ajax({
+        url : $(this).data('src'),
+        success: function (body){
+            $.showConfirm({
+                title: "Historique du forfait", body: body, textTrue: "Ok", textFalse: "Fermer",
+                onSubmit: function (result) {}
+            });
+        }
+    });
+});
+
+$('.btn-modal-import-sailor-rental-package').click(function(){
+    $('#modal-import-sailor-rental').modal('show');
+});
+
+bsCustomFileInput.init();
 
 $('#form-sailor-rental-add-hours').submit(function(){
     var form = $(this);

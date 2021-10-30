@@ -5,7 +5,8 @@ namespace Tests\Unit\Signing;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use Tests\TestCase;
@@ -52,12 +53,12 @@ class AddFleetTest extends TestCase
     /**
      * @test
      */
-    public function shouldAddSupportTranslation()
+    public function shouldNotAddFleetWithSameNameTwice()
     {
         $this->identityProvider->add($supportId = 'abc');
         app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = 20, Fleet::STATE_INACTIVE);
 
-        $translationsSaved = $this->translationService->get('name', $supportId, $type = 'support');
-        self::assertEquals($title, $translationsSaved);
+        self::expectException(FleetAlreadyExist::class);
+        app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = 20, Fleet::STATE_INACTIVE);
     }
 }

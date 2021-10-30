@@ -6,12 +6,14 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/php/Dockerfile
+    restart: unless-stopped
     ports:
     - 6001:6001
     expose:
       - 9000
     volumes:
-      - ./:/var/www/html/:rw
+      - ../signing-app:/var/www/html/signingapp:rw
+      - ../landing-wellsail:/var/www/html/landing-wellsail:rw
       - ./dockerfiles/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
     depends_on:
       - mysql_signing
@@ -24,6 +26,7 @@ services:
       context: .
       dockerfile: ./dockerfiles/mysql/Dockerfile
     container_name: mysql_signing
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: signing
       MYSQL_USER: signing
@@ -37,10 +40,12 @@ services:
   nginx_signing:
     image: nginx:latest
     container_name: nginx_signing
+    restart: unless-stopped
     ports:
       - 8002:80
     volumes:
-      - ./:/var/www/html/
+      - ../signing-app:/var/www/html/signingapp:rw
+      - ../landing-wellsail:/var/www/html/landing-wellsail:rw
       - ./nginx:/etc/nginx/conf.d/
     networks:
       - back-tier

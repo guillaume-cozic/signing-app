@@ -5,7 +5,9 @@ namespace Tests\Unit\Signing;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetState;
+use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\Exceptions\FleetNotFound;
 use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
@@ -61,5 +63,20 @@ class UpdateFleetTest extends TestCase
 
         self::expectException(FleetNotFound::class);
         $this->updateFleet->execute($fleetId, $newTotal = 20, $title = 'hobie cat', Fleet::STATE_INACTIVE);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotEditFleetWithSameName()
+    {
+        $fleet = new FleetState('abc', 10, Fleet::STATE_ACTIVE, ['name' => ['fr' => 'hobie cat 15']]);
+        $this->fleetRepository->save($fleet);
+
+        $fleet = new FleetState('abcd', 10, Fleet::STATE_ACTIVE, ['name' => ['fr' => 'hobie cat']]);
+        $this->fleetRepository->save($fleet);
+
+        self::expectException(FleetAlreadyExist::class);
+        app(UpdateFleet::class)->execute('abcd', 20, 'hobie cat 15', Fleet::STATE_INACTIVE);
     }
 }

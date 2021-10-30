@@ -5,10 +5,15 @@ namespace Tests\Unit\Signing\RentalPackage;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
+use App\Signing\Signing\Domain\Entities\RentalPackage\ActionSailor;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
-use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
+use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
+use App\Signing\Signing\Domain\Entities\State\SailorState;
+use App\Signing\Signing\Domain\Exceptions\NumberBoatsCantBeNegative;
 use App\Signing\Signing\Domain\Exceptions\RentalPackageNotFound;
+use App\Signing\Signing\Domain\Exceptions\RentalPackageValidityNegative;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -18,7 +23,7 @@ class CreateSailorRentalPackageTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotCreateSailorRentalPackageWhenTemplateRentalPackageDoesNotExist()
+    public function shouldNotCreateSailorRentalPackageWhenRentalPackageDoesNotExist()
     {
         self::expectException(RentalPackageNotFound::class);
         app(CreateSailorRentalPackage::class)->execute('sailor_rental_package_id', 'abc', 'frank', 10);
@@ -26,63 +31,114 @@ class CreateSailorRentalPackageTest extends TestCase
 
     /**
      * @test
+     * @throws NumberBoatsCantBeNegative
+     * @throws RentalPackageValidityNegative
      */
-    public function shouldCreateSailorRentalPackage()
+    public function shouldCreateSailorRentalPackage_WithNewSailor()
     {
-        $fleet = new Fleet(new Id('fleet'), 10);
-        $this->fleetRepository->save($fleet->getState());
+        $validityRentalPackage = 365;
+        $fleet = $this->addFleet();
+        $this->identityProvider->add($sailorId = 'sailor_id');
+        $rentalPackage = $this->addRentalPackage($fleet, $validityRentalPackage);
 
-        $rentalPackage = new RentalPackage('rental_package', new Fleet\FleetCollection([$fleet->id()]), 'forfait kayak', $validity = 365);
-        $this->rentalPackageRepository->save($rentalPackage->getState());
+        app(CreateSailorRentalPackage::class)->execute($sailorRentalPackageId = 'sailor_rental_package_id', $rentalPackage->id(), $sailorName = 'frank', $hours = 10);
 
-        app(CreateSailorRentalPackage::class)->execute('sailor_rental_package_id', 'rental_package', 'frank', $hours = 10);
-
-        $now = Carbon::instance($this->dateProvider->current());
-        $sailorRentalPackageExpected = new SailorRentalPackage(
-            'sailor_rental_package_id',
-            'frank',
-            'rental_package',
-            $now->addDays($validity),
+        $sailorRentalPackageExpected = new SailorRentalPackageState(
+            $sailorRentalPackageId,
+            $sailorId,
+            $rentalPackage->id(),
+            $this->now()->addDays($validityRentalPackage),
             $hours
         );
 
-        $sailorRentalPackage = $this->sailorRentalPackageRepository->get('sailor_rental_package_id');
-        self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackage);
+        $sailor = $this->sailorRepository->getByName($sailorName);
+        self::assertNotNull($sailor);
+        self::assertEquals(new SailorState(name:$sailorName, sailorId: $sailorId), $sailor->getState());
+
+        $this->assertSailorRentalPackageOk($sailorRentalPackageId, $sailorRentalPackageExpected);
     }
 
     /**
      * @test
+     * @throws NumberBoatsCantBeNegative
+     * @throws RentalPackageValidityNegative
      */
     public function shouldAddHoursToExistingSailorRentalPackage()
     {
+        $validityRentalPackage = 365;
+        $fleet = $this->addFleet();
+        $rentalPackage = $this->addRentalPackage($fleet, $validityRentalPackage);
+
+        $sailorId = 'sailor_id';
+        $sailorRentalPackageId = 'sailor_rental_package_id';
+        $hoursNotUsed = $this->addExistingSailorRentalPackageId($sailorRentalPackageId, $sailorId, $rentalPackage, $validityRentalPackage);
+
+        app(CreateSailorRentalPackage::class)->execute($sailorRentalPackageId, $rentalPackage->id(),  null, $hours = 8, $sailorId);
+
+        $sailorRentalPackageReloadedExpected = new SailorRentalPackageState(
+            $sailorRentalPackageId,
+            $sailorId,
+            $rentalPackage->id(),
+            $this->now()->addDays($validityRentalPackage),
+            $hours + $hoursNotUsed,
+            [new ActionSailor(ActionSailor::ADD_HOURS, $hours, Carbon::instance($this->dateProvider->current()))]
+        );
+
+        $this->assertSailorRentalPackageOk($sailorRentalPackageId, $sailorRentalPackageReloadedExpected);
+    }
+
+    /**
+     * @return Fleet
+     * @throws NumberBoatsCantBeNegative
+     */
+    private function addFleet(): Fleet
+    {
         $fleet = new Fleet(new Id('fleet'), 10);
         $this->fleetRepository->save($fleet->getState());
+        return $fleet;
+    }
 
-        $rentalPackage = new RentalPackage('rental_package', new Fleet\FleetCollection([$fleet->id()]), 'forfait kayak', $validity = 365);
+    /**
+     * @param Fleet $fleet
+     * @param int $validityRentalPackage
+     * @return RentalPackage
+     * @throws RentalPackageValidityNegative
+     */
+    private function addRentalPackage(Fleet $fleet, int $validityRentalPackage): RentalPackage
+    {
+        $rentalPackage = new RentalPackage('rental_package', new FleetCollection([$fleet->id()]), 'forfait kayak', $validityRentalPackage);
         $this->rentalPackageRepository->save($rentalPackage->getState());
+        return $rentalPackage;
+    }
 
-        $s = new SailorRentalPackage(
-            'sailor_rental_package_id',
-            'frank',
-            'rental_package',
-            (new Carbon())->addDays($validity - 100),
+    /**
+     * @param string $sailorRentalPackageId
+     * @param SailorRentalPackageState $sailorRentalPackageExpected
+     */
+    private function assertSailorRentalPackageOk(string $sailorRentalPackageId, SailorRentalPackageState $sailorRentalPackageExpected): void
+    {
+        $sailorRentalPackage = $this->sailorRentalPackageRepository->get($sailorRentalPackageId);
+        self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackage->getState());
+    }
+
+    /**
+     * @param string $sailorRentalPackageId
+     * @param string $sailorId
+     * @param RentalPackage $rentalPackage
+     * @param int $validityRentalPackage
+     * @return int
+     */
+    private function addExistingSailorRentalPackageId(string $sailorRentalPackageId, string $sailorId, RentalPackage $rentalPackage, int $validityRentalPackage): int
+    {
+        $s = new SailorRentalPackageState(
+            $sailorRentalPackageId,
+            $sailorId,
+            $rentalPackage->id(),
+            (new Carbon())->addDays($validityRentalPackage - 100),
             $hoursNotUsed = 5
         );
-        $this->sailorRentalPackageRepository->save($s->getState());
-
-        app(CreateSailorRentalPackage::class)->execute('sailor_rental_package_id', 'rental_package', 'frank', $hours = 8);
-
-        $now = Carbon::instance($this->dateProvider->current());
-        $sailorRentalPackageExpected = new SailorRentalPackage(
-            'sailor_rental_package_id',
-            'frank',
-            'rental_package',
-            $now->addDays($validity),
-            $hours + $hoursNotUsed
-        );
-
-        $sailorRentalPackage = $this->sailorRentalPackageRepository->get('sailor_rental_package_id');
-        self::assertEquals($sailorRentalPackageExpected, $sailorRentalPackage);
+        $this->sailorRentalPackageRepository->save($s);
+        return $hoursNotUsed;
     }
 
 }

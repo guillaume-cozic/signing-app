@@ -12,22 +12,18 @@
     {{-- Custom Meta Tags --}}
     @yield('meta_tags')
 
-    {{-- Title --}}
     <title>
         @yield('title_prefix', config('adminlte.title_prefix', ''))
         @yield('title', config('adminlte.title', 'AdminLTE 3'))
         @yield('title_postfix', config('adminlte.title_postfix', ''))
     </title>
 
-    {{-- Custom stylesheets (pre AdminLTE) --}}
     @yield('adminlte_css_pre')
 
-    {{-- Base Stylesheets --}}
     @if(!config('adminlte.enabled_laravel_mix'))
         <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 
-        {{-- Configured Stylesheets --}}
         @include('adminlte::plugins', ['type' => 'css'])
 
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
@@ -38,7 +34,6 @@
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
 
-    {{-- Livewire Styles --}}
     @if(config('adminlte.livewire'))
         @if(app()->version() >= 7)
             @livewireStyles
@@ -78,6 +73,11 @@
 <body class="@yield('classes_body')" @yield('body_data')>
     {{-- Body Content --}}
     @yield('body')
+
+    <script type="text/javascript">
+        var showModalNotClosed = '{{ !empty(\Illuminate\Support\Facades\Request::session()->get('boat-trips_not_closed')) }}';
+    </script>
+    @include('modal.message-boattrip-not-closed')
 
     {{-- Base Scripts --}}
     @if(!config('adminlte.enabled_laravel_mix'))

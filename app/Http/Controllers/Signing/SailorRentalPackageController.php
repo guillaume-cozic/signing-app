@@ -4,14 +4,22 @@
 namespace App\Http\Controllers\Signing;
 
 
+use App\Exports\SailorRentalPackageTemplateImport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\RentalPackage\AddSailorRentalPackageRequest;
+use App\Imports\SailorRentalPackageImport;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\AddSubHoursSailorRentalPackageParameters;
+use App\Signing\Signing\Application\ParametersWrapper\SailorRentalPackageParameters;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\AddOrSubHoursToSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\CreateSailorRentalPackage;
+use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetActionsSailorRentalPackage;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\GetRentalPackages;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\Query\SearchSailorRentalPackages;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\SailorModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 
 class SailorRentalPackageController extends Controller
@@ -32,7 +40,7 @@ class SailorRentalPackageController extends Controller
         $name = $request->input('name');
         $hours = $request->input('hours');
 
-        $createSailorRentalPackage->execute(Uuid::uuid4(), $rentalPackageId, $name, $hours);
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
         return redirect()->route('sailor-rental-package.index');
     }
 
@@ -42,7 +50,7 @@ class SailorRentalPackageController extends Controller
         $name = $request->input('name');
         $hours = $request->input('hours');
 
-        $createSailorRentalPackage->execute(Uuid::uuid4(), $rentalPackageId, $name, $hours);
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
         return [];
     }
 
@@ -69,6 +77,10 @@ class SailorRentalPackageController extends Controller
                  data-toggle="tooltip" data-placement="top" title="Enlever des heures sur le forfait"
                 class="decrease-hours-to-sailor-rental fa fa-minus-circle text-red p-1"></i>';
 
+            $buttons .= '<i style="cursor: pointer;" data-src="'.route('sailor-rental-package.actions', ['id' => $searchSailorRentalPackage->id]).'"
+                 data-toggle="tooltip" data-placement="top" title="Historique"
+                class="actions-sailor-rental fa fa-list-ul p-1 text-blue"></i>';
+
             $hours = '<span class="badge badge-danger">'.$searchSailorRentalPackage->hours.'</span>';
             if($searchSailorRentalPackage->hours > 0){
                 $hours = '<span class="badge badge-success">'.$searchSailorRentalPackage->hours.'</span>';
@@ -93,14 +105,14 @@ class SailorRentalPackageController extends Controller
     public function addHours(string $sailorRentalPackageId, Request $request, AddOrSubHoursToSailorRentalPackage $addOrSubHoursToSailorRentalPackage)
     {
         $hours = $request->input('hours');
-        $addOrSubHoursToSailorRentalPackage->execute($sailorRentalPackageId, $hours);
+        (new UseCaseHandler($addOrSubHoursToSailorRentalPackage))->execute(new AddSubHoursSailorRentalPackageParameters($sailorRentalPackageId, $hours));
         return [];
     }
 
     public function decreaseHours(string $sailorRentalPackageId, Request $request, AddOrSubHoursToSailorRentalPackage $addOrSubHoursToSailorRentalPackage)
     {
         $hours = $request->input('hours');
-        $addOrSubHoursToSailorRentalPackage->execute($sailorRentalPackageId, -$hours);
+        (new UseCaseHandler($addOrSubHoursToSailorRentalPackage))->execute(new AddSubHoursSailorRentalPackageParameters($sailorRentalPackageId, $hours));
         return [];
     }
 
@@ -126,5 +138,47 @@ class SailorRentalPackageController extends Controller
             ];
         }
         return $auto ?? [];
+    }
+
+    public function getActions(string $sailorRentalPackageId, GetActionsSailorRentalPackage $getActionsSailorRentalPackage)
+    {
+        $actions = $getActionsSailorRentalPackage->execute($sailorRentalPackageId);
+        return view('rental-package.sailor.list-actions', [
+            'actions' => $actions
+        ]);
+    }
+
+    public function downloadImportTemplate()
+    {
+        return Excel::download(new SailorRentalPackageTemplateImport, 'import-des-forfaits-locations.xlsx');
+    }
+
+    public function importSailorRentalPackage(Request $request)
+    {
+        $rules = [
+            'file_import' => 'file|required|mimes:xlsx'
+        ];
+        $validator = Validator::make($request->all(), $rules, [
+            'file_import.required' => 'Vous devez fournir le document contenant les différents forfaits à importer',
+            'file_import.mimes' => 'Le document doit être au format xlsx'
+        ]);
+        if($validator->fails()){
+            return redirect()
+                ->route('sailor-rental-package.show-result-import')
+                ->withInput($request->all())
+                ->withErrors($validator->getMessageBag());
+        }
+
+        Excel::import(new SailorRentalPackageImport, request()->file('file_import'));
+        return redirect()->route('sailor-rental-package.show-result-import');
+    }
+
+    public function showResultImport()
+    {
+        $result = request()->session()->get('import_result');
+        request()->session()->flash('import_result', $result);
+        return view('rental-package.sailor.result-import', [
+            'result' => $result
+        ]);
     }
 }

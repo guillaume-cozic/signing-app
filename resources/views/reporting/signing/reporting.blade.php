@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
             <div class="card-body">
                 <div id="chart" style="height: 400px;width: 100%;"></div>
             </div>
@@ -9,14 +9,14 @@
 </div>
 <div class="row">
     <div class="col-6">
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
             <div class="card-body">
                 <div id="chart-by-boats" style="height: 400px;"></div>
             </div>
         </div>
     </div>
     <div class="col-6">
-        <div class="card card-default">
+        <div class="card card-primary card-outline">
             <div class="card-body">
                 <div id="chart-frequency-by-day" style="height: 400px;"></div>
             </div>

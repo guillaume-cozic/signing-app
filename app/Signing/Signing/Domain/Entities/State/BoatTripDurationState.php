@@ -4,7 +4,7 @@
 namespace App\Signing\Signing\Domain\Entities\State;
 
 
-use App\Signing\Signing\Domain\Entities\State;
+use App\Signing\Shared\Entities\State;
 
 class BoatTripDurationState implements State
 {

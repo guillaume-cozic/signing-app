@@ -1976,10 +1976,12 @@ $('#start_now').change(function () {
 });
 $('.btn-add-boat-trip').click(function () {
   $('.time-setter').show();
+  $('.div-detail-sailor').hide();
   $('#modal-add-boat-trip form').trigger('reset');
   $('#modal-add-boat-trip').modal('show');
 });
 $('.btn-add-boat-trip-reservation').click(function () {
+  $('.div-detail-sailor').hide();
   $('#modal-add-boat-trip-reservation').modal('show');
 });
 $('#availability').on('click', '.btn-add-boat-trip', function () {
@@ -2052,7 +2054,7 @@ if ($('#boat-trips-table').length != 0) {
   });
   $('.dashboard-datatable').on('click', '.btn-cancel', function () {
     var url = $(this).data('href');
-    var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées pas dans les différentes statistiques</div>";
+    var body = "<div class=\"callout callout-danger\">Les sorties supprimées ne sont pas comptabilisées dans les différentes statistiques</div>";
     $.showConfirm({
       title: "Voulez vous vraiment supprimer cette sortie ?",
       body: body,
@@ -2380,9 +2382,22 @@ $('.autocomplete-sailor-name').autoComplete({
 });
 $('.autocomplete-sailor-name').on('autocomplete.select', function (e, i) {
   $('.input_sailor_id').val(i.value);
+  $('.detail-sailor').html(i.html);
+  $('.div-detail-sailor').slideDown();
 });
 $('.autocomplete-sailor-name').on('change', function (e, i) {
   $('.input_sailor_id').val('');
+  $('.div-detail-sailor').slideUp();
+  $('.detail-sailor').html('');
+});
+$('body').on('click', '#closed_all', function () {
+  if ($(this).prop('checked') == true) {
+    $('.boattrip_close').prop('checked', true);
+    return;
+  }
+
+  $('.boattrip_close').prop('checked', false);
+  return;
 });
 
 /***/ }),
@@ -2392,6 +2407,14 @@ $('.autocomplete-sailor-name').on('change', function (e, i) {
   !*** ./resources/js/fleet.js ***!
   \*******************************/
 /***/ (() => {
+
+$('.autocomplete-fleets-name').select2({
+  theme: 'classic'
+});
+
+if (typeof showModalInit !== "undefined" && showModalInit == true) {
+  $('#modal-add-easy-fleets').modal('show');
+}
 
 if ($('#fleets-table').length != 0) {
   var table = $('#fleets-table').DataTable({
@@ -2559,11 +2582,21 @@ function notify(message) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+if (showModalNotClosed == true) {
+  $('#modal-message-boattrip-not-closed').modal('show');
+}
+
+$('[data-ajax-href]').each(function () {
+  var item = $(this);
+  var uri = item.attr('data-ajax-href');
+  $.ajax({
+    url: uri,
+    success: function success(html) {
+      item.html(html);
+    }
+  });
+});
+
 function reloadDashboard() {
   if ($('#boat-trips-table').length != 0) {
     loadAvailability();
@@ -2606,6 +2639,9 @@ try {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/notify.js");
+/* harmony import */ var bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bs-custom-file-input */ "./node_modules/bs-custom-file-input/dist/bs-custom-file-input.js");
+/* harmony import */ var bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1__);
+
 
 $('.fleets-select').select2({
   theme: 'classic'
@@ -2727,6 +2763,24 @@ $('.datatable').on('click', '.decrease-hours-to-sailor-rental', function () {
   $('#form-sailor-rental-decrease-hours').trigger('reset');
   $('#form-sailor-rental-decrease-hours').attr('action', $(this).data('src'));
 });
+$('.datatable').on('click', '.actions-sailor-rental', function () {
+  $.ajax({
+    url: $(this).data('src'),
+    success: function success(body) {
+      $.showConfirm({
+        title: "Historique du forfait",
+        body: body,
+        textTrue: "Ok",
+        textFalse: "Fermer",
+        onSubmit: function onSubmit(result) {}
+      });
+    }
+  });
+});
+$('.btn-modal-import-sailor-rental-package').click(function () {
+  $('#modal-import-sailor-rental').modal('show');
+});
+bs_custom_file_input__WEBPACK_IMPORTED_MODULE_1___default().init();
 $('#form-sailor-rental-add-hours').submit(function () {
   var form = $(this);
   $.ajax({
@@ -10712,6 +10766,182 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/bs-custom-file-input/dist/bs-custom-file-input.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/bs-custom-file-input/dist/bs-custom-file-input.js ***!
+  \************************************************************************/
+/***/ (function(module) {
+
+/*!
+ * bsCustomFileInput v1.3.4 (https://github.com/Johann-S/bs-custom-file-input)
+ * Copyright 2018 - 2020 Johann-S <johann.servoire@gmail.com>
+ * Licensed under MIT (https://github.com/Johann-S/bs-custom-file-input/blob/master/LICENSE)
+ */
+(function (global, factory) {
+   true ? module.exports = factory() :
+  0;
+}(this, (function () { 'use strict';
+
+  var Selector = {
+    CUSTOMFILE: '.custom-file input[type="file"]',
+    CUSTOMFILELABEL: '.custom-file-label',
+    FORM: 'form',
+    INPUT: 'input'
+  };
+
+  var textNodeType = 3;
+
+  var getDefaultText = function getDefaultText(input) {
+    var defaultText = '';
+    var label = input.parentNode.querySelector(Selector.CUSTOMFILELABEL);
+
+    if (label) {
+      defaultText = label.textContent;
+    }
+
+    return defaultText;
+  };
+
+  var findFirstChildNode = function findFirstChildNode(element) {
+    if (element.childNodes.length > 0) {
+      var childNodes = [].slice.call(element.childNodes);
+
+      for (var i = 0; i < childNodes.length; i++) {
+        var node = childNodes[i];
+
+        if (node.nodeType !== textNodeType) {
+          return node;
+        }
+      }
+    }
+
+    return element;
+  };
+
+  var restoreDefaultText = function restoreDefaultText(input) {
+    var defaultText = input.bsCustomFileInput.defaultText;
+    var label = input.parentNode.querySelector(Selector.CUSTOMFILELABEL);
+
+    if (label) {
+      var element = findFirstChildNode(label);
+      element.textContent = defaultText;
+    }
+  };
+
+  var fileApi = !!window.File;
+  var FAKE_PATH = 'fakepath';
+  var FAKE_PATH_SEPARATOR = '\\';
+
+  var getSelectedFiles = function getSelectedFiles(input) {
+    if (input.hasAttribute('multiple') && fileApi) {
+      return [].slice.call(input.files).map(function (file) {
+        return file.name;
+      }).join(', ');
+    }
+
+    if (input.value.indexOf(FAKE_PATH) !== -1) {
+      var splittedValue = input.value.split(FAKE_PATH_SEPARATOR);
+      return splittedValue[splittedValue.length - 1];
+    }
+
+    return input.value;
+  };
+
+  function handleInputChange() {
+    var label = this.parentNode.querySelector(Selector.CUSTOMFILELABEL);
+
+    if (label) {
+      var element = findFirstChildNode(label);
+      var inputValue = getSelectedFiles(this);
+
+      if (inputValue.length) {
+        element.textContent = inputValue;
+      } else {
+        restoreDefaultText(this);
+      }
+    }
+  }
+
+  function handleFormReset() {
+    var customFileList = [].slice.call(this.querySelectorAll(Selector.INPUT)).filter(function (input) {
+      return !!input.bsCustomFileInput;
+    });
+
+    for (var i = 0, len = customFileList.length; i < len; i++) {
+      restoreDefaultText(customFileList[i]);
+    }
+  }
+
+  var customProperty = 'bsCustomFileInput';
+  var Event = {
+    FORMRESET: 'reset',
+    INPUTCHANGE: 'change'
+  };
+  var bsCustomFileInput = {
+    init: function init(inputSelector, formSelector) {
+      if (inputSelector === void 0) {
+        inputSelector = Selector.CUSTOMFILE;
+      }
+
+      if (formSelector === void 0) {
+        formSelector = Selector.FORM;
+      }
+
+      var customFileInputList = [].slice.call(document.querySelectorAll(inputSelector));
+      var formList = [].slice.call(document.querySelectorAll(formSelector));
+
+      for (var i = 0, len = customFileInputList.length; i < len; i++) {
+        var input = customFileInputList[i];
+        Object.defineProperty(input, customProperty, {
+          value: {
+            defaultText: getDefaultText(input)
+          },
+          writable: true
+        });
+        handleInputChange.call(input);
+        input.addEventListener(Event.INPUTCHANGE, handleInputChange);
+      }
+
+      for (var _i = 0, _len = formList.length; _i < _len; _i++) {
+        formList[_i].addEventListener(Event.FORMRESET, handleFormReset);
+
+        Object.defineProperty(formList[_i], customProperty, {
+          value: true,
+          writable: true
+        });
+      }
+    },
+    destroy: function destroy() {
+      var formList = [].slice.call(document.querySelectorAll(Selector.FORM)).filter(function (form) {
+        return !!form.bsCustomFileInput;
+      });
+      var customFileInputList = [].slice.call(document.querySelectorAll(Selector.INPUT)).filter(function (input) {
+        return !!input.bsCustomFileInput;
+      });
+
+      for (var i = 0, len = customFileInputList.length; i < len; i++) {
+        var input = customFileInputList[i];
+        restoreDefaultText(input);
+        input[customProperty] = undefined;
+        input.removeEventListener(Event.INPUTCHANGE, handleInputChange);
+      }
+
+      for (var _i2 = 0, _len2 = formList.length; _i2 < _len2; _i2++) {
+        formList[_i2].removeEventListener(Event.FORMRESET, handleFormReset);
+
+        formList[_i2][customProperty] = undefined;
+      }
+    }
+  };
+
+  return bsCustomFileInput;
+
+})));
+//# sourceMappingURL=bs-custom-file-input.js.map
 
 
 /***/ }),
@@ -58158,6 +58388,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/css/auth.css":
+/*!********************************!*\
+  !*** ./resources/css/auth.css ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./node_modules/moment-timezone/data/packed/latest.json":
 /*!**************************************************************!*\
   !*** ./node_modules/moment-timezone/data/packed/latest.json ***!
@@ -99640,7 +99883,8 @@ var TempusDominusBootstrap4 = function ($) {
 /******/ 		
 /******/ 		var deferredModules = [
 /******/ 			["./resources/js/app.js"],
-/******/ 			["./resources/css/app.css"]
+/******/ 			["./resources/css/app.css"],
+/******/ 			["./resources/css/auth.css"]
 /******/ 		];
 /******/ 		// no chunk on demand loading
 /******/ 		

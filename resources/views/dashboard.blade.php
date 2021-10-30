@@ -5,14 +5,14 @@
 @section('content')
     <div class="row d-block d-sm-none">
         <div class="col-12">
-            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip">
+            <button class="btn btn-primary btn-block mb-3 btn-add-boat-trip @if($fleetsCount === 0) disabled @else btn-add-boat-trip @endif">
                 <i class="fa fa-plus-circle"></i> Ajouter une sortie
             </button>
         </div>
     </div>
     <div class="row">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <div class="card">
+            <div class="card card-primary card-outline card-outline-tabs">
                 <div class="card-header p-0 pt-1 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                         <li class="nav-item">
@@ -26,6 +26,12 @@
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-three-reservations-tab" data-toggle="pill" href="#reservations" role="tab"
                                aria-controls="custom-tabs-three-reservations" aria-selected="false" style="">Réservations</a>
+                        </li>
+                        <li class="">
+                            <a aria-selected="false" href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'rental-package']) }}" target="_blank" role="tab" class="nav-link"
+                               data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
+                                <i class="fas fa-question-circle text-primary"></i>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -45,10 +51,10 @@
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            <button class="btn btn-info btn-block mb-3 btn-add-boat-trip-reservation">
+            <button class="btn btn-info btn-block mb-3 @if($fleetsCount === 0) disabled @else  btn-add-boat-trip-reservation @endif">
                 <i class="fa fa-plus-square"></i> Réserver du matériel
             </button>
-            <button class="btn btn-success btn-block mb-3 btn-add-boat-trip">
+            <button class="btn btn-success btn-block mb-3 @if($fleetsCount === 0) disabled @else btn-add-boat-trip @endif">
                 <i class="fa fa-plus-circle"></i> Ajouter une sortie
             </button>
             @include('dashboard.availability-loader')

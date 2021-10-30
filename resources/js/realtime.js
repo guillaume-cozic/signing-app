@@ -1,8 +1,18 @@
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+if(showModalNotClosed == true) {
+    $('#modal-message-boattrip-not-closed').modal('show');
+}
+
+$('[data-ajax-href]').each(function (){
+    var item = $(this);
+    var uri = item.attr('data-ajax-href');
+
+    $.ajax({
+        url: uri,
+        success:function (html){
+            item.html(html);
+        }
+    });
+});
 
 function reloadDashboard() {
     if($('#boat-trips-table').length != 0) {
@@ -11,8 +21,7 @@ function reloadDashboard() {
     }
 }
 
-import Echo from 'laravel-echo'
-
+import Echo from 'laravel-echo';
 
 try {
     let echo = new Echo({

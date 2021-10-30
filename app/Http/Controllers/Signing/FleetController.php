@@ -6,7 +6,12 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Requests\Domain\Fleet\AddFleetRequest;
 use App\Http\Requests\Domain\Fleet\EditFleetRequest;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\AddFleetParameters;
+use App\Signing\Signing\Application\ParametersWrapper\EditFleetParameters;
+use App\Signing\Signing\Application\ParametersWrapper\IdentityFleetParameters;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Exceptions\FleetAlreadyExist;
 use App\Signing\Signing\Domain\UseCases\AddFleet;
 use App\Signing\Signing\Domain\UseCases\DisableFleet;
 use App\Signing\Signing\Domain\UseCases\EnableFleet;
@@ -19,9 +24,43 @@ use App\Http\Controllers\Controller;
 
 class FleetController extends Controller
 {
-    public function listShips()
+    private function getFleetsInit():array
     {
-        return view('signing.fleet.list');
+        return [
+            'Catamaran' => [
+                'Hobie cat 15',
+                'Hobie cat T1',
+                'Hobie cat 16',
+                'Rs cat 14',
+                'Rs cat 16',
+            ],
+            'Dériveur' => [
+                'Optimist',
+                'Laser',
+                'Laser Pico',
+                'Fusion'
+            ],
+            'Planche à voile' => [
+                'Planche à voile débutant',
+                'Funboard',
+            ],
+            'Kayak et Paddle' => [
+                'Kayak simple',
+                'Kayak double',
+                'Paddle',
+                'Pédalo'
+            ]
+        ];
+    }
+
+    public function listShips(GetFleetsList $getFleetsList)
+    {
+        $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
+        $fleetsInit = $this->getFleetsInit();
+        return view('signing.fleet.list', [
+            'fleetsInit' => $fleetsInit,
+            'showModalInit' => count($fleets) === 0
+        ]);
     }
 
     public function getFleetList(Request $request, GetFleetsList $getFleetsList)
@@ -58,12 +97,16 @@ class FleetController extends Controller
 
     public function add(AddFleetRequest $request, AddFleet $addFleet)
     {
-        $name = $request->input('name', '');
-        $total = $request->input('total_available', 0);
-        $state = $request->input('state');
-        $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
-        $addFleet->execute($name, '', $total, $state);
-        return redirect()->route('fleet.list');
+        try {
+            $name = trim($request->input('name', ''));
+            $total = $request->input('total_available', 0);
+            $state = $request->has('state') ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
+            (new UseCaseHandler($addFleet))->execute(new AddFleetParameters($name, $total, $state));
+            return redirect()->route('fleet.list');
+        }catch (FleetAlreadyExist $e){
+            session()->flash('fleet_error',  "Une flotte du même nom existe déjà.");
+            return redirect()->route('fleet.list')->withInput($request->all());
+        }
     }
 
     public function showEdit(string $fleetId, GetFleet $getFleet)
@@ -78,21 +121,22 @@ class FleetController extends Controller
     {
         $name = $request->input('name', '');
         $total = $request->input('total_available', 0);
-        $state = $request->input('state');
-        $state = $state === 'on' ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
-        $updateFleet->execute($fleetId, $total, $name, $state);
+        $state = $request->has('state') ? Fleet::STATE_ACTIVE : Fleet::STATE_INACTIVE;
+        (new UseCaseHandler($updateFleet))->execute(new EditFleetParameters($fleetId, $name, $total, $state));
         return redirect()->route('fleet.list');
     }
 
     public function disable(Request $request, DisableFleet $disableFleet)
     {
-        $disableFleet->execute($request->input('fleet_id'));
+        $fleetId = $request->input('fleet_id');
+        (new UseCaseHandler($disableFleet))->execute(new IdentityFleetParameters($fleetId));
         return [];
     }
 
     public function enable(Request $request, EnableFleet $enableFleet)
     {
-        $enableFleet->execute($request->input('fleet_id'));
+        $fleetId = $request->input('fleet_id');
+        (new UseCaseHandler($enableFleet))->execute(new IdentityFleetParameters($fleetId));
         return [];
     }
 
@@ -103,4 +147,18 @@ class FleetController extends Controller
             'fleets' => $fleets
         ]);
     }
+
+    public function massCreate(Request $request, AddFleet $addFleet)
+    {
+        $fleets = $request->input('fleets');
+        foreach($fleets as $fleet) {
+            try {
+                (new UseCaseHandler($addFleet))->execute(new AddFleetParameters($fleet, 0, Fleet::STATE_ACTIVE));
+            }catch (FleetAlreadyExist $e){
+                continue;
+            }
+        }
+        return redirect()->back();
+    }
+
 }

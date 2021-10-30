@@ -6,7 +6,10 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\BoatTrip\AddBoatTripRequest;
-use App\Signing\Signing\Domain\Entities\Fleet;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\AddBoatTripParameters;
+use App\Signing\Signing\Application\ParametersWrapper\BoatTripIdentityParameters;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\ForceAddBoatTrip;
@@ -24,7 +27,8 @@ class BoatTripController extends Controller
     {
         $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
         return view('dashboard', [
-            'fleets' => $fleets
+            'fleets' => $fleets,
+            'fleetsCount' => $fleets->count()
         ]);
     }
 
@@ -59,6 +63,9 @@ class BoatTripController extends Controller
             }
             if($boatTrip->isInstructor){
                 $badgeName = '<span class="badge bg-info">Moniteur</span>';
+            }
+            if($boatTrip->sailorId !== null){
+                $badgeName = '<span data-toggle="tooltip" data-placement="top" title="Forfait" class="badge bg-indigo">F</span>';
             }
 
             $actions = [];
@@ -103,24 +110,27 @@ class BoatTripController extends Controller
 
             $buttons = '';
             if(in_array('start', $actions)) {
-                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Démarrer la sortie"
-                    class="btn-start fa fa-play text-green p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Démarrer la sortie">
+                        <i data-href="'.route('boat-trip.start', ['boatTripId' => $boatTrip->id]).'" class="btn-start fa fa-play text-green p-1"></i>
+                    </a>';
             }
             if(in_array('end', $actions)) {
-                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Terminer la sortie"
-                    class="btn-end fa fa-pause text-blue p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Terminer la sortie">
+                    <i data-href="'.route('boat-trip.end', ['boatTripId' => $boatTrip->id]).'"
+                    class="btn-end fa fa-pause text-blue p-1"></i>
+                    </a>';
             }
             if(in_array('cancel', $actions)) {
-                $buttons .= '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
-                     data-toggle="tooltip" data-placement="top" title="Supprimer la sortie"
-                    class="btn-cancel fa fa-trash text-red p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Supprimer la sortie">
+                        <i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+                        class="btn-cancel fa fa-trash text-red p-1"></i>
+                    </a>';
             }
             if(in_array('more', $actions)) {
-                $buttons .= '<i style="cursor: pointer;"
-                     data-toggle="tooltip" data-placement="top" title="Notes" data-note="'.$boatTrip->note.'"
-                    class="btn-more fa fa-clipboard-list text-gray p-1"></i>';
+                $buttons .= '<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Notes">
+                    <i style="cursor: pointer;"
+                      data-note="'.$boatTrip->note.'"
+                    class="btn-more fa fa-clipboard-list text-gray p-1"></i></a>';
             }
 
             $boatTripsData[] = [
@@ -131,73 +141,6 @@ class BoatTripController extends Controller
                 '   <span style="display: inline-block;">
                         <span class="badge bg-'.$state.'">'.$message.'</span>
                         <i class="fas fa-clock time-icon"></i> '.$shouldEndAt->format('H:i'). '
-                    </span>',
-                $buttons
-            ];
-        }
-
-        return [
-            'draw' => $request->get('draw'),
-            'recordsTotal' => count($boatTrips),
-            'recordsFiltered' => $boatTrips->total(),
-            'data' => $boatTripsData ?? [],
-        ];
-    }
-
-
-    public function reservations(Request $request, GetBoatTripsList $getBoatTripsList)
-    {
-        $start = $request->input('start', 0);
-        $search = $request->input('search.value', '');
-        $perPage = $request->input('length', 10);
-        $sortDir = $request->input('order.0.dir', null);
-        $sortIndex = $request->input('order.0.column', null);
-        $sort = $request->input('columns.'.$sortIndex.'.name', null);
-        $filters = [
-            'reservations' => (bool)$request->input('reservations', false)
-        ];
-        $boatTrips = $getBoatTripsList->execute($search, $start, $perPage, $sort, $sortDir, $filters);
-
-        foreach ($boatTrips as $boatTrip) {
-            $boats = '';
-            $total = 0;
-            foreach($boatTrip->boats as $boat => $qty){
-                $boats .= $qty. ' '.$boat.'</br>';
-                $total += $qty;
-            }
-            $boats = $boats !== '' ? $boats : 'Matériel perso';
-
-            $startAt = isset($boatTrip->startAt) ? clone $boatTrip->startAt : clone $boatTrip->shouldStartAt;
-
-            $state = 'success';
-            $message = 'Réservation';
-
-            $buttons = '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
-                 data-toggle="tooltip" data-placement="top" title="Supprimer la réservation"
-                class="btn-cancel fa fa-trash text-red p-1"></i>';
-
-            if(isset($boatTrip->note) && $boatTrip->note !== "") {
-                $buttons .= '<i style="cursor: pointer;"
-                     data-toggle="tooltip" data-placement="top" title="Notes" data-note="'.$boatTrip->note.'"
-                    class="btn-more fa fa-clipboard-list text-gray p-1"></i>';
-            }
-
-            $badgeName = "";
-            if($boatTrip->isMember){
-                $badgeName = '<span class="badge bg-primary">Adhérent</span>';
-            }
-            if($boatTrip->isInstructor){
-                $badgeName = '<span class="badge bg-info">Moniteur</span>';
-            }
-
-            setlocale(LC_TIME, "fr_FR");
-            $boatTripsData[] = [
-                $boats,
-                '<span class="badge bg-info">'.$total.'</span>',
-                mb_convert_encoding($badgeName.' '.$boatTrip->name, 'UTF-8', 'UTF-8'),
-                '<i class="fas fa-clock time-icon"></i> '.utf8_encode(strftime('%a %e %b à %H:%M', $startAt->getTimestamp())).' <small>'.$boatTrip->hours.' h</small>',
-                '   <span style="display: inline-block;">
-                        <span class="badge bg-'.$state.'">'.$message.'</span>
                     </span>',
                 $buttons
             ];
@@ -264,16 +207,19 @@ class BoatTripController extends Controller
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
         $startAuto = $request->input('start_auto');
-        $isMember = $request->input('is_member', false) == 'on';
-        $isInstructor = $request->input('is_instructor', false) == 'on';
-        $isReservation = $request->input('is_reservation', false);
+        $isMember = $request->has('is_member');
+        $isInstructor = $request->has('is_instructor');
+        $sailorId = $request->input('sailor_id', null);
         $note = $request->input('note');
+        $doNotDecreaseHours = $request->has('do_not_decrease_hours');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $isReservation, $note);
+        (new UseCaseHandler($addBoatTrip))->execute(
+            new AddBoatTripParameters($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId, $doNotDecreaseHours)
+        );
         return [];
     }
 
@@ -285,30 +231,37 @@ class BoatTripController extends Controller
         $startAt = $request->input('start_at', null);
         $startNow = $request->input('start_now');
         $startAuto = $request->input('start_auto');
+        $isMember = $request->input('is_member', false) == 'on';
+        $isInstructor = $request->input('is_instructor', false) == 'on';
+        $sailorId = $request->input('sailor_id', null);
+        $note = $request->input('note');
+        $doNotDecreaseHours = $request->has('do_not_decrease_hours');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto);
+        (new UseCaseHandler($forceAddBoatTrip))->execute(
+            new AddBoatTripParameters($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId, $doNotDecreaseHours)
+        );
         return [];
     }
 
     public function start(string $boatTripId, StartBoatTrip $startBoatTrip)
     {
-        $startBoatTrip->execute($boatTripId);
+        (new UseCaseHandler($startBoatTrip))->execute(new BoatTripIdentityParameters($boatTripId));
         return [];
     }
 
     public function cancel(string $boatTripId, CancelBoatTrip $cancelBoatTrip)
     {
-        $cancelBoatTrip->execute($boatTripId);
+        (new UseCaseHandler($cancelBoatTrip))->execute(new BoatTripIdentityParameters($boatTripId));
         return [];
     }
 
     public function end(string $boatTripId, EndBoatTrip $endBoatTrip)
     {
-        $endBoatTrip->execute($boatTripId);
+        (new UseCaseHandler($endBoatTrip))->execute(new BoatTripIdentityParameters($boatTripId));
         return [];
     }
 
@@ -320,7 +273,7 @@ class BoatTripController extends Controller
             $boats = '';
             $boatTrip = $suggestion->boatTrip;
             foreach($suggestion->boatTrip->boats as $boat => $qty){
-                $boats .= $qty. ' '.$boat.'</br>';
+                $boats .= $qty. ' ' . $boat.'</br>';
             }
             $boats = $boats !== '' ? $boats : 'Matériel perso';
 
@@ -332,5 +285,26 @@ class BoatTripController extends Controller
             ];
         }
         return view('boattrips.suggestions', ['suggestions' => $boatTripsData]);
+    }
+
+    public function notEnded(Request $request)
+    {
+        return view('modal.partials.mass-close-form', [
+            'boatTrips' => $request->session()->get('boat-trips_not_closed')
+        ]);
+    }
+
+    public function massEnd(Request $request)
+    {
+        $boatTrips = $request->except('_token');
+        foreach($boatTrips as $boatTrip => $action){
+            if($action === 'close'){
+                (new UseCaseHandler(app(EndBoatTrip::class)))->execute(new BoatTripIdentityParameters($boatTrip));
+                continue;
+            }
+            (new UseCaseHandler(app(CancelBoatTrip::class)))->execute(new BoatTripIdentityParameters($boatTrip));
+        }
+        $request->session()->remove('boat-trips_not_closed');
+        return back();
     }
 }

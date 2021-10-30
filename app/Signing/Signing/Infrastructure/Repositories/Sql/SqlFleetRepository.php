@@ -5,10 +5,11 @@ namespace App\Signing\Signing\Infrastructure\Repositories\Sql;
 
 
 use App\Signing\Shared\Services\ContextService;
-use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\FleetState;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetState;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
 use App\Signing\Signing\Infrastructure\Repositories\Sql\Model\FleetModel;
+use Illuminate\Support\Facades\App;
 
 class SqlFleetRepository implements FleetRepository
 {
@@ -29,6 +30,18 @@ class SqlFleetRepository implements FleetRepository
         $fleetModel->uuid = $fleetState->id();
         $fleetModel->state = $fleetState->state();
         $fleetModel->sailing_club_id = $this->contextService->get()->sailingClubId();
+        $fleetModel->name = $fleetState->translations()['name'] ?? [];
         $fleetModel->save();
     }
+
+    public function getByName(string $name): ?Fleet
+    {
+        return FleetModel::query()
+            ->whereRaw('lower(name->\'$.' . App::getLocale().'\') = ?', '"'.strtolower($name).'"')
+            ->sailingClub()
+            ->first()
+            ?->toDomain();
+    }
+
+
 }

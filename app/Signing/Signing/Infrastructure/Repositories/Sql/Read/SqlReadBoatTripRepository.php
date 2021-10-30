@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class SqlReadBoatTripRepository implements ReadBoatTripRepository
 {
-    public function getInProgress(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc", array $filters = [])
+    public function search(?string $search = '', int $page = 1, int $perPage = 10, string $sort = null, string $dirSort = "asc", array $filters = [])
     {
         $fleets = [];
         if(!empty($search)){
@@ -81,6 +81,31 @@ class SqlReadBoatTripRepository implements ReadBoatTripRepository
                     ->orWhereRaw('UNIX_TIMESTAMP(should_start_at) < UNIX_TIMESTAMP(NOW())');
                 })
                 ->whereNull('start_at');
+            })
+            ->sailingClub()
+            ->get()
+            ->transform(function (BoatTripModel $item) {
+                return $item->toDto();
+            })
+            ?->toArray()
+        ;
+    }
+
+    public function getNotClosedYesterdayOrMore()
+    {
+        return BoatTripModel::query()
+            ->whereNull('end_at')
+            ->where(function ($query) {
+                return $query->where(function ($query){
+                    return $query->where(function ($query) {
+                        $query->whereRaw('date(should_start_at) != date(now())')
+                            ->whereRaw('UNIX_TIMESTAMP(should_start_at) < UNIX_TIMESTAMP(now())');
+                    })
+                    ->orWhere(function($query){
+                        $query->whereRaw('date(start_at) != date(now())')
+                            ->whereRaw('UNIX_TIMESTAMP(start_at) < UNIX_TIMESTAMP(now())');
+                    });
+                });
             })
             ->sailingClub()
             ->get()

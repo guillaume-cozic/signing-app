@@ -4,9 +4,10 @@
 namespace Tests\Unit\Adapters\Repositories;
 
 
-use App\Signing\Signing\Domain\Entities\Fleet;
-use App\Signing\Signing\Domain\Entities\FleetState;
+use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
+use App\Signing\Signing\Domain\Entities\Fleet\FleetState;
 use App\Signing\Signing\Domain\Repositories\FleetRepository;
+use Illuminate\Support\Facades\App;
 
 class InMemoryFleetRepository implements FleetRepository
 {
@@ -25,5 +26,15 @@ class InMemoryFleetRepository implements FleetRepository
     public function all()
     {
         return $this->fleets;
+    }
+
+    public function getByName(string $name): ?Fleet
+    {
+        foreach($this->fleets as $fleet) {
+            if(isset($fleet->translations()['name'][App::getLocale()]) && $fleet->translations()['name'][App::getLocale()] === $name){
+                return $fleet->toDomain();
+            }
+        }
+        return null;
     }
 }
