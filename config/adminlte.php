@@ -280,7 +280,7 @@ return [
         [
             'text' => 'Documentation',
             'url'  => 'docs',
-            'icon' => 'nav-icon fa fa-question',
+            'icon' => 'nav-icon fa fa-question-circle',
         ],
         /*[
             'text' => 'Facturation',
