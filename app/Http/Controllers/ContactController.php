@@ -6,13 +6,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Mail\Contact;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
     public function showContact()
     {
-        return view('contact.contact-us');
+        $name = Auth::user()->surname;
+        $email = Auth::user()->email;
+        return view('contact.contact-us', [
+            'name' => $name,
+            'email' => $email,
+        ]);
     }
 
     public function processSendEmail(ContactRequest $request)
