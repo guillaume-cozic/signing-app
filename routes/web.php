@@ -143,6 +143,7 @@ require __DIR__.'/auth.php';
 
 
 Route::get('/contact-us', [App\Http\Controllers\ContactController::class, 'showContact'])->name('contact');
+Route::post('/contact-us', [App\Http\Controllers\ContactController::class, 'processSendEmail'])->name('contact.process');
 
 
 

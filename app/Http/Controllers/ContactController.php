@@ -4,7 +4,9 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
+use App\Mail\Contact;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -13,8 +15,15 @@ class ContactController extends Controller
         return view('contact.contact-us');
     }
 
-    public function processSendEmail(Request $request)
+    public function processSendEmail(ContactRequest $request)
     {
-
+        Mail::send(new Contact(
+            $request->input('message'),
+            $request->input('name'),
+            $request->input('email'),
+            $request->input('phone'),
+        ));
+        session()->flash('contact_ok',  "L'email a bien été envoyé");
+        return redirect()->back();
     }
 }
