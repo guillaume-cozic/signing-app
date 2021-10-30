@@ -6,6 +6,9 @@ namespace App\Http\Controllers\Signing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domain\BoatTrip\AddBoatTripRequest;
+use App\Signing\Shared\Services\UseCaseHandler\UseCaseHandler;
+use App\Signing\Signing\Application\ParametersWrapper\AddBoatTripParameters;
+use App\Signing\Signing\Application\ParametersWrapper\BoatTripIdentityParameters;
 use App\Signing\Signing\Domain\Entities\Fleet\Fleet;
 use App\Signing\Signing\Domain\UseCases\AddBoatTrip;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\CancelBoatTrip;
@@ -214,7 +217,9 @@ class BoatTripController extends Controller
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $addBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId);
+        (new UseCaseHandler($addBoatTrip))->execute(
+            new AddBoatTripParameters($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId, $doNotDecreaseHours)
+        );
         return [];
     }
 
@@ -230,30 +235,33 @@ class BoatTripController extends Controller
         $isInstructor = $request->input('is_instructor', false) == 'on';
         $sailorId = $request->input('sailor_id', null);
         $note = $request->input('note');
+        $doNotDecreaseHours = $request->has('do_not_decrease_hours');
 
         $boatsProcessed = [];
         foreach($boats as $boat){
             $boatsProcessed[$boat['id']] = isset($boatsProcessed[$boat['id']]) ? $boatsProcessed[$boat['id']] + $boat['number'] : $boat['number'];
         }
-        $forceAddBoatTrip->execute($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId);
+        (new UseCaseHandler($forceAddBoatTrip))->execute(
+            new AddBoatTripParameters($boatsProcessed, $name, $hours, $startAt, $startNow, $startAuto, $isInstructor, $isMember, $note, $sailorId, $doNotDecreaseHours)
+        );
         return [];
     }
 
     public function start(string $boatTripId, StartBoatTrip $startBoatTrip)
     {
-        $startBoatTrip->execute($boatTripId);
+        (new UseCaseHandler($startBoatTrip))->execute(new BoatTripIdentityParameters($boatTripId));
         return [];
     }
 
     public function cancel(string $boatTripId, CancelBoatTrip $cancelBoatTrip)
     {
-        $cancelBoatTrip->execute($boatTripId);
+        (new UseCaseHandler($cancelBoatTrip))->execute(new BoatTripIdentityParameters($boatTripId));
         return [];
     }
 
     public function end(string $boatTripId, EndBoatTrip $endBoatTrip)
     {
-        $endBoatTrip->execute($boatTripId);
+        (new UseCaseHandler($endBoatTrip))->execute(new BoatTripIdentityParameters($boatTripId));
         return [];
     }
 
@@ -291,10 +299,10 @@ class BoatTripController extends Controller
         $boatTrips = $request->except('_token');
         foreach($boatTrips as $boatTrip => $action){
             if($action === 'close'){
-                app(EndBoatTrip::class)->execute($boatTrip);
+                (new UseCaseHandler(app(EndBoatTrip::class)))->execute(new BoatTripIdentityParameters($boatTrip));
                 continue;
             }
-            app(CancelBoatTrip::class)->execute($boatTrip);
+            (new UseCaseHandler(app(CancelBoatTrip::class)))->execute(new BoatTripIdentityParameters($boatTrip));
         }
         $request->session()->remove('boat-trips_not_closed');
         return back();
