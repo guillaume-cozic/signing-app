@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content')
-    <div class="card">
+    <div class="card card-outline card-primary">
     <div class="card-body row">
         <div class="col-5 text-center d-flex align-items-center justify-content-center">
             <div class="">

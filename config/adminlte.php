@@ -282,6 +282,18 @@ return [
             'url'  => 'docs',
             'icon' => 'nav-icon fa fa-question-circle',
         ],
+        [
+            'text' => '',
+            'url'  => 'docs',
+            'icon' => 'nav-icon fa fa-question-circle text-primary',
+            'topnav_right' => true
+        ],
+        [
+            'text' => '',
+            'url'  => 'contact-us',
+            'icon' => 'nav-icon fa fa-envelope',
+            'topnav_right' => true
+        ],
         /*[
             'text' => 'Facturation',
             'url'  => 'billing',
