@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
-            <div class="card">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title">Liste des flottes</h3>
                     <div class="card-tools">
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            <div class="card card-primary">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title">Ajouter une flotte</h3>
                 </div>
