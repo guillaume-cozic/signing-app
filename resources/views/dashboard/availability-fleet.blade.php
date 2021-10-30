@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card card-primary card-outline">
     <div class="card-body @if(!empty($fleets)) p-0 @endif">
         @if(!empty($fleets))
             <table class="table table-striped">

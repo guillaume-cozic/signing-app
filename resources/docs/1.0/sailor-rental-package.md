@@ -38,7 +38,7 @@ Pour celà recherchez le forfait parmi la liste et :
 - Cliquez sur l'icône <i class="text-success fa fa-plus-circle fa-lg"></i> pour ajouter des heures sur le forfait
 - Cliquez sur l'icône <i class="text-danger fa fa-minus-circle fa-lg"></i> pour retirer des heures sur le forfait
 
-Une nouvelle fênetre vous demandera le nombre d'heure à ajouter ou retirer.
+Une nouvelle fênetre vous demandera le nombre d'heure(s) à ajouter ou retirer.
 
 
 <a name="archive-sailor-rental-package"></a>

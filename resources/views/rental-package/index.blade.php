@@ -3,9 +3,9 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
-            <div class="card">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">Liste des forfaits</h3>
+                    <h3 class="card-title">Liste des modèles de forfaits</h3>
                     <div class="card-tools">
                         <a href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'rental-package']) }}" target="_blank" class="btn btn-tool"
                            data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
