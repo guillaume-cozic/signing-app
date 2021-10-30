@@ -2,7 +2,6 @@
 
 namespace App\Signing\Signing\Domain\Entities\BoatTrip;
 
-use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Shared\Entities\HasState;
 use App\Signing\Shared\Entities\Id;
 use App\Signing\Signing\Domain\Entities\BoatAvailabilityChecker;
