@@ -28,7 +28,7 @@ class SqlSailorRepository implements SailorRepository
         $sailorModel = new SailorModel();
         $sailorModel->name = $sailor->name();
         $sailorModel->uuid = $sailor->sailorId();
-        $sailorModel->sailing_club_id = $this->contextService->get()->sailingClubId();;
+        $sailorModel->sailing_club_id = $this->contextService->get()->sailingClubId();
         $sailorModel->save();
     }
 }
