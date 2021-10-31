@@ -50,8 +50,9 @@ class SailorRentalPackageController extends Controller
         $rentalPackageId = $request->input('rental_package_id');
         $name = $request->input('name');
         $hours = $request->input('hours');
+        $sailorId = $request->input('sailor_id') !== '' ? $request->input('sailor_id') : null;
 
-        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours, $sailorId));
         return [];
     }
 
@@ -121,6 +122,7 @@ class SailorRentalPackageController extends Controller
         $value = $request->input('q');
         $sailors = SailorModel::query()
             ->where('sailor.name', 'LIKE', '%'.$value.'%')
+            ->sailingClub()
             ->groupBy('sailor.uuid')
             ->get();
         foreach($sailors as $sailor){

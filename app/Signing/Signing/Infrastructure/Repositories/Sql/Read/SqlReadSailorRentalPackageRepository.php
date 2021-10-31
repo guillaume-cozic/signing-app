@@ -64,6 +64,4 @@ class SqlReadSailorRentalPackageRepository implements ReadSailorRentalPackageRep
             ?->toState()
         ;
     }
-
-
 }
