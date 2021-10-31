@@ -136,6 +136,6 @@ class AddReservationTest extends TestCase
     private function expectBoatNotAvailable(): void
     {
         self::expectException(BoatNotAvailable::class);
-        self::expectExceptionMessage('error.boat_not_available');
+        self::expectExceptionMessage('errors.boat_not_available');
     }
 }

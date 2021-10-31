@@ -26,7 +26,7 @@ class Fleet implements HasState
         private string $state = self::STATE_ACTIVE,
     )
     {
-        if($this->totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
+        if($this->totalAvailable < 0) throw new NumberBoatsCantBeNegative('errors.qty_can_not_be_lt_0');
         $this->fleetRepository = app(FleetRepository::class);
     }
 
@@ -49,7 +49,7 @@ class Fleet implements HasState
 
     public function update(int $totalAvailable, string $title, string $state)
     {
-        if($totalAvailable < 0) throw new NumberBoatsCantBeNegative('error.qty_can_not_be_lt_0');
+        if($totalAvailable < 0) throw new NumberBoatsCantBeNegative('errors.qty_can_not_be_lt_0');
 
         $fleetCheck = $this->fleetRepository->getByName($title);
         if(isset($fleetCheck) && $this->id() !== $fleetCheck->id()){

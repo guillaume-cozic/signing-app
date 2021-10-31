@@ -9,7 +9,7 @@
                     <form class="form-horizontal" method="post" action="{{route('teams.store')}}">
                         {!! csrf_field() !!}
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('name') ? ' has-errors' : '' }}">
                             <label class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">

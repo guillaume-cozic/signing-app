@@ -48,6 +48,9 @@ class Handler extends ExceptionHandler
                 ]
             ], 430);
         }
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            return response()->view('errors.403', [], 403);
+        }
         return Parent::render($request, $exception);
     }
 

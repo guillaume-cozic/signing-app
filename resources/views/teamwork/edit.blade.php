@@ -9,7 +9,7 @@
                     <form class="form-horizontal" method="post" action="{{route('teams.update', $team)}}">
                         <input type="hidden" name="_method" value="PUT" />
                         {!! csrf_field() !!}
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('name') ? ' has-errors' : '' }}">
                             <label class="col-md-4 control-label">Nom</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="name" value="{{ old('name', $team->name) }}">

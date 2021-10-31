@@ -25,7 +25,7 @@ $('.html-datatable').dataTable({
 });
 
 $('.add-sailor-rental-package').click(function(){
-    var divError = $('#modal-sailor-rental-create .alert-error');
+    var divError = $('#modal-sailor-rental-create .alert-errors');
     divError.html('');
     divError.hide();
     var rentalPackageId = $(this).data('rental-package-id');
@@ -52,8 +52,8 @@ $('#modal-sailor-rental-create form').submit(function (){
                     errorString += '<li>' + value + '</li>';
                 });
                 errorString += '</ul>';
-                form.find('.alert-error').html(errorString);
-                form.find('.alert-error').slideDown();
+                form.find('.alert-errors').html(errorString);
+                form.find('.alert-errors').slideDown();
             }
         }
     })

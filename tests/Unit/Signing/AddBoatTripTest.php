@@ -174,7 +174,7 @@ class AddBoatTripTest extends TestCase
         $this->fleetRepository->save($s1->getState());
 
         self::expectException(NumberBoatsCantBeNegative::class);
-        self::expectExceptionMessage('error.qty_cant_be_negative');
+        self::expectExceptionMessage('errors.qty_cant_be_negative');
         $this->addBoatTripUseCase->execute([$s1->id() => -1], $name = 'Tabarly', $numberHours = 3);
     }
 
@@ -249,6 +249,6 @@ class AddBoatTripTest extends TestCase
     private function expectBoatNotAvailable(): void
     {
         self::expectException(BoatNotAvailable::class);
-        self::expectExceptionMessage('error.boat_not_available');
+        self::expectExceptionMessage('errors.boat_not_available');
     }
 }

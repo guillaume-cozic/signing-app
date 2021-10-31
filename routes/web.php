@@ -28,7 +28,7 @@ Route::post('/profile', [UserController::class, 'update'])
     ->name('user.profile.save');
 
 Route::get('/fleets', [FleetController::class, 'listShips'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:show fleets'])
     ->name('fleet.list');
 
 Route::post('/fleet', [FleetController::class, 'add'])
@@ -155,7 +155,6 @@ Route::group(['prefix' => 'teams', 'namespace' => 'Teamwork'], function()
     Route::get('edit/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'edit'])->name('teams.edit');
     Route::put('edit/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'update'])->name('teams.update');
     Route::delete('destroy/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'destroy'])->name('teams.destroy');
-    Route::get('switch/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'switchTeam'])->name('teams.switch');
 
     Route::get('members/{id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'show'])->name('teams.members.show');
     Route::get('redirect', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'redirectToMainTeam'])->name('teams.members.redirect');
