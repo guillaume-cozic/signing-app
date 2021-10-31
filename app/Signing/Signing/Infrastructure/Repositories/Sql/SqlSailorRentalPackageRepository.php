@@ -25,23 +25,6 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
             ?->toDomain();
     }
 
-    public function getByNameAndRentalPackage(string $name, string $packageRentalId): ?SailorRentalPackage
-    {
-        $rentalPackage = RentalPackageModel::query()->where('uuid', $packageRentalId)->first();
-        if(!isset($rentalPackage)){
-            return null;
-        }
-        $sailor = SailorModel::query()->where('name', $name)->first();
-        if(!isset($sailor)){
-            return null;
-        }
-        return SailorRentalPackageModel::query()
-            ->where('rental_package_id', $rentalPackage->id)
-            ->where('sailor_id', $sailor->id)
-            ->first()
-            ?->toDomain();
-    }
-
     public function save(SailorRentalPackageState $sailorRentalPackageState)
     {
         $rentalPackage = RentalPackageModel::query()->where('uuid', $sailorRentalPackageState->rentalPackageId())->first();
@@ -61,12 +44,16 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
 
     public function getBySailorAndRentalPackage(Sailor $sailor, RentalPackage $rentalPackage): ?SailorRentalPackage
     {
+        $sailorId = null;
+        if($sailor->surrogateId() === null){
+            $sailorModel = SailorModel::query()->where('uuid', $sailor->id())->first();
+            $sailorId = $sailorModel->id;
+        }
+        $sailorId = $sailor->surrogateId() ?? $sailorId;
         return SailorRentalPackageModel::query()
             ->where('rental_package_id', $rentalPackage->surrogateId())
-            ->where('sailor_id', $sailor->surrogateId())
+            ->where('sailor_id', $sailorId)
             ->first()
             ?->toDomain();
     }
-
-
 }

@@ -26,7 +26,8 @@ class SearchSailorRentalPackagesImpl implements SearchSailorRentalPackages
         array $filters = []
     )
     {
-        $sailorRentalPackages = $this->readSailorRentalPackageRepository->search($search, $start, $perPage, $sort, $dirSort, $filters);
+        $page = $perPage !== 0 ? $start/$perPage +1 : 0;
+        $sailorRentalPackages = $this->readSailorRentalPackageRepository->search($search, $page, $perPage, $sort, $dirSort, $filters);
         return $sailorRentalPackages->through(function (SailorRentalPackageState $sailorRentalPackage) {
             $rentalPackage = $this->readRentalPackageRepository->get($sailorRentalPackage->rentalPackageId());
             return new SailorRentalPackageViewModel(

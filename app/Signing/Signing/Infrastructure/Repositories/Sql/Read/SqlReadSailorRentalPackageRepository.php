@@ -25,6 +25,7 @@ class SqlReadSailorRentalPackageRepository implements ReadSailorRentalPackageRep
                 $rentalPackageModel = RentalPackageModel::query()->where('uuid', $filters['rental_package_id'])->first();
                 $query->where('rental_package.id', $rentalPackageModel->id);
             })
+            ->sailingClub()
             ->when(isset($sort), function ($query) use($sort, $dirSort){
                 switch ($sort){
                     case 'sailor_name':
@@ -33,6 +34,8 @@ class SqlReadSailorRentalPackageRepository implements ReadSailorRentalPackageRep
                         return $query->orderBy('rental_package.name', $dirSort);
                     case 'hours':
                         return $query->orderBy('hours', $dirSort);
+                    default:
+                        return $query;
                 }
             })
             ->paginate($perPage, ['*'], 'page', $page)

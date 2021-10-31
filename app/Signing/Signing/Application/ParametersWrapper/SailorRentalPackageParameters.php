@@ -10,7 +10,8 @@ class SailorRentalPackageParameters implements Parameters
         public string $id,
         public string $rentalPackageId,
         public string $name,
-        public float $hours
+        public float $hours,
+        public ?string $sailorId,
     ){}
 
     public function loggable(): array
