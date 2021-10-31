@@ -39,8 +39,9 @@ class SailorRentalPackageController extends Controller
         $rentalPackageId = $request->input('rental_package_id');
         $name = $request->input('name');
         $hours = $request->input('hours');
+        $sailorId = $request->input('sailor_id') !== '' ? $request->input('sailor_id') : null;
 
-        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours, $sailorId));
         return redirect()->route('sailor-rental-package.index');
     }
 
@@ -49,8 +50,9 @@ class SailorRentalPackageController extends Controller
         $rentalPackageId = $request->input('rental_package_id');
         $name = $request->input('name');
         $hours = $request->input('hours');
+        $sailorId = $request->input('sailor_id') !== '' ? $request->input('sailor_id') : null;
 
-        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours));
+        (new UseCaseHandler($createSailorRentalPackage))->execute(new SailorRentalPackageParameters(Uuid::uuid4(), $rentalPackageId, $name, $hours, $sailorId));
         return [];
     }
 
@@ -62,9 +64,7 @@ class SailorRentalPackageController extends Controller
         $sortDir = $request->input('order.0.dir', null);
         $sortIndex = $request->input('order.0.column', null);
         $sort = $request->input('columns.'.$sortIndex.'.name', null);
-        $filters = [
-            'rental_package_id' => $request->input('rental_package_id', null)
-        ];
+        $filters = ['rental_package_id' => $request->input('rental_package_id', null)];
         $searchSailorRentalPackages = $searchSailorRentalPackages->execute($search, $start, $perPage, $sort, $sortDir, $filters);
 
         foreach ($searchSailorRentalPackages as $searchSailorRentalPackage) {
@@ -94,6 +94,7 @@ class SailorRentalPackageController extends Controller
             ];
         }
 
+
         return [
             'draw' => $request->get('draw'),
             'recordsTotal' => count($searchSailorRentalPackages),
@@ -111,7 +112,7 @@ class SailorRentalPackageController extends Controller
 
     public function decreaseHours(string $sailorRentalPackageId, Request $request, AddOrSubHoursToSailorRentalPackage $addOrSubHoursToSailorRentalPackage)
     {
-        $hours = $request->input('hours');
+        $hours = -$request->input('hours');
         (new UseCaseHandler($addOrSubHoursToSailorRentalPackage))->execute(new AddSubHoursSailorRentalPackageParameters($sailorRentalPackageId, $hours));
         return [];
     }
@@ -121,6 +122,7 @@ class SailorRentalPackageController extends Controller
         $value = $request->input('q');
         $sailors = SailorModel::query()
             ->where('sailor.name', 'LIKE', '%'.$value.'%')
+            ->sailingClub()
             ->groupBy('sailor.uuid')
             ->get();
         foreach($sailors as $sailor){
