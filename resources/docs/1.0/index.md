@@ -1,4 +1,6 @@
-- ## Pour bien commencer
+- ## Introduction   
+    - [Pour bien commencer](/{{route}})
+- ## Gestion des flottes
     - [Gestion des flottes](/{{route}}/{{version}}/fleet)
 - ## Tableau de bord
     - [Sortie en mer](/{{route}}/{{version}}/boat-trip)
