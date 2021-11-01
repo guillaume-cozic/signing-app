@@ -32,7 +32,7 @@
             u: 'undefined',
             z: 'null'
             //d : 'date',
-            //e : 'errors',
+            //e : 'error',
             //r : 'regexp',
             //y : 'symbol'
         };
@@ -267,7 +267,7 @@
                  */
                 inA: function (item, arr) {
                     for (var i = 0; i < arr[LEXICON.l]; i++)
-                        //Sometiems in IE a "SCRIPT70" Permission denied errors occurs if HTML elements in a iFrame are compared
+                        //Sometiems in IE a "SCRIPT70" Permission denied error occurs if HTML elements in a iFrame are compared
                         try {
                             if (arr[i] === item)
                                 return i;
@@ -1550,7 +1550,7 @@
                      * Validates the passed object by the passed template.
                      * @param obj The object which shall be validated.
                      * @param template The template which defines the allowed values and types.
-                     * @param writeErrors True if errors shall be logged to the console.
+                     * @param writeErrors True if error shall be logged to the console.
                      * @param diffObj If a object is passed then only valid differences to this object will be returned.
                      * @returns {{}} A object which contains two objects called "default" and "prepared" which contains only the valid properties of the passed original object and discards not different values compared to the passed diffObj.
                      */
@@ -3497,8 +3497,8 @@
                     };
                     var getViewportSize = function () {
                         //viewport size is padding container because it never has padding, margin and a border
-                        //determine zoom rounding errors -> sometimes scrollWidth/Height is smaller than clientWidth/Height
-                        //if this happens add the difference to the viewportSize to compensate the rounding errors
+                        //determine zoom rounding error -> sometimes scrollWidth/Height is smaller than clientWidth/Height
+                        //if this happens add the difference to the viewportSize to compensate the rounding error
                         return {
                             w: _paddingElementNative[LEXICON.oW] + MATH.max(0, _contentElementNative[LEXICON.cW] - _contentElementNative[LEXICON.sW]),
                             h: _paddingElementNative[LEXICON.oH] + MATH.max(0, _contentElementNative[LEXICON.cH] - _contentElementNative[LEXICON.sH])

@@ -59,7 +59,7 @@
             </form>
         </div>
 
-        {{-- Password errors alert --}}
+        {{-- Password error alert --}}
         @error('password')
             <div class="lockscreen-subitem text-center" role="alert">
                 <b class="text-danger">{{ $message }}</b>

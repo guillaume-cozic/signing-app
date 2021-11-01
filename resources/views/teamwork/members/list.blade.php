@@ -45,7 +45,7 @@
                         <div class="card-body">
                             <form class="form-horizontal" method="post" action="{{route('teams.members.invite', $team)}}">
                                 {!! csrf_field() !!}
-                                <div class="form-group{{ $errors->has('email') ? ' has-errors' : '' }}">
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label class="col-md-4 control-label">Adresse email</label>
                                     <div class="col-md-6">
                                         <input type="email" class="form-control" name="email" value="{{ old('email') }}">

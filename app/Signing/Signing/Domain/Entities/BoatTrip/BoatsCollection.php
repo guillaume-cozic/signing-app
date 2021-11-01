@@ -11,7 +11,7 @@ class BoatsCollection
     public function __construct(private array $boats)
     {
         foreach($this->boats as $boatId => $qty){
-            if($qty < 0) throw new NumberBoatsCantBeNegative('errors.qty_cant_be_negative');
+            if($qty < 0) throw new NumberBoatsCantBeNegative('error.qty_cant_be_negative');
         }
     }
 

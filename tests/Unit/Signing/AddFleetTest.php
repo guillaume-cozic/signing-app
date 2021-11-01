@@ -46,7 +46,7 @@ class AddFleetTest extends TestCase
     {
         $this->identityProvider->add($supportId = 'abc');
         self::expectException(NumberBoatsCantBeNegative::class);
-        self::expectExceptionMessage('errors.qty_can_not_be_lt_0');
+        self::expectExceptionMessage('error.qty_can_not_be_lt_0');
         app(AddFleet::class)->execute($title = 'hobie cat 15', $description = 'desc', $totalSupportAvailable = -1, Fleet::STATE_INACTIVE);
     }
 

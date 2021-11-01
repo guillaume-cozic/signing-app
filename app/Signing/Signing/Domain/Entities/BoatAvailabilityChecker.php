@@ -29,7 +29,7 @@ class BoatAvailabilityChecker
     public function checkIfEnough():void
     {
         foreach($this->boatsAsked->boats() as $boatId => $qty) {
-            if (!$this->isBoatAvailable($boatId, $qty)) throw new BoatNotAvailable('errors.boat_not_available');
+            if (!$this->isBoatAvailable($boatId, $qty)) throw new BoatNotAvailable('error.boat_not_available');
         }
     }
 

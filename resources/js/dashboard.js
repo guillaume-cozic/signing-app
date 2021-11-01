@@ -258,7 +258,7 @@ function addBoatTrip(url, form) {
             $('.row-boat-trip').html('');
             notify('La sortie a bien été créée');
             loadSuggestions();
-            form.find('.alert-errors-add-boat-trip').hide();
+            form.find('.alert-error-add-boat-trip').hide();
             form.find('.alert-boat-not-available').hide();
         },
         statusCode: {
@@ -269,8 +269,8 @@ function addBoatTrip(url, form) {
                     errorString += '<li>' + value + '</li>';
                 });
                 errorString += '</ul>';
-                form.find('.alert-errors-add-boat-trip').html(errorString);
-                form.find('.alert-errors-add-boat-trip').slideDown();
+                form.find('.alert-error-add-boat-trip').html(errorString);
+                form.find('.alert-error-add-boat-trip').slideDown();
             },
             430: function (response){
                 form.find('.alert-boat-not-available').slideDown();

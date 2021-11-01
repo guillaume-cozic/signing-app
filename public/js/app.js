@@ -97,10 +97,10 @@ module.exports = function xhrAdapter(config) {
       request = null;
     };
 
-    // Handle low level network errors
+    // Handle low level network error
     request.onerror = function handleError() {
-      // Real errors are hidden from us by the browser
-      // onerror should only fire if it's a network errors
+      // Real error are hidden from us by the browser
+      // onerror should only fire if it's a network error
       reject(createError('Network Error', config, null, request));
 
       // Clean up request
@@ -594,14 +594,14 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
 var enhanceError = __webpack_require__(/*! ./enhanceError */ "./node_modules/axios/lib/core/enhanceError.js");
 
 /**
- * Create an Error with the specified message, config, errors code, request and response.
+ * Create an Error with the specified message, config, error code, request and response.
  *
- * @param {string} message The errors message.
+ * @param {string} message The error message.
  * @param {Object} config The config.
- * @param {string} [code] The errors code (for example, 'ECONNABORTED').
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
  * @param {Object} [request] The request.
  * @param {Object} [response] The response.
- * @returns {Error} The created errors.
+ * @returns {Error} The created error.
  */
 module.exports = function createError(message, config, code, request, response) {
   var error = new Error(message);
@@ -711,14 +711,14 @@ module.exports = function dispatchRequest(config) {
 
 
 /**
- * Update an Error with the specified config, errors code, and response.
+ * Update an Error with the specified config, error code, and response.
  *
- * @param {Error} error The errors to update.
+ * @param {Error} error The error to update.
  * @param {Object} config The config.
- * @param {string} [code] The errors code (for example, 'ECONNABORTED').
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
  * @param {Object} [request] The request.
  * @param {Object} [response] The response.
- * @returns {Error} The errors.
+ * @returns {Error} The error.
  */
 module.exports = function enhanceError(error, config, code, request, response) {
   error.config = config;
@@ -1256,10 +1256,10 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /**
- * Determines whether the payload is an errors thrown by Axios
+ * Determines whether the payload is an error thrown by Axios
  *
  * @param {*} payload The value to test
- * @returns {boolean} True if the payload is an errors thrown by Axios, otherwise false
+ * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
  */
 module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
@@ -2186,7 +2186,7 @@ function addBoatTrip(url, form) {
       $('.row-boat-trip').html('');
       (0,_notify__WEBPACK_IMPORTED_MODULE_0__.default)('La sortie a bien été créée');
       loadSuggestions();
-      form.find('.alert-errors-add-boat-trip').hide();
+      form.find('.alert-error-add-boat-trip').hide();
       form.find('.alert-boat-not-available').hide();
     },
     statusCode: {
@@ -2197,8 +2197,8 @@ function addBoatTrip(url, form) {
           errorString += '<li>' + value + '</li>';
         });
         errorString += '</ul>';
-        form.find('.alert-errors-add-boat-trip').html(errorString);
-        form.find('.alert-errors-add-boat-trip').slideDown();
+        form.find('.alert-error-add-boat-trip').html(errorString);
+        form.find('.alert-error-add-boat-trip').slideDown();
       },
       430: function _(response) {
         form.find('.alert-boat-not-available').slideDown();
@@ -2665,7 +2665,7 @@ $('.html-datatable').dataTable({
   }
 });
 $('.add-sailor-rental-package').click(function () {
-  var divError = $('#modal-sailor-rental-create .alert-errors');
+  var divError = $('#modal-sailor-rental-create .alert-error');
   divError.html('');
   divError.hide();
   var rentalPackageId = $(this).data('rental-package-id');
@@ -2691,8 +2691,8 @@ $('#modal-sailor-rental-create form').submit(function () {
           errorString += '<li>' + value + '</li>';
         });
         errorString += '</ul>';
-        form.find('.alert-errors').html(errorString);
-        form.find('.alert-errors').slideDown();
+        form.find('.alert-error').html(errorString);
+        form.find('.alert-error').slideDown();
       }
     }
   });
@@ -11091,7 +11091,7 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 		}
 	};
 
-	// IE9 throws an 'unknown errors' if document.activeElement is used
+	// IE9 throws an 'unknown error' if document.activeElement is used
 	// inside an iframe or frame.
 	var activeEl;
 
@@ -14187,7 +14187,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 		 *    update a whole row.
 		 *  @param {bool} [bRedraw=true] Redraw the table or not
 		 *  @param {bool} [bAction=true] Perform pre-draw actions or not
-		 *  @returns {int} 0 on success, 1 on errors
+		 *  @returns {int} 0 on success, 1 on error
 		 *  @dtopt API
 		 *  @deprecated Since v1.10
 		 *
@@ -16039,7 +16039,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 			 * nested object so we loop over the data for each level to get the next
 			 * level down. On each loop we test for undefined, and if found immediately
 			 * return. This allows entire objects to be missing and sDefaultContent to
-			 * be used if defined, rather than throwing an errors
+			 * be used if defined, rather than throwing an error
 			 */
 			var fetchData = function (data, type, src) {
 				var arrayNotation, funcNotation, out, innerSrc;
@@ -17332,7 +17332,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 						_fnLog( oSettings, 0, 'Invalid JSON response', 1 );
 					}
 					else if ( xhr.readyState === 4 ) {
-						_fnLog( oSettings, 0, 'Ajax errors', 7 );
+						_fnLog( oSettings, 0, 'Ajax error', 7 );
 					}
 				}
 
@@ -17673,7 +17673,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 		// Update the input elements whenever the table is filtered
 		$(settings.nTable).on( 'search.dt.DT', function ( ev, s ) {
 			if ( settings === s ) {
-				// IE9 throws an 'unknown errors' if document.activeElement is used
+				// IE9 throws an 'unknown error' if document.activeElement is used
 				// inside an iframe or frame...
 				try {
 					if ( jqFilter[0] !== document.activeElement ) {
@@ -19129,7 +19129,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 					Math.ceil( headerCells[i].getBoundingClientRect().width ) :
 					cell.outerWidth();
 
-				// Total is tracked to remove any sub-pixel errors as the outerWidth
+				// Total is tracked to remove any sub-pixel error as the outerWidth
 				// of the table might not equal the total given here (IE!).
 				total += bounding;
 
@@ -19495,7 +19495,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 			var sTitle = col.sTitle.replace( /<.*?>/g, "" );
 			var th = col.nTh;
 
-			// IE7 is throwing an errors when setting these properties with jQuery's
+			// IE7 is throwing an error when setting these properties with jQuery's
 			// attr() and removeAttr() methods...
 			th.removeAttribute('aria-sort');
 
@@ -19881,11 +19881,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 
 
 	/**
-	 * Log an errors message
+	 * Log an error message
 	 *  @param {object} settings dataTables settings object
-	 *  @param {int} level log errors messages, or display them to the user
-	 *  @param {string} msg errors message
-	 *  @param {int} tn Technical note id to get more information about the errors.
+	 *  @param {int} level log error messages, or display them to the user
+	 *  @param {string} msg error message
+	 *  @param {int} tn Technical note id to get more information about the error.
 	 *  @memberof DataTable#oApi
 	 */
 	function _fnLog( settings, level, msg, tn )
@@ -19894,7 +19894,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 			(settings ? 'table id='+settings.sTableId+' - ' : '')+msg;
 
 		if ( tn ) {
-			msg += '. For more information about this errors, please see '+
+			msg += '. For more information about this error, please see '+
 			'http://datatables.net/tn/'+tn;
 		}
 
@@ -20906,7 +20906,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 	 * Set the current page.
 	 *
 	 * Note that if you attempt to show a page which does not exist, DataTables will
-	 * not throw an errors, but rather reset the paging.
+	 * not throw an error, but rather reset the paging.
 	 *
 	 * @param {integer|string} action The paging action to take. This can be one of:
 	 *  * `integer` - The page index to jump to
@@ -21325,7 +21325,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 
 			// Short cut - selector is a number and no options provided (default is
 			// all records, so no need to check if the index is in there, since it
-			// must be - dev errors if the index doesn't exist).
+			// must be - dev error if the index doesn't exist).
 			if ( selInt !== null && ! opts ) {
 				return [ selInt ];
 			}
@@ -27095,7 +27095,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 		"bDrawing": false,
 
 		/**
-		 * Draw index (iDraw) of the last errors when parsing the returned data
+		 * Draw index (iDraw) of the last error when parsing the returned data
 		 *  @type int
 		 *  @default -1
 		 */
@@ -27356,7 +27356,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 		/**
 		 * Error reporting.
 		 *
-		 * How should DataTables report an errors. Can take the value 'alert',
+		 * How should DataTables report an error. Can take the value 'alert',
 		 * 'throw', 'none' or a function.
 		 *
 		 *  @type string|function
@@ -28082,8 +28082,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 					}
 				};
 
-				// IE9 throws an 'unknown errors' if document.activeElement is used
-				// inside an iframe or frame. Try / catch the errors. Not good for
+				// IE9 throws an 'unknown error' if document.activeElement is used
+				// inside an iframe or frame. Try / catch the error. Not good for
 				// accessibility, but neither are frames.
 				var activeEl;
 
@@ -28585,7 +28585,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 		_fnExtend: _fnExtend,
 		_fnCalculateEnd: function () {} // Used by a lot of plug-ins, but redundant
 		                                // in 1.10, so this dead-end function is
-		                                // added to prevent errors
+		                                // added to prevent error
 	} );
 
 
@@ -28941,7 +28941,7 @@ var
 	jQuery = function( selector, context ) {
 
 		// The jQuery object is actually just the init constructor 'enhanced'
-		// Need init if jQuery is called (just allow errors to be thrown if not included)
+		// Need init if jQuery is called (just allow error to be thrown if not included)
 		return new jQuery.fn.init( selector, context );
 	};
 
@@ -29291,7 +29291,7 @@ function( _i, name ) {
 function isArrayLike( obj ) {
 
 	// Support: real iOS 8.2 only (not reproducible in simulator)
-	// `in` check used to prevent JIT errors (gh-2145)
+	// `in` check used to prevent JIT error (gh-2145)
 	// hasOwn isn't used here due to false negatives
 	// regarding Nodelist length in IE
 	var length = !!obj && "length" in obj && obj.length,
@@ -29496,7 +29496,7 @@ var i,
 	// Used for iframes
 	// See setDocument()
 	// Removing the function wrapper causes a "Permission Denied"
-	// errors in IE
+	// error in IE
 	unloadHandler = function() {
 		setDocument();
 	},
@@ -29916,7 +29916,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 	// Return early if doc is invalid or already selected
 	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( doc == document || doc.nodeType !== 9 || !doc.documentElement ) {
@@ -29929,9 +29929,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 	documentIsHTML = !isXML( document );
 
 	// Support: IE 9 - 11+, Edge 12 - 18+
-	// Accessing iframe documents after unload throws "permission denied" errors (jQuery #13936)
+	// Accessing iframe documents after unload throws "permission denied" error (jQuery #13936)
 	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( preferredDoc != document &&
@@ -30094,9 +30094,9 @@ setDocument = Sizzle.setDocument = function( node ) {
 	rbuggyMatches = [];
 
 	// qSa(:focus) reports false when true (Chrome 21)
-	// We allow this because of a bug in IE8/9 that throws an errors
+	// We allow this because of a bug in IE8/9 that throws an error
 	// whenever `document.activeElement` is accessed on an iframe
-	// So, we allow :focus to pass through QSA all the time to avoid the IE errors
+	// So, we allow :focus to pass through QSA all the time to avoid the IE error
 	// See https://bugs.jquery.com/ticket/13378
 	rbuggyQSA = [];
 
@@ -30151,7 +30151,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Webkit/Opera - :checked should return selected option elements
 			// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
-			// IE8 throws errors here and will not see later tests
+			// IE8 throws error here and will not see later tests
 			if ( !el.querySelectorAll( ":checked" ).length ) {
 				rbuggyQSA.push( ":checked" );
 			}
@@ -30186,7 +30186,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
-			// IE8 throws errors here and will not see later tests
+			// IE8 throws error here and will not see later tests
 			if ( el.querySelectorAll( ":enabled" ).length !== 2 ) {
 				rbuggyQSA.push( ":enabled", ":disabled" );
 			}
@@ -30218,7 +30218,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			support.disconnectedMatch = matches.call( el, "*" );
 
 			// This should fail with an exception
-			// Gecko does not errors, returns false instead
+			// Gecko does not error, returns false instead
 			matches.call( el, "[s!='']:x" );
 			rbuggyMatches.push( "!=", pseudos );
 		} );
@@ -30276,7 +30276,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 		// Calculate position if both inputs belong to the same document
 		// Support: IE 11+, Edge 17 - 18+
-		// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+		// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 		// two documents; shallow comparisons work.
 		// eslint-disable-next-line eqeqeq
 		compare = ( a.ownerDocument || a ) == ( b.ownerDocument || b ) ?
@@ -30291,7 +30291,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Choose the first element that is related to our preferred document
 			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
 			if ( a == document || a.ownerDocument == preferredDoc &&
@@ -30300,7 +30300,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			// eslint-disable-next-line eqeqeq
 			if ( b == document || b.ownerDocument == preferredDoc &&
@@ -30335,7 +30335,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		if ( !aup || !bup ) {
 
 			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			/* eslint-disable eqeqeq */
 			return a == document ? -1 :
@@ -30374,7 +30374,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 			// Otherwise nodes in our document sort first
 			// Support: IE 11+, Edge 17 - 18+
-			// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+			// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 			// two documents; shallow comparisons work.
 			/* eslint-disable eqeqeq */
 			ap[ i ] == preferredDoc ? -1 :
@@ -30421,7 +30421,7 @@ Sizzle.contains = function( context, elem ) {
 
 	// Set document vars if needed
 	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( ( context.ownerDocument || context ) != document ) {
@@ -30434,7 +30434,7 @@ Sizzle.attr = function( elem, name ) {
 
 	// Set document vars if needed
 	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 	// two documents; shallow comparisons work.
 	// eslint-disable-next-line eqeqeq
 	if ( ( elem.ownerDocument || elem ) != document ) {
@@ -30462,7 +30462,7 @@ Sizzle.escape = function( sel ) {
 };
 
 Sizzle.error = function( msg ) {
-	throw new Error( "Syntax errors, unrecognized expression: " + msg );
+	throw new Error( "Syntax error, unrecognized expression: " + msg );
 };
 
 /**
@@ -31158,7 +31158,7 @@ tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 
 	// Return the length of the invalid excess
 	// if we're just parsing
-	// Otherwise, throw an errors or return tokens
+	// Otherwise, throw an error or return tokens
 	return parseOnly ?
 		soFar.length :
 		soFar ?
@@ -31473,7 +31473,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 			if ( outermost ) {
 
 				// Support: IE 11+, Edge 17 - 18+
-				// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+				// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 				// two documents; shallow comparisons work.
 				// eslint-disable-next-line eqeqeq
 				outermostContext = context == document || context || outermost;
@@ -31487,7 +31487,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 					j = 0;
 
 					// Support: IE 11+, Edge 17 - 18+
-					// IE/Edge sometimes throw a "Permission denied" errors when strict-comparing
+					// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
 					// two documents; shallow comparisons work.
 					// eslint-disable-next-line eqeqeq
 					if ( !context && elem.ownerDocument != document ) {
@@ -31951,7 +31951,7 @@ var rootjQuery,
 					context = context instanceof jQuery ? context[ 0 ] : context;
 
 					// Option to run scripts is true for back-compat
-					// Intentionally let the errors be thrown if parseHTML is not present
+					// Intentionally let the error be thrown if parseHTML is not present
 					jQuery.merge( this, jQuery.parseHTML(
 						match[ 1 ],
 						context && context.nodeType ? context.ownerDocument || context : document,
@@ -32643,7 +32643,7 @@ jQuery.extend( {
 							// Support: Promises/A+ section 2.3.3.3.1
 							// https://promisesaplus.com/#point-57
 							// Re-resolve promises immediately to dodge false rejection from
-							// subsequent errors
+							// subsequent error
 							if ( depth ) {
 								process();
 							} else {
@@ -32856,7 +32856,7 @@ jQuery.fn.ready = function( fn ) {
 		.then( fn )
 
 		// Wrap jQuery.readyException in a function so that the lookup
-		// happens at the time of errors handling instead of callback
+		// happens at the time of error handling instead of callback
 		// registration.
 		.catch( function( error ) {
 			jQuery.readyException( error );
@@ -33495,7 +33495,7 @@ var documentElement = document.documentElement;
 	// Check attachment across shadow DOM boundaries when possible (gh-3504)
 	// Support: iOS 10.0-10.2 only
 	// Early iOS 10 versions support `attachShadow` but not `getRootNode`,
-	// leading to errors. We need to check for `getRootNode`.
+	// leading to error. We need to check for `getRootNode`.
 	if ( documentElement.getRootNode ) {
 		isAttached = function( elem ) {
 			return jQuery.contains( elem.ownerDocument, elem ) ||
@@ -35808,7 +35808,7 @@ jQuery.each( [ "height", "width" ], function( _i, dimension ) {
 					// getBoundingClientRect().width unless display is changed.
 					// Support: IE <=11 only
 					// Running getBoundingClientRect on a disconnected node
-					// in IE throws an errors.
+					// in IE throws an error.
 					( !elem.getClientRects().length || !elem.getBoundingClientRect().width ) ?
 						swap( elem, cssShow, function() {
 							return getWidthOrHeight( elem, dimension, extra );
@@ -38040,7 +38040,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 				// Apply converter (if not an equivalence)
 				if ( conv !== true ) {
 
-					// Unless errors are allowed to bubble, catch and return them
+					// Unless error are allowed to bubble, catch and return them
 					if ( conv && s.throws ) {
 						response = conv( response );
 					} else {
@@ -38325,7 +38325,7 @@ jQuery.extend( {
 					urlAnchor.protocol + "//" + urlAnchor.host;
 			} catch ( e ) {
 
-				// If there is an errors parsing the URL, assume it is crossDomain,
+				// If there is an error parsing the URL, assume it is crossDomain,
 				// it can be rejected by the transport if it is invalid
 				s.crossDomain = true;
 			}
@@ -38555,7 +38555,7 @@ jQuery.extend( {
 				}
 			} else {
 
-				// Extract errors from statusText and normalize for non-aborts
+				// Extract error from statusText and normalize for non-aborts
 				error = statusText;
 				if ( status || !statusText ) {
 					statusText = "error";
@@ -38820,7 +38820,7 @@ jQuery.ajaxTransport( function( options ) {
 
 								// Support: IE <=9 only
 								// On a manual native abort, IE9 throws
-								// errors on any property access that is not readyState
+								// error on any property access that is not readyState
 								if ( typeof xhr.status !== "number" ) {
 									complete( 0, "error" );
 								} else {
@@ -38887,7 +38887,7 @@ jQuery.ajaxTransport( function( options ) {
 					xhr.send( options.hasContent && options.data || null );
 				} catch ( e ) {
 
-					// #14683: Only rethrow if this hasn't been notified as an errors yet
+					// #14683: Only rethrow if this hasn't been notified as an error yet
 					if ( callback ) {
 						throw e;
 					}
@@ -38951,7 +38951,7 @@ jQuery.ajaxTransport( "script", function( s ) {
 				script = jQuery( "<script>" )
 					.attr( s.scriptAttrs || {} )
 					.prop( { charset: s.scriptCharset, src: s.url } )
-					.on( "load errors", callback = function( evt ) {
+					.on( "load error", callback = function( evt ) {
 						script.remove();
 						callback = null;
 						if ( evt ) {
@@ -39176,7 +39176,7 @@ jQuery.fn.load = function( url, params, callback ) {
 			self.html( selector ?
 
 				// If a selector was specified, locate the right elements in a dummy div
-				// Exclude scripts to avoid IE 'Permission Denied' errors
+				// Exclude scripts to avoid IE 'Permission Denied' error
 				jQuery( "<div>" ).append( jQuery.parseHTML( responseText ) ).find( selector ) :
 
 				// Otherwise use the full result
@@ -39184,7 +39184,7 @@ jQuery.fn.load = function( url, params, callback ) {
 
 		// If the request succeeds, this function gets "data", "status", "jqXHR"
 		// but they are ignored because response was set above.
-		// If it fails, this function gets "jqXHR", "status", "errors"
+		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
 				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
@@ -39289,7 +39289,7 @@ jQuery.fn.extend( {
 		// Return zeros for disconnected and hidden (display: none) elements (gh-2310)
 		// Support: IE <=11 only
 		// Running getBoundingClientRect on a
-		// disconnected node in IE throws an errors
+		// disconnected node in IE throws an error
 		if ( !elem.getClientRects().length ) {
 			return { top: 0, left: 0 };
 		}
@@ -40023,7 +40023,7 @@ var PusherChannel = /*#__PURE__*/function (_Channel) {
       return this;
     }
     /**
-     * Register a callback to be called anytime a subscription errors occurs.
+     * Register a callback to be called anytime a subscription error occurs.
      */
 
   }, {
@@ -40273,7 +40273,7 @@ var SocketIoChannel = /*#__PURE__*/function (_Channel) {
       return this;
     }
     /**
-     * Register a callback to be called anytime an errors occurs.
+     * Register a callback to be called anytime an error occurs.
      */
 
   }, {
@@ -40500,7 +40500,7 @@ var NullChannel = /*#__PURE__*/function (_Channel) {
       return this;
     }
     /**
-     * Register a callback to be called anytime an errors occurs.
+     * Register a callback to be called anytime an error occurs.
      */
 
   }, {
@@ -52255,7 +52255,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * numbers, `Object` objects, regexes, sets, strings, symbols, and typed
      * arrays. The own enumerable properties of `arguments` objects are cloned
      * as plain objects. An empty object is returned for uncloneable values such
-     * as errors objects, functions, DOM nodes, and WeakMaps.
+     * as error objects, functions, DOM nodes, and WeakMaps.
      *
      * @static
      * @memberOf _
@@ -52751,7 +52751,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * equivalent.
      *
      * **Note:** This method supports comparing arrays, array buffers, booleans,
-     * date objects, errors objects, maps, numbers, `Object` objects, regexes,
+     * date objects, error objects, maps, numbers, `Object` objects, regexes,
      * sets, strings, symbols, and typed arrays. `Object` objects are compared
      * by their own, not inherited, enumerable properties. Functions and DOM
      * nodes are compared by strict equality, i.e. `===`.
@@ -52825,7 +52825,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * @since 3.0.0
      * @category Lang
      * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is an errors object, else `false`.
+     * @returns {boolean} Returns `true` if `value` is an error object, else `false`.
      * @example
      *
      * _.isError(new Error);
@@ -53137,7 +53137,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      */
     function isNaN(value) {
       // An `NaN` primitive is the only value that is not equal to itself.
-      // Perform the `toStringTag` check first to avoid errors with some
+      // Perform the `toStringTag` check first to avoid error with some
       // ActiveX objects in IE.
       return isNumber(value) && value != +value;
     }
@@ -53149,7 +53149,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * of the core-js package because core-js circumvents this kind of detection.
      * Despite multiple requests, the core-js maintainer has made it clear: any
      * attempt to fix the detection will be obstructed. As a result, we're left
-     * with little choice but to throw an errors. Unfortunately, this also affects
+     * with little choice but to throw an error. Unfortunately, this also affects
      * packages, like [babel-polyfill](https://www.npmjs.com/package/babel-polyfill),
      * which rely on core-js.
      *
@@ -56006,7 +56006,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * // => 'hello mustache!'
      *
      * // Use the `source` property to inline compiled templates for meaningful
-     * // line numbers in errors messages and stack traces.
+     * // line numbers in error messages and stack traces.
      * fs.writeFileSync(path.join(process.cwd(), 'jst.js'), '\
      *   var JST = {\
      *     "main": ' + _.template(mainText).source + '\
@@ -56472,7 +56472,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     /*------------------------------------------------------------------------*/
 
     /**
-     * Attempts to invoke `func`, returning either the result or the caught errors
+     * Attempts to invoke `func`, returning either the result or the caught error
      * object. Any additional arguments are provided to `func` when it's invoked.
      *
      * @static
@@ -56481,10 +56481,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
      * @category Util
      * @param {Function} func The function to attempt.
      * @param {...*} [args] The arguments to invoke `func` with.
-     * @returns {*} Returns the `func` result or errors object.
+     * @returns {*} Returns the `func` result or error object.
      * @example
      *
-     * // Avoid throwing errors for invalid selectors.
+     * // Avoid throwing error for invalid selectors.
      * var elements = _.attempt(function(selector) {
      *   return document.querySelectorAll(selector);
      * }, '>_>');
@@ -58355,7 +58355,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
   // Some AMD build optimizers, like r.js, check for condition patterns like:
   if (true) {
-    // Expose Lodash on the global object to prevent errors when Lodash is
+    // Expose Lodash on the global object to prevent error when Lodash is
     // loaded by a script tag in the presence of an AMD loader.
     // See http://requirejs.org/docs/errors.html#mismatch for more details.
     // Use `_.noConflict` to remove Lodash from the global object.
@@ -78049,7 +78049,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
             +milliseconds +
             seconds * 1e3 + // 1000
             minutes * 6e4 + // 1000 * 60
-            hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
+            hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding error https://github.com/moment/moment/issues/2978
         // Because of dateAddRemove treats 24 hours as different from a
         // day when working around DST, we need to store them separately
         this._days = +days + weeks * 7;
@@ -80195,7 +80195,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
                     return months / 12;
             }
         } else {
-            // handle milliseconds separately because of floating point math errors (issue #1867)
+            // handle milliseconds separately because of floating point math error (issue #1867)
             days = this._days + Math.round(monthsToDays(this._months));
             switch (units) {
                 case 'week':
@@ -80208,7 +80208,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
                     return days * 1440 + milliseconds / 6e4;
                 case 'second':
                     return days * 86400 + milliseconds / 1000;
-                // Math.floor prevents floating point math errors here
+                // Math.floor prevents floating point math error here
                 case 'millisecond':
                     return Math.floor(days * 864e5) + milliseconds;
                 default:
@@ -80603,7 +80603,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
             u: 'undefined',
             z: 'null'
             //d : 'date',
-            //e : 'errors',
+            //e : 'error',
             //r : 'regexp',
             //y : 'symbol'
         };
@@ -80865,7 +80865,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
                  */
                 inA: function (item, arr) {
                     for (var i = 0; i < arr[LEXICON.l]; i++)
-                        //Sometiems in IE a "SCRIPT70" Permission denied errors occurs if HTML elements in a iFrame are compared
+                        //Sometiems in IE a "SCRIPT70" Permission denied error occurs if HTML elements in a iFrame are compared
                         try {
                             if (arr[i] === item)
                                 return i;
@@ -82151,7 +82151,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
                      * Validates the passed object by the passed template.
                      * @param obj The object which shall be validated.
                      * @param template The template which defines the allowed values and types.
-                     * @param writeErrors True if errors shall be logged to the console.
+                     * @param writeErrors True if error shall be logged to the console.
                      * @param diffObj If a object is passed then only valid differences to this object will be returned.
                      * @returns {{}} A object which contains two objects called "default" and "prepared" which contains only the valid properties of the passed original object and discards not different values compared to the passed diffObj.
                      */
@@ -84065,8 +84065,8 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*!
                     };
                     var getViewportSize = function () {
                         //viewport size is padding container because it never has padding, margin and a border
-                        //determine zoom rounding errors -> sometimes scrollWidth/Height is smaller than clientWidth/Height
-                        //if this happens add the difference to the viewportSize to compensate the rounding errors
+                        //determine zoom rounding error -> sometimes scrollWidth/Height is smaller than clientWidth/Height
+                        //if this happens add the difference to the viewportSize to compensate the rounding error
                         return {
                             w: _paddingElementNative[LEXICON.oW] + MATH.max(0, _contentElementNative[LEXICON.cW] - _contentElementNative[LEXICON.sW]),
                             h: _paddingElementNative[LEXICON.oH] + MATH.max(0, _contentElementNative[LEXICON.cH] - _contentElementNative[LEXICON.sH])
@@ -87498,7 +87498,7 @@ function getRoot(node) {
  * @returns {Element} common offset parent
  */
 function findCommonOffsetParent(element1, element2) {
-  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
+  // This check is needed to avoid error in case one of the elements isn't defined for any reason
   if (!element1 || !element1.nodeType || !element2 || !element2.nodeType) {
     return document.documentElement;
   }
@@ -87842,7 +87842,7 @@ function isFixed(element) {
  */
 
 function getFixedPositionOffsetParent(element) {
-  // This check is needed to avoid errors in case one of the elements isn't defined for any reason
+  // This check is needed to avoid error in case one of the elements isn't defined for any reason
   if (!element || !element.parentElement || isIE()) {
     return document.documentElement;
   }
@@ -89925,7 +89925,7 @@ function runTimeout(fun) {
             // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
             return cachedSetTimeout.call(null, fun, 0);
         } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global errors
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
             return cachedSetTimeout.call(this, fun, 0);
         }
     }
@@ -89950,7 +89950,7 @@ function runClearTimeout(marker) {
             // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
             return cachedClearTimeout.call(null, marker);
         } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global errors.
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
             // Some versions of I.E. have different rules for clearTimeout vs setTimeout
             return cachedClearTimeout.call(this, marker);
         }
@@ -90164,7 +90164,7 @@ var requirejs, require, define;
                     // keep them so that when converted to a path it may
                     // still work when converted to a path, even though
                     // as an ID it is less than ideal. In larger point
-                    // releases, may be better to just kick out an errors.
+                    // releases, may be better to just kick out an error.
                     if (i === 0 || (i === 1 && name[2] === '..') || name[i - 1] === '..') {
                         continue;
                     } else if (i > 0) {
