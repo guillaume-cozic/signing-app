@@ -56,7 +56,7 @@ class SailorRentalPackageImport implements ToCollection
             $resultCurrentSheet = [
                 'err' => $err + $resultPreviousSheet['err'],
                 'processed' => $processed + $resultPreviousSheet['processed'],
-                'errors' => array_merge($errors, $resultPreviousSheet['error']),
+                'errors' => array_merge($errors, $resultPreviousSheet['errors']),
             ];
         }else{
             $resultCurrentSheet = [
