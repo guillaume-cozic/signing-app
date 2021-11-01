@@ -15,7 +15,7 @@
     @if($invite)
         <div class="row">
             <div class="callout callout-info">
-                <h5>Vous avez été invité à rejoindre : club nautique du Pradet</h5>
+                <h5>Vous avez été invité à rejoindre : {{ session()->get('team_name', '') }}</h5>
                 <p>Enregistrez vous pour accèder à l'espace de collaboration</p>
             </div>
         </div>
@@ -37,7 +37,7 @@
                             <div class="mb-4">
                                 <h3>WellSail : Enregistrement d'un club nautique</h3>
                                 @if($invite)
-                                    <p class="mb-4">Vous avez été invité à rejoindre : club nautique du Pradet,
+                                    <p class="mb-4">Vous avez été invité à rejoindre : {{ session()->get('team_name', '') }},
                                         Enregistrez vous pour accèder à l'espace de travail
                                     </p>
                                 @else

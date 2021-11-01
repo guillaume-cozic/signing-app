@@ -28,7 +28,7 @@ Route::post('/profile', [UserController::class, 'update'])
     ->name('user.profile.save');
 
 Route::get('/fleets', [FleetController::class, 'listShips'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:show fleets'])
     ->name('fleet.list');
 
 Route::post('/fleet', [FleetController::class, 'add'])
@@ -115,14 +115,14 @@ Route::middleware(['auth'])->group(function (){
         Route::post('list', [ReservationController::class, 'reservations'])->name('reservation.list');
     });
 
-    Route::prefix('rental-package')->group(function (){
+    Route::prefix('rental-package')->middleware(['can:show rental package'])->group(function (){
         Route::get('', [RentalPackageController::class, 'showAddRentalPackage'])->name('rental-package.add');
         Route::post('', [RentalPackageController::class, 'processAddRentalPackage'])->name('rental-package.add.process');
         Route::post('{id}/edit', [RentalPackageController::class, 'processEditRentalPackage'])->name('rental-package.edit.process');
         Route::get('{id}/edit', [RentalPackageController::class, 'showEdit'])->name('rental-package.edit');
     });
 
-    Route::prefix('sailor-rental-packages')->group(function () {
+    Route::prefix('sailor-rental-packages')->middleware(['can:show sailor rental package'])->group(function () {
         Route::get('', [SailorRentalPackageController::class, 'index'])->name('sailor-rental-package.index');
         Route::post('', [SailorRentalPackageController::class, 'processAdd'])->name('sailor-rental-package.add');
         Route::post('add', [SailorRentalPackageController::class, 'processAddAjax'])->name('sailor-rental-package.add.ajax');
@@ -147,21 +147,22 @@ Route::post('/contact-us', [App\Http\Controllers\ContactController::class, 'proc
 
 
 
-Route::group(['prefix' => 'teams', 'namespace' => 'Teamwork'], function()
-{
-    Route::get('/', [App\Http\Controllers\Teamwork\TeamController::class, 'index'])->name('teams.index');
-    Route::get('create', [App\Http\Controllers\Teamwork\TeamController::class, 'create'])->name('teams.create');
-    Route::post('teams', [App\Http\Controllers\Teamwork\TeamController::class, 'store'])->name('teams.store');
-    Route::get('edit/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'edit'])->name('teams.edit');
-    Route::put('edit/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'update'])->name('teams.update');
-    Route::delete('destroy/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'destroy'])->name('teams.destroy');
-    Route::get('switch/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'switchTeam'])->name('teams.switch');
+Route::group(['prefix' => 'teams', 'namespace' => 'Teamwork'], function() {
 
-    Route::get('members/{id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'show'])->name('teams.members.show');
-    Route::get('redirect', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'redirectToMainTeam'])->name('teams.members.redirect');
-    Route::get('members/resend/{invite_id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'resendInvite'])->name('teams.members.resend_invite');
-    Route::post('members/{id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'invite'])->name('teams.members.invite');
-    Route::delete('members/{id}/{user_id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'destroy'])->name('teams.members.destroy');
+    Route::prefix('')->middleware('can:show collaborator')->group(function() {
+        Route::get('/', [App\Http\Controllers\Teamwork\TeamController::class, 'index'])->name('teams.index');
+        Route::get('create', [App\Http\Controllers\Teamwork\TeamController::class, 'create'])->name('teams.create');
+        Route::post('teams', [App\Http\Controllers\Teamwork\TeamController::class, 'store'])->name('teams.store');
+        Route::get('edit/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'edit'])->name('teams.edit');
+        Route::put('edit/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'update'])->name('teams.update');
+        Route::delete('destroy/{id}', [App\Http\Controllers\Teamwork\TeamController::class, 'destroy'])->name('teams.destroy');
+
+        Route::get('members/{id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'show'])->name('teams.members.show');
+        Route::get('redirect', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'redirectToMainTeam'])->name('teams.members.redirect');
+        Route::get('members/resend/{invite_id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'resendInvite'])->name('teams.members.resend_invite');
+        Route::post('members/{id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'invite'])->name('teams.members.invite');
+        Route::delete('members/{id}/{user_id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'destroy'])->name('teams.members.destroy');
+    });
 
     Route::get('accept/{token}', [App\Http\Controllers\Teamwork\AuthController::class, 'acceptInvite'])->name('teams.accept_invite');
 });

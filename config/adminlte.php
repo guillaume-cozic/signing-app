@@ -239,11 +239,13 @@ return [
             'text' => 'Les flottes',
             'url'  => 'fleets',
             'icon' => 'nav-icon fas fa-ship',
+            'can' => 'show fleets'
         ],
         [
             'text' => 'Forfaits',
             'icon' => 'nav-icon fas fa-copy',
             'active' => ['rental*'],
+            'can'=> 'show rental package',
             'submenu' => [
                 [
                     'text' => 'Modèle de forfait',
@@ -260,6 +262,7 @@ return [
             'text' => 'Utilisateurs',
             'icon' => 'nav-icon fas fa-users',
             'active' => ['teams*'],
+            'can' => 'show collaborator',
             'submenu' => [
                 [
                     'text' => 'L\'équipe',

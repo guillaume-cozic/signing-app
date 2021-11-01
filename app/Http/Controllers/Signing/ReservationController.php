@@ -9,6 +9,7 @@ use App\Signing\Signing\Application\ParametersWrapper\ReservationParameters;
 use App\Signing\Signing\Domain\UseCases\BoatTrip\AddReservation;
 use App\Signing\Signing\Domain\UseCases\GetBoatTripsList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
@@ -51,10 +52,12 @@ class ReservationController extends Controller
             $state = 'success';
             $message = 'Réservation';
 
-
-            $buttons = '<i style="cursor: pointer;" data-href="'.route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]).'"
+            $buttons = '';
+            if(Auth::user()->hasPermissionTo('delete boat trip')) {
+                $buttons = '<i style="cursor: pointer;" data-href="' . route('boat-trip.cancel', ['boatTripId' => $boatTrip->id]) . '"
                  data-toggle="tooltip" data-placement="top" title="Supprimer la réservation"
                 class="btn-cancel fa fa-trash text-red p-1"></i>';
+            }
 
             if(isset($boatTrip->note) && $boatTrip->note !== "") {
                 $buttons .= '<i style="cursor: pointer;"

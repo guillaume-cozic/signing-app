@@ -10,13 +10,13 @@ class AddBoatTripParameters implements Parameters
         public array $boats,
         public string $name,
         public float $hours,
-        public string $startAt,
+        public ?string $startAt,
         public bool $startNow,
         public bool $startAuto,
         public bool $isInstructor,
         public bool $isMember,
-        public string $note,
-        public string $sailorId,
+        public ?string $note,
+        public ?string $sailorId,
         public bool $doNotDecreaseHours
     ){}
 

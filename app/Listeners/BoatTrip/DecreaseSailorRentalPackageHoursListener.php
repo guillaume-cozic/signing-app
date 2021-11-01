@@ -4,7 +4,7 @@
 namespace App\Listeners\BoatTrip;
 
 
-use App\Events\BoatTrip\BoatTripEnded;
+use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripEnded;
 use App\Signing\Signing\Domain\UseCases\RentalPackage\DecreaseSailorRentalPackageHoursWhenBoatTripFinished;
 
 class DecreaseSailorRentalPackageHoursListener
