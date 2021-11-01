@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     @endif
-                    @if(!empty($result['error']))
+                    @if(!empty($result['errors']))
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -48,7 +48,7 @@
                                     <th>Date de fin de validité</th>
                                 </tr>
                             </thead>
-                            @foreach($result['error'] as $errorImport)
+                            @foreach($result['errors'] as $errorImport)
                                 <tr>
                                     <td>{{ $errorImport[0] }}</td>
                                     <td>{{ $errorImport[1] }}</td>
