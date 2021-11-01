@@ -8,14 +8,22 @@
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Roles</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         @foreach($team->users AS $user)
                             <tr>
                                 <td>{{ucfirst($user->firstname).' '.ucfirst($user->surname)}}</td>
+                                @php
+                                    $roles = $user->roles->pluck('name')->toArray();
+                                    foreach($roles as $i => $role){
+                                        $roles[$i] = '<span class="badge badge-info">'.__('roles.'.strtolower($role)).' </span>';
+                                    }
+                                @endphp
+                                <td>{!! implode(' ', $roles) !!}</td>
                                 <td>
                                     @if(auth()->user()->isOwnerOfTeam($team))
                                         @if(auth()->user()->getKey() !== $user->getKey())
@@ -24,7 +32,7 @@
                                                   method="post">
                                                 {!! csrf_field() !!}
                                                 <input type="hidden" name="_method" value="DELETE"/>
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i>
+                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>
                                                     Supprimer
                                                 </button>
                                             </form>

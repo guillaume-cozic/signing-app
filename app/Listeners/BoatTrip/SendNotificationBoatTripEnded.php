@@ -4,8 +4,8 @@
 namespace App\Listeners\BoatTrip;
 
 
-use App\Events\BoatTrip\BoatTripEnded;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripEndedNotification;
+use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripEnded;
 
 class SendNotificationBoatTripEnded
 {
