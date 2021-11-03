@@ -47,6 +47,9 @@ class SqlSailorRentalPackageRepository implements SailorRentalPackageRepository
         $sailorId = null;
         if($sailor->surrogateId() === null){
             $sailorModel = SailorModel::query()->where('uuid', $sailor->id())->first();
+            if(!isset($sailorModel)){
+                return null;
+            }
             $sailorId = $sailorModel->id;
         }
         $sailorId = $sailor->surrogateId() ?? $sailorId;
