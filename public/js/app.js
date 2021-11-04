@@ -2610,9 +2610,10 @@ var sailing_club_id = $('#sailing_team_id').val();
 try {
   var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
     broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001'
+    host: window.location.hostname + ':6001',
+    namespace: 'App.Signing.Notifications.Domain.Events'
   });
-  echo["private"]('notification_' + sailing_club_id).listen('NotificationCreated', function (e) {
+  echo["private"]('notification.' + sailing_club_id).listen('NotificationCreated', function (e) {
     reloadDashboard();
     $.notify({
       icon: e.avatar,

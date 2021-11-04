@@ -24,6 +24,6 @@ class NotificationCreated implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PrivateChannel('notification_'.app(ContextService::class)->get());
+        return new PrivateChannel('notification.'.app(ContextService::class)->get()->sailingClubId());
     }
 }

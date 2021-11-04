@@ -21,6 +21,7 @@ use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class FleetController extends Controller
 {
@@ -55,6 +56,7 @@ class FleetController extends Controller
 
     public function listShips(GetFleetsList $getFleetsList)
     {
+        Log::info('ggh');
         $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
         $fleetsInit = $this->getFleetsInit();
         return view('signing.fleet.list', [

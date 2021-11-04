@@ -40,12 +40,12 @@ services:
   nginx_signing:
     image: nginx:latest
     container_name: nginx_signing
+    hostname: nginx_signing
     restart: unless-stopped
     ports:
       - 8002:80
     volumes:
       - ../signing-app:/var/www/html/signingapp:rw
-      - ../landing-wellsail:/var/www/html/landing-wellsail:rw
       - ./nginx:/etc/nginx/conf.d/
     networks:
       - back-tier

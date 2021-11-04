@@ -13,17 +13,15 @@ use Illuminate\Support\Facades\Log;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
-/*Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+/*
+Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });*/
 
 
-
-/*Broadcast::channel('notification_{id}', function ($user, $id) {
-    return true;
-    //return $user->currentTeam->id == $id;
-});*/
+Broadcast::channel('notification.{id}', function ($user, $id) {
+    return $user->currentTeam->id == $id;
+});
 
 
 
