@@ -21,6 +21,7 @@ use App\Signing\Signing\Domain\UseCases\Query\GetNumberBoatsOfFleetAvailable;
 use App\Signing\Signing\Domain\UseCases\UpdateFleet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class FleetController extends Controller
 {

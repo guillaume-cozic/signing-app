@@ -4,8 +4,9 @@
 namespace App\Signing\Notifications\Domain\Events;
 
 
-use Illuminate\Broadcasting\Channel;
+use App\Signing\Shared\Services\ContextService;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -18,11 +19,12 @@ class NotificationCreated implements ShouldBroadcast
         public string $message,
         public string $title,
         public string $avatar,
-        public string $level
+        public string $level,
+        public string $performerId,
     ){}
 
     public function broadcastOn()
     {
-        return new Channel('notification');
+        return new PrivateChannel('notification.'.app(ContextService::class)->get()->sailingClubId());
     }
 }
