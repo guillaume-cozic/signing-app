@@ -15,4 +15,9 @@ class Controller extends BaseController
     {
         return redirect('login');
     }
+
+    public function p404()
+    {
+        return view ('errors.404');
+    }
 }
