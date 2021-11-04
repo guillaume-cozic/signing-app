@@ -56,7 +56,6 @@ class FleetController extends Controller
 
     public function listShips(GetFleetsList $getFleetsList)
     {
-        Log::info('ggh');
         $fleets = $getFleetsList->execute(['filters' => ['state' => Fleet::STATE_ACTIVE]], 0, 0, 'name');
         $fleetsInit = $this->getFleetsInit();
         return view('signing.fleet.list', [
