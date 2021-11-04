@@ -57,6 +57,9 @@
                                 </label>
                                 <span class="ml-auto"><a href="{{$password_reset_url}}" class="forgot-pass">Mot de passe oublié</a></span>
                             </div>
+                            <div class="d-flex mb-5 align-items-center">
+                                <span class="ml-auto"><a href="{{$register_url}}">Je souhaite créer un compte pour mon club nautique</a></span>
+                            </div>
                             <input type="submit" value="Se connecter" class="btn btn-block btn-primary">
                             <!--span class="d-block text-left my-4 text-muted">&mdash; ou vous connectez avec &mdash;</span>
                             <div class="social-login">

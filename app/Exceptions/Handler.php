@@ -41,12 +41,18 @@ class Handler extends ExceptionHandler
 
     public function render($request, \Throwable $exception)
     {
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){
+            return redirect(url('/404'));
+        }
         if ($exception instanceof DomainException) {
             return response()->json([
                 'data' => [
                     'message' => $exception->getMessage(),
                 ]
             ], 430);
+        }
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            return response()->view('error.403', [], 403);
         }
         return Parent::render($request, $exception);
     }

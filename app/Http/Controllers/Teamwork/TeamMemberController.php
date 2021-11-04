@@ -71,16 +71,19 @@ class TeamMemberController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
+            'roles' => 'required'
         ]);
 
         $teamModel = config('teamwork.team_model');
         $team = $teamModel::findOrFail($team_id);
 
         if (! Teamwork::hasPendingInvite($request->email, $team)) {
-            Teamwork::inviteToTeam($request->email, $team, function ($invite) {
+            Teamwork::inviteToTeam($request->email, $team, function ($invite) use($request) {
                 Mail::send('teamwork.emails.invite', ['team' => $invite->team, 'invite' => $invite], function ($m) use ($invite) {
                     $m->to($invite->email)->subject('Invitation to join team '.$invite->team->name);
                 });
+                $invite->roles = json_encode($request->roles);
+                $invite->save();
             });
         } else {
             return redirect()->back()->withErrors([

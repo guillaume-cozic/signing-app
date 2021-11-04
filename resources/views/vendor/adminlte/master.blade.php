@@ -71,6 +71,8 @@
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>
+    <input type="hidden" value="{{ \Illuminate\Support\Facades\Auth::user() !== null && \Illuminate\Support\Facades\Auth::user()->currentTeam ? \Illuminate\Support\Facades\Auth::user()->currentTeam->id : null }}" id="sailing_team_id"/>
+    <input type="hidden" value="{{ \Illuminate\Support\Facades\Auth::user() !== null && \Illuminate\Support\Facades\Auth::user()->id ? \Illuminate\Support\Facades\Auth::user()->id : null }}" id="user_id"/>
     {{-- Body Content --}}
     @yield('body')
 

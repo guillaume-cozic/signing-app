@@ -94,68 +94,6 @@ class SqlSailorRentalPackageRepositoryTest extends TestCase
     }
 
     /**
-     * @test
-     * @throws NumberBoatsCantBeNegative
-     */
-    public function shouldGetSailorRentalByNameAndPackageId()
-    {
-        $now = Carbon::instance($this->dateProvider->current())->startOfDay();
-
-        $fleet = $this->addFleet();
-
-        $sailorId = 'sailorId';
-        $name = "tabarly";
-        $sailor = new Sailor(name:$name, sailorId: $sailorId);
-        $this->sailorRepository->save($sailor->getState());
-
-        $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection([$fleet->id()]), 'forfait', 10);
-        $this->rentalPackageRepository->save($rentalPackage->getState());
-
-        $sailorRentalExpected = new SailorRentalPackage('abc',$sailorId, 'rental_package_id', $now, 10);
-        $this->sailorRentalPackageRepository->save($sailorRentalExpected->getState());
-
-        $sailorRentalSaved = $this->sailorRentalPackageRepository->getByNameAndRentalPackage($name, 'rental_package_id');
-        self::assertEquals($sailorRentalExpected, $sailorRentalSaved);
-    }
-
-
-    /**
-     * @test
-     * @throws NumberBoatsCantBeNegative
-     */
-    public function shouldNotGetSailorRental_WhenNoRentalPackage()
-    {
-        $now = Carbon::instance($this->dateProvider->current())->startOfDay();
-        $this->addFleet();
-
-        $sailorId = 'sailorId';
-        $name = "tabarly";
-        $sailor = new Sailor(name:$name, sailorId: $sailorId);
-        $this->sailorRepository->save($sailor->getState());
-
-        $sailorRentalExpected = new SailorRentalPackage('abc',$sailorId, 'rental_package_id', $now, 10);
-        $this->sailorRentalPackageRepository->save($sailorRentalExpected->getState());
-
-        self::assertNull($this->sailorRentalPackageRepository->getByNameAndRentalPackage($name, 'rental_package_id'));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotGetSailorRental_WhenNoSailor()
-    {
-        $name = "tabarly";
-
-        $fleet = $this->addFleet();
-
-        $rentalPackage = new RentalPackage('rental_package_id', new FleetCollection([$fleet->id()]), 'forfait', 10);
-        $this->rentalPackageRepository->save($rentalPackage->getState());
-
-        $sailorRentalPackage = $this->sailorRentalPackageRepository->getByNameAndRentalPackage($name, 'rental_package_id');
-        self::assertNull($sailorRentalPackage);
-    }
-
-    /**
      * @return Fleet
      * @throws NumberBoatsCantBeNegative
      */

@@ -20,6 +20,7 @@ use App\Signing\Signing\Domain\UseCases\GetFleetsList;
 use App\Signing\Signing\Domain\UseCases\Query\GetBoatTripsSuggestions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BoatTripController extends Controller
 {
@@ -78,7 +79,9 @@ class BoatTripController extends Controller
                 $state = 'indigo';
                 $message = 'Réservation';
                 $actions[] = 'start';
-                $actions[] = 'cancel';
+                if(Auth::user()->hasPermissionTo('delete boat trip')) {
+                    $actions[] = 'cancel';
+                }
             }
 
             if($boatTrip->startAt !== null){
@@ -95,7 +98,9 @@ class BoatTripController extends Controller
                     $state = 'warning';
                     $message = 'A terre';
                     $actions[] = 'start';
-                    $actions[] = 'cancel';
+                    if(Auth::user()->hasPermissionTo('delete boat trip')) {
+                        $actions[] = 'cancel';
+                    }
                 }
             }
 
@@ -205,8 +210,8 @@ class BoatTripController extends Controller
         $name = $request->input('name');
         $hours = $request->input('hours', 1);
         $startAt = $request->input('start_at', null);
-        $startNow = $request->input('start_now');
-        $startAuto = $request->input('start_auto');
+        $startNow = $request->has('start_now');
+        $startAuto = $request->has('start_auto');
         $isMember = $request->has('is_member');
         $isInstructor = $request->has('is_instructor');
         $sailorId = $request->input('sailor_id', null);

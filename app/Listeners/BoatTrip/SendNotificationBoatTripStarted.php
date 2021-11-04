@@ -4,9 +4,8 @@
 namespace App\Listeners\BoatTrip;
 
 
-use App\Events\BoatTrip\BoatTripEnded;
-use App\Events\BoatTrip\BoatTripStarted;
 use App\Signing\Notifications\Domain\UseCases\Notifications\SendBoatTripStartedNotification;
+use App\Signing\Signing\Domain\Events\BoatTrip\BoatTripStarted;
 
 class SendNotificationBoatTripStarted
 {

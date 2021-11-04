@@ -9,19 +9,22 @@ use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackage;
 use App\Signing\Signing\Domain\Entities\RentalPackage\SailorRentalPackageState;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SailorRentalPackageModel extends Model
 {
+    use ScopeSailingClub;
+
     protected $table = 'sailor_rental_package';
 
     protected $casts = ['end_validity' => 'date', 'actions' => 'array'];
 
-    public function rentalPackage()
+    public function rentalPackage():BelongsTo
     {
         return $this->belongsTo(RentalPackageModel::class, 'rental_package_id', 'id');
     }
 
-    public function sailor()
+    public function sailor():BelongsTo
     {
         return $this->belongsTo(SailorModel::class, 'sailor_id', 'id');
     }
@@ -43,7 +46,7 @@ class SailorRentalPackageModel extends Model
         );
     }
 
-    public function toState()
+    public function toState():SailorRentalPackageState
     {
         return new SailorRentalPackageState(
             $this->sailor_rental_id ?? $this->uuid,

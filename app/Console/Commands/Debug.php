@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
 use Predis\Client;
 
@@ -19,7 +20,10 @@ class Debug extends Command
 
     public function handle()
     {
-        $c = new Client(['host' => env('REDIS_HOST'), 'port' => env('REDIS_PORT')]);
-        dd($c->keys('*'));
+        $user = User::query()->where('email', 'guillaume.cozic@gmail.com')->first();
+        $user->assignRole('RTQ');
+
+        //$c = new Client(['host' => env('REDIS_HOST'), 'port' => env('REDIS_PORT')]);
+        //dd($c->keys('*'));
     }
 }

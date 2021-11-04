@@ -5,7 +5,6 @@ namespace App\Signing\Signing\Domain\UseCases\RentalPackage\Impl;
 
 
 use App\Signing\Shared\Entities\Id;
-use App\Signing\Shared\Exception\DomainException;
 use App\Signing\Shared\Services\UseCaseHandler\Parameters;
 use App\Signing\Shared\Services\UseCaseHandler\UseCase;
 use App\Signing\Signing\Application\ParametersWrapper\SailorRentalPackageParameters;
@@ -50,6 +49,6 @@ class CreateSailorRentalPackageImpl implements CreateSailorRentalPackage, UseCas
 
     public function handle(SailorRentalPackageParameters|Parameters $parameters)
     {
-        $this->execute($parameters->id, $parameters->rentalPackageId, $parameters->name, $parameters->hours);
+        $this->execute($parameters->id, $parameters->rentalPackageId, $parameters->name, $parameters->hours, $parameters->sailorId);
     }
 }

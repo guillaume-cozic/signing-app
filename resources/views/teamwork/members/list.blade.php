@@ -3,19 +3,27 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <div class="card card-default">
+            <div class="card card-primary card-outline">
                 <div class="card-header clearfix">Membres de l'équipe</div>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Roles</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         @foreach($team->users AS $user)
                             <tr>
                                 <td>{{ucfirst($user->firstname).' '.ucfirst($user->surname)}}</td>
+                                @php
+                                    $roles = $user->roles->pluck('name')->toArray();
+                                    foreach($roles as $i => $role){
+                                        $roles[$i] = '<span class="badge badge-info">'.__('roles.'.strtolower($role)).' </span>';
+                                    }
+                                @endphp
+                                <td>{!! implode(' ', $roles) !!}</td>
                                 <td>
                                     @if(auth()->user()->isOwnerOfTeam($team))
                                         @if(auth()->user()->getKey() !== $user->getKey())
@@ -24,8 +32,8 @@
                                                   method="post">
                                                 {!! csrf_field() !!}
                                                 <input type="hidden" name="_method" value="DELETE"/>
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i>
-                                                    Delete
+                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>
+                                                    Supprimer
                                                 </button>
                                             </form>
                                         @endif
@@ -40,17 +48,15 @@
         <div class="col-6">
             <div class="row">
                 <div class="col-12">
-                    <div class="card card-default">
+                    <div class="card card-primary card-outline">
                         <div class="card-header clearfix">Inviter un collaborateur</div>
                         <div class="card-body">
-                            <form class="form-horizontal" method="post"
-                                  action="{{route('teams.members.invite', $team)}}">
+                            <form class="form-horizontal" method="post" action="{{route('teams.members.invite', $team)}}">
                                 {!! csrf_field() !!}
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label class="col-md-4 control-label">Adresse email</label>
                                     <div class="col-md-6">
-                                        <input type="email" class="form-control" name="email"
-                                               value="{{ old('email') }}">
+                                        <input type="email" class="form-control" name="email" value="{{ old('email') }}">
                                         @if ($errors->has('email'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('email') }}</strong>
@@ -58,6 +64,29 @@
                                         @endif
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="INSTRUCTOR_HELP" name="roles[]" id="INSTRUCTOR_HELP"/>
+                                        <label class="form-check-label" for="INSTRUCTOR_HELP">Aide moniteur</label>
+                                        <small>(Peut seulement démarrer ou terminer une sortie en mer)</small>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="INSTRUCTOR" name="roles[]" id="INSTRUCTOR"/>
+                                        <label class="form-check-label" for="INSTRUCTOR">Moniteur</label>
+                                        <small>(Peut démarrer, terminer ou supprimer une sortie en mer et gérer les forfaits clients)</small>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="RTQ" name="roles[]" id="RTQ"/>
+                                        <label class="form-check-label" for="RTQ">RTQ</label>
+                                        <small>(A accès à tous sauf la facturation)</small>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="BUYER" name="roles[]" id="BUYER"/>
+                                        <label class="form-check-label" for="BUYER">Facturation</label>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
                                         <button type="submit" class="btn btn-primary">

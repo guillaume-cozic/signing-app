@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SailorModel extends Model
 {
+    use ScopeSailingClub;
+
     protected $table = 'sailor';
 
     public function rentalPackages(): HasMany

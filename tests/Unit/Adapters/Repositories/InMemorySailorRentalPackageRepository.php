@@ -26,17 +26,6 @@ class InMemorySailorRentalPackageRepository implements SailorRentalPackageReposi
         $this->sailorRentalPackages[$sailorRentalPackageState->id()] = $sailorRentalPackageState;
     }
 
-    public function getByNameAndRentalPackage(string $name, string $packageRentalId): ?SailorRentalPackage
-    {
-        foreach($this->sailorRentalPackages as $sailorRentalPackage) {
-            if($sailorRentalPackage->rentalPackageId() === $packageRentalId && $sailorRentalPackage->name() === $name){
-                return $sailorRentalPackage->toDomain();
-            }
-        }
-        return null;
-    }
-
-
     public function getBySailorAndRentalPackage(Sailor $sailor, RentalPackage $rentalPackage): ?SailorRentalPackage
     {
         foreach($this->sailorRentalPackages as $sailorRentalPackage) {
@@ -46,6 +35,4 @@ class InMemorySailorRentalPackageRepository implements SailorRentalPackageReposi
         }
         return null;
     }
-
-
 }
