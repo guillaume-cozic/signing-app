@@ -21,7 +21,6 @@
     @yield('adminlte_css_pre')
 
     @if(!config('adminlte.enabled_laravel_mix'))
-        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
 
         @include('adminlte::plugins', ['type' => 'css'])
@@ -30,7 +29,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     @else
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap4.min.css">
-        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
 
@@ -71,6 +69,7 @@
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>
+    <input type="hidden" value="{{ \Illuminate\Support\Facades\Auth::user() !== null && \Illuminate\Support\Facades\Auth::user()->currentTeam ? \Illuminate\Support\Facades\Auth::user()->currentTeam->id : null }}" id="sailing_team_id"/>
     {{-- Body Content --}}
     @yield('body')
 

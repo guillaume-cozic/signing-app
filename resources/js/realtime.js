@@ -22,6 +22,7 @@ function reloadDashboard() {
 }
 
 import Echo from 'laravel-echo';
+var sailing_club_id = $('#sailing_team_id').val();
 
 try {
     let echo = new Echo({
@@ -29,7 +30,7 @@ try {
         host: window.location.hostname + ':6001'
     });
 
-    echo.channel('notification')
+    echo.private('notification_'+sailing_club_id)
         .listen('NotificationCreated', (e) => {
             reloadDashboard();
             $.notify({
@@ -49,4 +50,5 @@ try {
         });
 }catch (e){
     console.log('Server socket not running');
+    console.log(e);
 }
