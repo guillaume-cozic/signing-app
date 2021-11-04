@@ -2606,6 +2606,7 @@ function reloadDashboard() {
 
 
 var sailing_club_id = $('#sailing_team_id').val();
+var user_id = $('#user_id').val();
 
 try {
   var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
@@ -2615,6 +2616,11 @@ try {
   });
   echo["private"]('notification.' + sailing_club_id).listen('NotificationCreated', function (e) {
     reloadDashboard();
+
+    if (user_id === e.performerId) {
+      return;
+    }
+
     $.notify({
       icon: e.avatar,
       title: e.title,

@@ -19,7 +19,8 @@ class NotificationCreated implements ShouldBroadcast
         public string $message,
         public string $title,
         public string $avatar,
-        public string $level
+        public string $level,
+        public string $performerId,
     ){}
 
     public function broadcastOn()

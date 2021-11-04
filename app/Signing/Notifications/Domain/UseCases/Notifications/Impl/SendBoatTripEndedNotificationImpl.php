@@ -18,13 +18,22 @@ class SendBoatTripEndedNotificationImpl implements SendBoatTripEndedNotification
         $boatTripEndedNotification = new BoatTripEnded($boatTripId, $userId);
         $performer = User::where('uuid', $userId)->first();
         $users = $performer->currentTeam()->first()->users()->get();
-        Notification::send($users, $boatTripEndedNotification);
+
+        $usersExceptMe = [];
+        foreach ($users as $user){
+            if($user->id !== $performer->id) {
+                $usersExceptMe[] = $user;
+            }
+        }
+        Notification::send($usersExceptMe, $boatTripEndedNotification);
+
+
 
         $boatTrip = BoatTripModel::where('uuid', $boatTripId)->first();
         $message = __('notification.user_end_boat_trip', [
             'user' => ucfirst($performer->firstname),
             'sailor' => $boatTrip->name,
         ]);
-        event(new NotificationCreated($message, 'Sortie terminée', $performer->adminlte_image(), 'info'));
+        event(new NotificationCreated($message, 'Sortie terminée', $performer->adminlte_image(), 'info', $performer->id));
     }
 }

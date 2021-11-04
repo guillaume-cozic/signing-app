@@ -23,6 +23,7 @@ function reloadDashboard() {
 
 import Echo from 'laravel-echo';
 var sailing_club_id = $('#sailing_team_id').val();
+var user_id = $('#user_id').val();
 
 try {
     let echo = new Echo({
@@ -34,6 +35,9 @@ try {
     echo.private('notification.'+sailing_club_id)
         .listen('NotificationCreated', (e) => {
             reloadDashboard();
+            if(user_id === e.performerId){
+                return;
+            }
             $.notify({
                 icon: e.avatar,
                 title: e.title,

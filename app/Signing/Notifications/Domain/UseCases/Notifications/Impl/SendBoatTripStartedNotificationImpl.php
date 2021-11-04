@@ -18,6 +18,13 @@ class SendBoatTripStartedNotificationImpl implements SendBoatTripStartedNotifica
         $boatTripEndedNotification = new BoatTripStarted($boatTripId, $userId);
         $performer = User::where('uuid', $userId)->first();
         $users = $performer->currentTeam()->first()->users()->get();
+
+        $usersExceptMe = [];
+        foreach ($users as $user){
+            if($user->id !== $performer->id) {
+                $usersExceptMe[] = $user;
+            }
+        }
         Notification::send($users, $boatTripEndedNotification);
 
         $boatTrip = BoatTripModel::where('uuid', $boatTripId)->first();
@@ -25,6 +32,6 @@ class SendBoatTripStartedNotificationImpl implements SendBoatTripStartedNotifica
             'user' => ucfirst($performer->firstname),
             'sailor' => $boatTrip->name,
         ]);
-        event(new NotificationCreated($message, 'Sortie démarée', $performer->adminlte_image(), 'info'));
+        event(new NotificationCreated($message, 'Sortie démarée', $performer->adminlte_image(), 'info', $performer->id));
     }
 }
