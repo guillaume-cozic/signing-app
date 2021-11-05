@@ -10,6 +10,7 @@ class AddRolesAcl extends Migration
         $roleInstructor = \Spatie\Permission\Models\Role::create(['name' => 'INSTRUCTOR']);
         $roleRTQ = \Spatie\Permission\Models\Role::create(['name' => 'RTQ']);
         $roleBuyer = \Spatie\Permission\Models\Role::create(['name' => 'BUYER']);
+        $roleDemo = \Spatie\Permission\Models\Role::create(['name' => 'DEMO']);
 
         $permissions = [
             'start boat trip',
@@ -35,18 +36,24 @@ class AddRolesAcl extends Migration
             'sub hours sailor rental package',
 
             'show collaborator',
-            'billings'
+            'billings',
+            'edit profile',
+            'send contact mail'
         ];
 
         foreach ($permissions as $permission) {
             \Spatie\Permission\Models\Permission::create(['name' => $permission]);
         }
 
-        $roleBuyer->givePermissionTo('billings');
+        $roleBuyer->givePermissionTo([
+            'billings',
+            'edit profile'
+        ]);
 
         $roleInstructorHelp->givePermissionTo([
             'start boat trip',
             'end boat trip',
+            'edit profile'
         ]);
 
         $roleInstructor->givePermissionTo([
@@ -61,6 +68,7 @@ class AddRolesAcl extends Migration
             'add sailor rental package',
             'add hours sailor rental package',
             'sub hours sailor rental package',
+            'edit profile'
         ]);
 
         $roleRTQ->givePermissionTo([
@@ -87,6 +95,32 @@ class AddRolesAcl extends Migration
             'sub hours sailor rental package',
 
             'show collaborator',
+            'edit profile'
+        ]);
+
+        $roleDemo->givePermissionTo([
+            'start boat trip',
+            'end boat trip',
+            'delete boat trip',
+
+            'add boat trip',
+            'add reservation',
+
+            'show fleets',
+            'enable fleet',
+            'disable fleet',
+            'add fleet',
+            'edit fleet',
+
+            'show rental package',
+            'add rental package',
+            'edit rental package',
+
+            'show sailor rental package',
+            'add sailor rental package',
+            'add hours sailor rental package',
+            'sub hours sailor rental package',
+            'edit profile'
         ]);
     }
 
