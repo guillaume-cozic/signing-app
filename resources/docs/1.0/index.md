@@ -5,6 +5,7 @@
 - ## Tableau de bord
     - [Sortie en mer](/{{route}}/{{version}}/boat-trip)
     - [Réservation](/{{route}}/{{version}}/boat-trip)
+    - [Sortie en mer avec forfait](/{{route}}/{{version}}/rental-boat-trip)
 - ## Gestion des forfaits de locations
     - [Modèle de Forfait](/{{route}}/{{version}}/rental-package)
     - [Forfait client](/{{route}}/{{version}}/sailor-rental-package)
