@@ -2,7 +2,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Ajouter une réservation</h4>
+                <h4 class="modal-title">
+                    Ajouter une réservation
+                    <a href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'boat-trip']) }}" target="_blank" class="btn btn-tool"
+                       data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
+                        <i class="fas fa-question-circle text-primary"></i>
+                    </a>
+                </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
