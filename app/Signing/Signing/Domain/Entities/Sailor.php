@@ -47,20 +47,21 @@ class Sailor extends Entity implements HasState
         $this->sailorRepository->save($this->getState());
     }
 
-    public function addRentalPackage(string $sailorRentalPackageId, RentalPackage $rentalPackage, float $hours, Carbon $validityEndAt)
+    public function addRentalPackage(string $sailorRentalPackageId, RentalPackage $rentalPackage, float $hours, Carbon $validityEndAt):SailorRentalPackage
     {
         $sailorRentalPackage = $this->sailorRentalPackageRepository->getBySailorAndRentalPackage($this, $rentalPackage);
         if(!isset($sailorRentalPackage)){
-            (new SailorRentalPackage(
+            ($sailorRentalPackage = new SailorRentalPackage(
                 $sailorRentalPackageId,
                 $this->sailorId,
                 $rentalPackage->id(),
                 $validityEndAt,
                 $hours
             ))->create();
-            return;
+            return $sailorRentalPackage;
         }
         $sailorRentalPackage->reload($hours, $validityEndAt);
+        return $sailorRentalPackage;
     }
 
     public function getState(): SailorState
