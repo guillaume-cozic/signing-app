@@ -165,7 +165,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(SailorRepository::class, SqlSailorRepository::class);
         }
 
-        if(config('app.env') == 'local') {
+        if(config('app.env') === 'local' || config('app.env') === "production") {
             $this->app->singleton(IdentityProvider::class, IdentityProviderImpl::class);
             $this->app->singleton(DateProvider::class, DateProviderImpl::class);
             $this->app->singleton(FleetRepository::class, SqlFleetRepository::class);

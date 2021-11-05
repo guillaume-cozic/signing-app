@@ -17,6 +17,9 @@ class ResetDemo extends Command
 
     public function handle()
     {
-        return 0;
+        if(!env('IS_DEMO')){
+            return;
+        }
+        $this->call('migrate:fresh', ['--force' => true, '--seeder' => 'DemoSeeder']);
     }
 }
