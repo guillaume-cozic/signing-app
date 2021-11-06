@@ -14,6 +14,7 @@ use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
 use \App\Signing\Signing\Domain\Exceptions\BoatNotAvailable;
 use \App\Signing\Signing\Domain\Exceptions\BoatTripAlreadyEnded;
 use App\Signing\Signing\Domain\Repositories\RentalPackageRepository;
+use Illuminate\Support\Facades\Log;
 
 class BoatTrip implements HasState
 {

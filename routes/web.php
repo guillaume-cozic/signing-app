@@ -22,7 +22,7 @@ Route::get('/dashboard',  [BoatTripController::class, 'index'])
     ->name('dashboard');
 
 Route::get('/profile', [UserController::class, 'profile'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:edit profile'])
     ->name('user.profile');
 
 Route::post('/profile', [UserController::class, 'update'])
@@ -143,11 +143,10 @@ Route::middleware(['auth'])->group(function (){
 
 require __DIR__.'/auth.php';
 
-
-Route::get('/contact-us', [App\Http\Controllers\ContactController::class, 'showContact'])->name('contact');
-Route::post('/contact-us', [App\Http\Controllers\ContactController::class, 'processSendEmail'])->name('contact.process');
-
-
+Route::prefix('/contact-us')->middleware('can:send contact mail')->group(function() {
+    Route::get('', [App\Http\Controllers\ContactController::class, 'showContact'])->name('contact');
+    Route::post('', [App\Http\Controllers\ContactController::class, 'processSendEmail'])->name('contact.process');
+});
 
 Route::group(['prefix' => 'teams', 'namespace' => 'Teamwork'], function() {
 

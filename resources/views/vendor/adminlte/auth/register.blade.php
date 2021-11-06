@@ -32,7 +32,8 @@
                     <img src="{{ asset('images/undraw_remotely_2j6y.svg') }}" alt="Image" class="img-fluid">
                 </div>
                 <div class="col-md-6 contents">
-                    <div class="row justify-content-center">
+                    @if(!env('IS_DEMO'))
+                        <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="mb-4">
                                 <h3>WellSail : Enregistrement d'un club nautique</h3>
@@ -115,6 +116,11 @@
                             </form>
                         </div>
                     </div>
+                    @else
+                        <div class="alert alert-danger">
+                            Cette page est désactivé sur le compte de démonstration
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
