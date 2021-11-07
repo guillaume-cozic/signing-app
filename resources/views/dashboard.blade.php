@@ -30,7 +30,7 @@
                                aria-controls="custom-tabs-three-reservations" aria-selected="false" style="">Réservations</a>
                         </li>
                         <li class="">
-                            <a aria-selected="false" href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'rental-package']) }}" target="_blank" role="tab" class="nav-link"
+                            <a aria-selected="false" href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'boat-trip']) }}" target="_blank" role="tab" class="nav-link"
                                data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
                                 <i class="fas fa-question-circle text-primary"></i>
                             </a>
@@ -55,11 +55,11 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
             @can('add reservation')
                 <button class="btn btn-info btn-block mb-3 @if($fleetsCount === 0) disabled @else  btn-add-boat-trip-reservation @endif">
-                    <i class="fa fa-plus-square"></i> Réserver du matériel
+                    <i class="fa fa-plus-square"></i> Ajouter une réservation
                 </button>
             @endcan
             @can('add boat trip')
-                <button class="btn btn-success btn-block mb-3 @if($fleetsCount === 0) disabled @else btn-add-boat-trip @endif">
+                <button class="btn btn-primary btn-block mb-3 @if($fleetsCount === 0) disabled @else btn-add-boat-trip @endif">
                     <i class="fa fa-plus-circle"></i> Ajouter une sortie
                 </button>
             @endcan

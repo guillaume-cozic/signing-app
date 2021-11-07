@@ -2,7 +2,12 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Ajouter une sortie en mer</h4>
+                <h4 class="modal-title">Ajouter une sortie en mer
+                    <a href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'boat-trip']) }}" target="_blank" class="btn btn-tool"
+                       data-toggle="tooltip" data-placement="top" title="Consulter la documentation utilisateur">
+                        <i class="fas fa-question-circle text-primary"></i>
+                    </a>
+                </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -15,7 +20,9 @@
                             <div class="col-12">
                                 <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
                                 <div class="form-group">
-                                    <label for="name">Nom et ou prénom du client</label>
+                                    <label for="name">
+                                        Nom et ou prénom du client
+                                    </label>
                                     <input type="search" class="form-control autocomplete-sailor-name"
                                            name="name" id="name"
                                            placeholder="Nom du client"

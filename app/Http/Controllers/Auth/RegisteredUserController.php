@@ -39,6 +39,7 @@ class RegisteredUserController extends Controller
 
         if(isset($request->team_name)) {
             $user->team_name = $request->team_name;
+            $user->assignRole(['BUYER', 'RTQ']);
         }
 
         event(new Registered($user));

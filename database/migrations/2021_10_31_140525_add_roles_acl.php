@@ -47,13 +47,15 @@ class AddRolesAcl extends Migration
 
         $roleBuyer->givePermissionTo([
             'billings',
-            'edit profile'
+            'edit profile',
+            'send contact mail'
         ]);
 
         $roleInstructorHelp->givePermissionTo([
             'start boat trip',
             'end boat trip',
-            'edit profile'
+            'edit profile',
+            'send contact mail'
         ]);
 
         $roleInstructor->givePermissionTo([
@@ -68,7 +70,8 @@ class AddRolesAcl extends Migration
             'add sailor rental package',
             'add hours sailor rental package',
             'sub hours sailor rental package',
-            'edit profile'
+            'edit profile',
+            'send contact mail'
         ]);
 
         $roleRTQ->givePermissionTo([
@@ -95,7 +98,8 @@ class AddRolesAcl extends Migration
             'sub hours sailor rental package',
 
             'show collaborator',
-            'edit profile'
+            'edit profile',
+            'send contact mail'
         ]);
 
         $roleDemo->givePermissionTo([
@@ -120,7 +124,6 @@ class AddRolesAcl extends Migration
             'add sailor rental package',
             'add hours sailor rental package',
             'sub hours sailor rental package',
-            'edit profile'
         ]);
     }
 
