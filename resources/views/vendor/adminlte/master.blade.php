@@ -75,7 +75,7 @@
     <input type="hidden" value="{{ \Illuminate\Support\Facades\Auth::user() !== null && \Illuminate\Support\Facades\Auth::user()->id ? \Illuminate\Support\Facades\Auth::user()->id : null }}" id="user_id"/>
     {{-- Body Content --}}
     @yield('body')
-    @if(env('IS_DEMO'))
+    @if(!env('IS_DEMO'))
         @include('kustomer::kustomer')
     @endif
 
