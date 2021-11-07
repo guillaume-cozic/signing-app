@@ -75,6 +75,9 @@
     <input type="hidden" value="{{ \Illuminate\Support\Facades\Auth::user() !== null && \Illuminate\Support\Facades\Auth::user()->id ? \Illuminate\Support\Facades\Auth::user()->id : null }}" id="user_id"/>
     {{-- Body Content --}}
     @yield('body')
+    @if(env('IS_DEMO'))
+        @include('kustomer::kustomer')
+    @endif
 
     <script type="text/javascript">
         var showModalNotClosed = '{{ !empty(\Illuminate\Support\Facades\Request::session()->get('boat-trips_not_closed')) }}';
@@ -95,6 +98,7 @@
         @routes
         <script type="text/javascript" src="//{{ \Illuminate\Support\Facades\Request::getHost() }}:6001/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
+        <script src="{{ asset('vendor/kustomer/js/kustomer.js') }}" defer></script>
     @endif
 
     {{-- Custom Scripts --}}
