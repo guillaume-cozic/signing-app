@@ -9,7 +9,7 @@
   - [Ajouter une sortie en mer qui démarre immédiatement](#boat-trip-start-now)
   - [Ajouter une sortie en mer qui démarre automatiquement à l'heure indiquée](#add-boat-trip-start-auto)
   - [Supprimer une sortie en mer](#delete-boat-trip)
-  - [Forcer la création d'une sortie en mer](#section-1)
+  - [Forcer la création d'une sortie en mer](#force-add-boat-trip)
   - [Sortie en mer en retard](#late-boattrip)
 - [Disponibilité des flottes](#avai-fleets)
 
@@ -63,6 +63,16 @@ Créer une sortie en mer en sélectionnant l'option "Faire partir automatiquemen
 La sortie sera marquée avec le statut : <span class="badge bg-warning">A terre</span> et passera automatiquement au statut <span class="badge bg-info">En navigation</span> 
 lorsque l'heure de départ sera atteinte.
 
+<a name="force-add-boat-trip"></a>
+## Forcer la création d'une sortie en mer
+
+Il est possible d'ajouter une sortie en mer même si vous ne disposez pas assez de matériel à l'instant de l'ajout. Pour celà cliquer sur le bouton 
+"Forcer la création de la sortie". 
+
+<div style="text-align: center;">
+<img src="/docs/force-add-boattrip.png" style="width:50%;text-align: center;" />
+</div>
+
 
 <a name="delete-boat-trip"></a>
 ## Supprimer une sortie en mer
@@ -76,6 +86,8 @@ lorsque l'heure de départ sera atteinte.
 
 Lorsque sortie en mer dépasse l'heure de fin approximative de 30 minutes elle passe au statut <span class="badge bg-danger">En retard</span>
 qui vous laissera prendre une décision en conséquence.
+
+
 
 
 <a name="avai-fleets"></a>

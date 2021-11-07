@@ -20,7 +20,9 @@
                             <div class="col-12">
                                 <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
                                 <div class="form-group">
-                                    <label for="name">Nom et ou prénom du client</label>
+                                    <label for="name">
+                                        Nom et ou prénom du client
+                                    </label>
                                     <input type="search" class="form-control autocomplete-sailor-name"
                                            name="name" id="name"
                                            placeholder="Nom du client"

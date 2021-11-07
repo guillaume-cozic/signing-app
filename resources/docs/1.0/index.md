@@ -10,7 +10,5 @@
     - [Modèle de Forfait](/{{route}}/{{version}}/rental-package)
     - [Forfait client](/{{route}}/{{version}}/sailor-rental-package)
     - [Importer des forfaits](/{{route}}/{{version}}/import-sailor-rental-package)
-- ## Reporting
-    - [Reporting](/{{route}}/{{version}}/team)
 - ## Gestion de l'équipe
     - [Inviter un collaborateur](/{{route}}/{{version}}/team)
