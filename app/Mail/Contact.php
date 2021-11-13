@@ -21,7 +21,7 @@ class Contact extends Mailable
     {
         return $this->view('contact.mail', [
             'messageMail' => $this->message,
-            'name' => $this->message,
+            'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
         ])

@@ -19,15 +19,15 @@
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#in-progress" role="tab"
-                               aria-controls="custom-tabs-three-home" aria-selected="false">En cours</a>
+                               aria-controls="custom-tabs-three-home" aria-selected="false">Sorties en cours</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#ended" role="tab"
-                               aria-controls="custom-tabs-three-profile" aria-selected="false" style="">Terminées</a>
+                               aria-controls="custom-tabs-three-profile" aria-selected="false" style="">Sorties terminées</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-three-reservations-tab" data-toggle="pill" href="#reservations" role="tab"
-                               aria-controls="custom-tabs-three-reservations" aria-selected="false" style="">Réservations</a>
+                               aria-controls="custom-tabs-three-reservations" aria-selected="false" style="">Réservations à venir</a>
                         </li>
                         <li class="">
                             <a aria-selected="false" href="{{ route('larecipe.show', ['version' => '1.0', 'page' => 'boat-trip']) }}" target="_blank" role="tab" class="nav-link"

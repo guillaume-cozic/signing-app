@@ -21,7 +21,7 @@
                                 <input type="hidden" name="sailor_id" value="" class="input_sailor_id"/>
                                 <div class="form-group">
                                     <label for="name">
-                                        Nom et ou prénom du client
+                                        Identité de la personne naviguant
                                     </label>
                                     <input type="search" class="form-control autocomplete-sailor-name"
                                            name="name" id="name"
@@ -80,8 +80,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input data-href="{{ route('boat-trips.modal') }}" type="button"
-                                           class="btn-add-boats btn btn-primary btn-sm pull-right" value="Ajouter un type d'embarcation">
+                                    <button data-href="{{ route('boat-trips.modal') }}" type="button"
+                                           class="btn-add-boats btn btn-primary btn-sm pull-right">
+                                        <i class="fa fa-plus-circle"></i> Ajouter un type d'embarcation
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +111,7 @@
                         <div class="col-sm-12 col-12">
                             <div class="bootstrap-timepicker time-setter">
                                 <div class="form-group">
-                                    <label>Ou</label>
+                                    <label>Ou sélectionner l'heure de départ</label>
                                     <div class="input-group date" id="timepicker" data-target-input="nearest">
                                         <input autocomplete="off" data-toggle="datetimepicker" type="text" name="start_at" class="form-control datetimepicker-input" data-target="#timepicker">
                                         <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">

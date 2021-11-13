@@ -51,8 +51,8 @@ class DemoSeeder extends Seeder
               'Fusion' => 5,
               'Pav débutant' => 8,
               'Pav performance' => 10,
-              'Wing foil' => 1,
-              'Optimists' => 30,
+              'Wing foil' => 5,
+              'Optimist' => 30,
         ];
         $ids = [];
         $idsByNumber = [];

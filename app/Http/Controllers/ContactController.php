@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Mail\Contact;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -31,5 +32,18 @@ class ContactController extends Controller
         ));
         session()->flash('contact_ok',  "L'email a bien été envoyé");
         return redirect()->back();
+    }
+
+    public function processSendEmailFromLanding(Request $request)
+    {
+        if(!env('IS_DEMO')){
+            return;
+        }
+        Mail::send(new Contact(
+            $request->input('message'),
+            $request->input('name'). ' ' .$request->input('sailing_club'),
+            $request->input('email'),
+            ' ',
+        ));
     }
 }
