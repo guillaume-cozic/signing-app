@@ -8,14 +8,14 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-lg-6 col-sm-12">
         <div class="card card-primary card-outline">
             <div class="card-body">
                 <div id="chart-by-boats" style="height: 400px;"></div>
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-lg-6 col-sm-12">
         <div class="card card-primary card-outline">
             <div class="card-body">
                 <div id="chart-frequency-by-day" style="height: 400px;"></div>
@@ -34,14 +34,14 @@
                 .colors(['#ECC94B', '#4299E1'])
                 .legend()
                 .tooltip()
-                .title('Nombre de sortie par jour'),
+                .title('Nombre de sorties par jour'),
         });
 
         const chartByFloat = new Chartisan({
             el: '#chart-by-boats',
             url: "@chart('boat_trips_by_fleet')",
             hooks: new ChartisanHooks()
-                .title('Nombre de sortie par flotte')
+                .title('Nombre de sorties par flotte')
                 .datasets('pie')
                 .axis(false)
                 .tooltip()
