@@ -13,8 +13,10 @@ use App\Signing\Signing\Domain\Entities\Fleet\FleetCollection;
 use App\Signing\Signing\Domain\Entities\RentalPackage\RentalPackage;
 use App\Signing\Signing\Domain\Entities\Sailor;
 use App\Signing\Signing\Domain\Repositories\BoatTripRepository;
+use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 
 class DemoSeeder extends Seeder
@@ -27,11 +29,19 @@ class DemoSeeder extends Seeder
 
         $user = new User();
         $user->email = 'admin@wellsail.io';
-        $user->firstname = 'admin';
+        $user->firstname = 'Paul';
         $user->uuid = Uuid::uuid4();
-        $user->surname = 'admin';
+        $user->surname = 'Durand';
         $user->password = bcrypt('secret');
         $user->save();
+
+        $user2 = new User();
+        $user2->email = 'rtq@wellsail.io';
+        $user2->firstname = 'Mathieu';
+        $user2->uuid = Uuid::uuid4();
+        $user2->surname = 'Louis';
+        $user2->password = bcrypt('secret');
+        $user2->save();
 
         $teamModel = config('teamwork.team_model');
 
@@ -40,8 +50,10 @@ class DemoSeeder extends Seeder
             'owner_id' => $user->id,
         ]);
         $user->attachTeam($sailingClub);
+        $user2->attachTeam($sailingClub);
 
         $user->assignRole('demo');
+        $user2->assignRole('demo');
         app(ContextService::class)->set($sailingClub->id);
         $fleets = [
               'Kayak' => 10,
@@ -127,5 +139,15 @@ class DemoSeeder extends Seeder
             app(BoatTripRepository::class)->save($boatTrip->getState());
 
         }
+
+        $messageID = mt_rand(9, 999999999) + time();
+        Chatify::newMessage([
+            'id' => $messageID,
+            'type' => 'user',
+            'from_id' => $user->id,
+            'to_id' => $user2->id,
+            'body' => htmlentities('Bonjour Mathieu, voici le début de notre conversation', ENT_QUOTES, 'UTF-8'),
+            'attachment' => null
+        ]);
     }
 }
