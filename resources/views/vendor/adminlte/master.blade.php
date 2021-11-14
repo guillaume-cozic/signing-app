@@ -96,7 +96,13 @@
         <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @else
         @routes
-        <script type="text/javascript" src="//{{ \Illuminate\Support\Facades\Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+        @if(config('app.env') === 'local')
+            <script> var port = ':6001'; </script>
+            <script type="text/javascript" src="//{{ \Illuminate\Support\Facades\Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+        @else
+            <script> var port = ''; </script>
+            <script type="text/javascript" src="https://{{ \Illuminate\Support\Facades\Request::getHost() }}/socket.io"></script>
+        @endif
         <script type="text/javascript" src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
         <script src="{{ asset('vendor/kustomer/js/kustomer.js') }}" defer></script>
     @endif

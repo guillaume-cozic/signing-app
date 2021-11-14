@@ -28,7 +28,7 @@ var user_id = $('#user_id').val();
 try {
     let echo = new Echo({
         broadcaster: 'socket.io',
-        host: window.location.hostname + ':6001',
+        host: window.location.hostname+port,
         namespace: 'App.Signing.Notifications.Domain.Events'
     });
 

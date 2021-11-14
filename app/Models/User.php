@@ -40,7 +40,7 @@ class User extends Authenticatable
         if(isset($this->avatar)){
             return asset($this->avatar);
         }
-        return url('').'/vendor/adminlte/dist/img/AdminLTELogo.png';
+        return url('').'/images/avatar.png';
     }
 
     public function adminlte_desc()
