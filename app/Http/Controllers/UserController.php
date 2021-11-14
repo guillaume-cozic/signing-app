@@ -25,21 +25,23 @@ class UserController extends Controller
         $user->surname = $request->input('surname');
         $user->email = $request->input('email');
 
-        if ($request->hasFile('file')) {$avatar = $request->file('file');
+        if ($request->hasFile('file')) {
+            $avatar = $request->file('file');
             $filename = 'avatar.'.$avatar->getClientOriginalExtension();
             $save_path = storage_path().'/app/public/users/id/'.$user->id.'/';
-            $public_path = '/storage/users/id/'.$user->id.'/'.time().$filename;
+            $uni = time().$filename;
+            $public_path = '/storage/users/id/'.$user->id.'/'.$uni;
 
             File::makeDirectory($save_path, $mode = 0755, true, true);
 
-                $files = scandir($save_path);
-                array_walk($files, function ($item) use($save_path){
-                    if(is_file($save_path.$item)){
-                        unlink($save_path.$item);
-                    }
-                });
+            $files = scandir($save_path);
+            array_walk($files, function ($item) use($save_path){
+                if(is_file($save_path.$item)){
+                    unlink($save_path.$item);
+                }
+            });
 
-            Image::make($avatar)->widen(300)->save($save_path.$filename);
+            Image::make($avatar)->widen(300)->save($save_path.$uni);
 
             $user->avatar = $public_path;
         }

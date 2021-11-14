@@ -86,7 +86,7 @@ class MessagesController extends Controller
         return Response::json([
             'favorite' => $favorite,
             'fetch' => $fetch,
-            'user_avatar' => asset('/storage/' . config('chatify.user_avatar.folder') . '/' . $fetch->avatar),
+            'user_avatar' => $fetch->adminlte_image(),
         ]);
     }
 
@@ -448,8 +448,8 @@ class MessagesController extends Controller
                     }
                     // upload
                     $avatar = Str::uuid() . "." . $file->getClientOriginalExtension();
-                    $update = User::where('id', Auth::user()->id)->update(['avatar' => $avatar]);
-                    $file->storeAs("public/" . config('chatify.user_avatar.folder'), $avatar);
+                    $update = User::where('id', Auth::user()->id)->update(['avatar' => '/storage/users/id/'.Auth::user()->id.'/'.$avatar]);
+                    $file->storeAs('public/users/id/'.Auth::user()->id.'/', $avatar);
                     $success = $update ? 1 : 0;
                 } else {
                     $msg = "File extension not allowed!";
