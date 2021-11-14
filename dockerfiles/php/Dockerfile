@@ -13,10 +13,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
         libzip-dev \
         zip \
+        default-mysql-client \
   && docker-php-ext-install zip
 
 ENV TZ=Europe/Paris
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+

@@ -16,6 +16,9 @@ class Kernel extends ConsoleKernel
     {
         if(env('IS_DEMO')) {
             $schedule->command(ResetDemo::class)->dailyAt('23:00');
+        }else{
+            $schedule->command('backup:run')->dailyAt('01:00');
+            $schedule->command('backup:clean')->dailyAt('00:30');
         }
     }
 
