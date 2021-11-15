@@ -297,6 +297,12 @@ return [
             'icon' => 'nav-icon fa fa-envelope',
             'topnav_right' => true
         ],
+        [
+            'text' => '',
+            'url'  => 'chatify',
+            'icon' => 'nav-icon fa fa-comments',
+            'topnav_right' => true
+        ],
         /*[
             'text' => 'Facturation',
             'url'  => 'billing',
