@@ -110,6 +110,15 @@
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-72E7NT9P51"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-72E7NT9P51');
+    </script>
 </body>
 
 </html>
