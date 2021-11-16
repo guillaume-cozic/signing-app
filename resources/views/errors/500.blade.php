@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="card card-danger card-outline">
                 <div class="card-body">
-                    Une erreur s'est produite,
+                    Malheuresement une une erreur s'est produite ):
                 </div>
             </div>
         </div>

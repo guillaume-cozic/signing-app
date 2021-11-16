@@ -109,28 +109,35 @@ class DemoSeeder extends Seeder
         $sailorRentalPackage->decreaseHours(2);
         $sailorRentalPackage->decreaseHours(1);
 
+        $startAt = (new \DateTime('+1 days'))->setTime(11, 0);
         $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
             ->withSailor(sailorId: $sailorIdJohn, name:'John Doe')
             ->withBoats([$ids['Kayak'] => 2])
-            ->inProgress(1);
+            ->fromState(rand(1, 3), $startAt);
         app(BoatTripRepository::class)->save($boatTrip->getState());
 
+        $startAt = (new \DateTime('+1 days'))->setTime(10, 0);
         $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
             ->withSailor(sailorId: $sailorIdJohn, name:'John Doe')
             ->withBoats([$ids['Hobie cat 15'] => 2])
-            ->inProgress(1);
+            ->fromState(rand(1, 3), $startAt);
+        app(BoatTripRepository::class)->save($boatTrip->getState());
+
+        $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
+            ->withSailor(name:'Eric')
+            ->withBoats([$ids['Hobie cat 15'] => 3])
+            ->ended(rand(1, 3));
         app(BoatTripRepository::class)->save($boatTrip->getState());
 
 
-        for($i = 0; $i < 50; $i++){
-
+        for($i = 0; $i < 500; $i++){
             $boats = [];
             $boatsNumber = rand(1, 2);
             for($j=0; $j<$boatsNumber; $j++){
                 $boats[$idsByNumber[rand(0, 8)]] = rand(1, 15);
             }
 
-            $days = rand(0, 30);
+            $days = rand(0, 120);
             $startAt = (new \DateTime('-'.$days.' days'))->setTime(rand(9, 19), 0);
             $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
                 ->withBoats($boats)
@@ -138,6 +145,13 @@ class DemoSeeder extends Seeder
                 ->fromState(rand(1, 3), $startAt, $startAt);
             app(BoatTripRepository::class)->save($boatTrip->getState());
 
+            $days = rand(0, 120)+365;
+            $startAt = (new \DateTime('-'.$days.' days'))->setTime(rand(9, 19), 0);
+            $boatTrip = BoatTripBuilder::build(Uuid::uuid4())
+                ->withBoats($boats)
+                ->withSailor(name:$this->faker->firstName)
+                ->fromState(rand(1, 3), $startAt, $startAt);
+            app(BoatTripRepository::class)->save($boatTrip->getState());
         }
 
         $messageID = mt_rand(9, 999999999) + time();

@@ -58,6 +58,9 @@ class SqlBoatTripReportingRepository implements BoatTripReportingRepository
         ;
 
         foreach ($boatTrips as $boatTrip){
+            if(!isset($reporting[$boatTrip->start_at->format('Y')][$boatTrip->start_at->format($formatKey)])){
+                $reporting[$boatTrip->start_at->format('Y')][$boatTrip->start_at->format($formatKey)] = 0;
+            }
             $reporting[$boatTrip->start_at->format('Y')][$boatTrip->start_at->format($formatKey)] += $boatTrip->totalBoats();
         }
         return $reporting;
