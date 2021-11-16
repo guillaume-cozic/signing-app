@@ -20,7 +20,7 @@ class UseCaseHandler
         } catch (\Throwable $e){
             $this->rollbackTransaction();
             report($e);
-            throw new TechnicalException();
+            throw $e;
         }
         $this->commitTransaction();
         return $result;
