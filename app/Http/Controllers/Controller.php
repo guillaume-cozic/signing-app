@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 
 class Controller extends BaseController
 {
@@ -18,6 +19,9 @@ class Controller extends BaseController
 
     public function p404()
     {
-        return view ('errors.404');
+        if(Auth::check()) {
+            return view('errors.404');
+        }
+        return view('errors.visitor-404');
     }
 }
