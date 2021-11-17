@@ -6,7 +6,7 @@
             <div class="card card-danger card-outline">
                 <div class="card-body">
                     @if(env('IS_DEMO'))
-                        Cette page est désactivé sur le compte de démonstration
+                        Cette page est désactivée sur le compte de démonstration
                     @else
                         Vous n'avez pas accès à cette page.
                     @endif

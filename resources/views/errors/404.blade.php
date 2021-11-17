@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            Page not found
+            Page introuvable
         </div>
     </div>
 @endsection

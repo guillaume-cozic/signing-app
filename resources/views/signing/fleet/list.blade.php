@@ -27,7 +27,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">Nom du support</label>
+                            <label for="name">Nom du bateau</label>
                             <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
                                    name="name" id="name" placeholder="Entrer le nom du support" value="{{ old('name') }}">
                             @if ($errors->has('name'))
@@ -37,7 +37,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="total_available">Nombre total d'embarcations disponible</label>
+                            <label for="total_available">@lang('fleet.number_fleet_available')</label>
                             <input type="number" name="total_available" step="1" value="1" min="1" class="form-control {{ $errors->has('total_available') ? 'is-invalid' : '' }}" id="total_available" placeholder="Total disponible">
                             @if ($errors->has('total_available'))
                                 <span class="error invalid-feedback">
@@ -49,7 +49,7 @@
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                 <input type="checkbox" @if(old('state', 'on') === 'on') checked @endif
                                        class="custom-control-input" id="support_status" name="state">
-                                <label class="custom-control-label" for="support_status">Support actif</label>
+                                <label class="custom-control-label" for="support_status">Actif</label>
                             </div>
                         </div>
                         @if(session()->has('fleet_error'))
