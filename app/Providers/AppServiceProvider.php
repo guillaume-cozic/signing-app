@@ -12,6 +12,9 @@ use App\Signing\Reporting\Domain\Charts\BoatTripsByFleet;
 use App\Signing\Reporting\Domain\Charts\FrequencyByDay;
 use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
+use App\Signing\School\Domain\Repositories\InternshipRepository;
+use App\Signing\School\Domain\UseCases\CreateInternshipSailing;
+use App\Signing\School\Domain\UseCases\Impl\CreateInternshipSailingImpl;
 use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Shared\Providers\Impl\AuthGatewayImpl;
@@ -93,6 +96,7 @@ use Tests\Unit\Adapters\Provider\FakeIdentityProvider;
 use Tests\Unit\Adapters\Provider\InMemoryAuthGateway;
 use Tests\Unit\Adapters\Repositories\InMemoryBoatTripRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryFleetRepository;
+use Tests\Unit\Adapters\Repositories\InMemoryInternshipRepository;
 use Tests\Unit\Adapters\Repositories\InMemoryRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\InMemorySailorRentalPackageRepository;
 use Tests\Unit\Adapters\Repositories\InMemorySailorRepository;
@@ -118,6 +122,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CreateSailorRentalPackage::class, CreateSailorRentalPackageImpl::class);
         $this->app->singleton(DecreaseSailorRentalPackageHoursWhenBoatTripFinished::class, DecreaseSailorRentalPackageHoursWhenBoatTripFinishedImpl::class);
         $this->app->singleton(AddOrSubHoursToSailorRentalPackage::class, AddOrSubHoursToSailorRentalPackageImpl::class);
+
+        $this->app->singleton(CreateInternshipSailing::class, CreateInternshipSailingImpl::class);
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
         $this->app->singleton(SendBoatTripStartedNotification::class, SendBoatTripStartedNotificationImpl::class);
@@ -147,6 +153,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(RentalPackageRepository::class, InMemoryRentalPackageRepository::class);
             $this->app->singleton(SailorRentalPackageRepository::class, InMemorySailorRentalPackageRepository::class);
             $this->app->singleton(SailorRepository::class, InMemorySailorRepository::class);
+            $this->app->singleton(InternshipRepository::class, InMemoryInternshipRepository::class);
         }
 
         if(config('app.env') == 'testing-db') {

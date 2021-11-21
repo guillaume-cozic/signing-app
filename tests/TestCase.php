@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Signing\School\Domain\Repositories\InternshipRepository;
 use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Shared\Services\ContextService;
@@ -22,6 +23,7 @@ abstract class TestCase extends BaseTestCase
 
     protected IdentityProvider $identityProvider;
     protected FleetRepository $fleetRepository;
+    protected InternshipRepository $internshipRepository;
     protected BoatTripRepository $boatTripRepository;
     protected RentalPackageRepository $rentalPackageRepository;
     protected SailorRentalPackageRepository $sailorRentalPackageRepository;
@@ -45,6 +47,7 @@ abstract class TestCase extends BaseTestCase
         $this->contextService = app(ContextService::class);
         $this->contextService->setSailingClubId(1);
         $this->authGateway = app(AuthGateway::class);
+        $this->internshipRepository = app(InternshipRepository::class);
         Event::fake();
     }
 
