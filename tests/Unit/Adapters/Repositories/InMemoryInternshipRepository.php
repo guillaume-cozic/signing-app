@@ -18,4 +18,9 @@ class InMemoryInternshipRepository implements InternshipRepository
     {
         $this->internships[$internshipSailing->id()] = $internshipSailing;
     }
+
+    public function delete(string $id)
+    {
+        unset($this->internships[$id]);
+    }
 }

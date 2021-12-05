@@ -14,7 +14,9 @@ use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
 use App\Signing\School\Domain\Repositories\InternshipRepository;
 use App\Signing\School\Domain\UseCases\CreateInternshipSailing;
+use App\Signing\School\Domain\UseCases\DeleteInternship;
 use App\Signing\School\Domain\UseCases\Impl\CreateInternshipSailingImpl;
+use App\Signing\School\Domain\UseCases\Impl\DeleteInternshipImpl;
 use App\Signing\Shared\Providers\AuthGateway;
 use App\Signing\Shared\Providers\DateProvider;
 use App\Signing\Shared\Providers\Impl\AuthGatewayImpl;
@@ -124,6 +126,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AddOrSubHoursToSailorRentalPackage::class, AddOrSubHoursToSailorRentalPackageImpl::class);
 
         $this->app->singleton(CreateInternshipSailing::class, CreateInternshipSailingImpl::class);
+        $this->app->singleton(DeleteInternship::class, DeleteInternshipImpl::class);
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
         $this->app->singleton(SendBoatTripStartedNotification::class, SendBoatTripStartedNotificationImpl::class);

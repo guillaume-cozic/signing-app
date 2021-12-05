@@ -12,6 +12,7 @@ class Internship implements HasState
 {
     private FleetCollection $fleets;
     private Interval $ages;
+    private array $title;
 
     public function __construct(
         private string $id,
@@ -36,6 +37,11 @@ class Internship implements HasState
     {
         $this->title = $title;
         app(InternshipRepository::class)->save($this);
+    }
+
+    public function delete()
+    {
+        app(InternshipRepository::class)->delete($this->id());
     }
 
     public function getState(): InternshipState

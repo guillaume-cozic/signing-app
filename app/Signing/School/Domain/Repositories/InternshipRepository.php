@@ -8,4 +8,5 @@ interface InternshipRepository
 {
     public function get(string $id):?Internship;
     public function save(Internship $internshipSailing);
+    public function delete(string $id);
 }
