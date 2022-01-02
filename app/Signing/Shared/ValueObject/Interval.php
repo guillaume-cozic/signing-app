@@ -18,4 +18,14 @@ class Interval
             throw new IntervalException();
         }
     }
+
+    public function start(): ?float
+    {
+        return $this->start;
+    }
+
+    public function end(): ?float
+    {
+        return $this->end;
+    }
 }

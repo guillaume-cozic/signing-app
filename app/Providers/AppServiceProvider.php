@@ -12,6 +12,12 @@ use App\Signing\Reporting\Domain\Charts\BoatTripsByFleet;
 use App\Signing\Reporting\Domain\Charts\FrequencyByDay;
 use App\Signing\Reporting\Domain\Repositories\BoatTripReportingRepository;
 use App\Signing\Reporting\Infrastructure\Repositories\SqlBoatTripReportingRepository;
+use App\Signing\School\Application\UseCases\Impl\PlanNewSessionInternshipImpl;
+use App\Signing\School\Application\UseCases\Impl\SetDefaultPriceToInternshipImpl;
+use App\Signing\School\Application\UseCases\Impl\UpdateAgeIntervalInternshipImpl;
+use App\Signing\School\Application\UseCases\PlanNewInternshipSession;
+use App\Signing\School\Application\UseCases\SetDefaultPriceToInternship;
+use App\Signing\School\Application\UseCases\UpdateAgeIntervalInternship;
 use App\Signing\School\Domain\Repositories\InternshipRepository;
 use App\Signing\School\Domain\UseCases\CreateInternshipSailing;
 use App\Signing\School\Domain\UseCases\DeleteInternship;
@@ -127,6 +133,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(CreateInternshipSailing::class, CreateInternshipSailingImpl::class);
         $this->app->singleton(DeleteInternship::class, DeleteInternshipImpl::class);
+        $this->app->singleton(UpdateAgeIntervalInternship::class, UpdateAgeIntervalInternshipImpl::class);
+        $this->app->singleton(SetDefaultPriceToInternship::class, SetDefaultPriceToInternshipImpl::class);
+        $this->app->singleton(PlanNewInternshipSession::class, PlanNewSessionInternshipImpl::class);
 
         $this->app->singleton(SendBoatTripEndedNotification::class, SendBoatTripEndedNotificationImpl::class);
         $this->app->singleton(SendBoatTripStartedNotification::class, SendBoatTripStartedNotificationImpl::class);

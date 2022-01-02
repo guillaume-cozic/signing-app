@@ -2,6 +2,7 @@
 
 namespace App\Signing\School\Domain\Model;
 
+use App\Signing\School\Domain\Model\Exception\PriceCantBeNegative;
 use App\Signing\School\Domain\Model\Exception\TraineesNumberCantBeNulOrNegativeException;
 use App\Signing\School\Domain\Repositories\InternshipRepository;
 use App\Signing\Shared\Entities\HasState;
@@ -16,10 +17,11 @@ class Internship implements HasState
 
     public function __construct(
         private string $id,
-        private ?int $startAge,
-        private ?int $endAge,
+        ?int $startAge,
+        ?int $endAge,
         private int $maxTrainees,
-        array $fleetsCollection
+        array $fleetsCollection,
+        private ?float $price = null
     ){
         if($this->maxTrainees <= 0){
             throw new TraineesNumberCantBeNulOrNegativeException();
@@ -44,17 +46,30 @@ class Internship implements HasState
         app(InternshipRepository::class)->delete($this->id());
     }
 
+    public function updateAgeInterval(int $start, int $end)
+    {
+        $this->ages = new Interval($start, $end);
+        app(InternshipRepository::class)->save($this);
+    }
+
+    public function setDefaultPrice(float $price)
+    {
+        if($price <= 0){
+            throw new PriceCantBeNegative();
+        }
+        $this->price = $price;
+        app(InternshipRepository::class)->save($this);
+    }
+
     public function getState(): InternshipState
     {
         return new InternshipState(
             $this->id,
-            $this->startAge,
-            $this->endAge,
+            $this->ages->start(),
+            $this->ages->end(),
             $this->maxTrainees,
             $this->fleets->toArray(),
             $this->title
         );
     }
-
-
 }

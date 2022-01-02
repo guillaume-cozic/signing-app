@@ -29,6 +29,5 @@ class DeleteInternshipTest extends TestCase
         app(DeleteInternship::class)->execute('id');
 
         self::assertNull($this->internshipRepository->get('id'));
-
     }
 }
